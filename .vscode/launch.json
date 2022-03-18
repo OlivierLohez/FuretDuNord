@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "Dart (bin/furetdunord.dart)",
+            "type": "dart",
+            "request": "launch",
+            "program": "bin/furetdunord.dart",
+            "console": "terminal"
+        }
+    ]
+}
