@@ -9,8 +9,14 @@ void main(List<String> args) async {
     print("Début");
     MySqlConnection conn = await MySqlConnection.connect(settings);
     print("Connexion réussie !");
-    //LaBDFuret.creerTables(conn);
-    IHMEditeur.demandeInsererEditeur(conn);
+    /*
+    try {
+      LaBDFuret.creerTables(conn);
+    } catch (e) {
+      print("Les tables sont déjà créées");
+    }*/
+    //IHMEditeur.demandeInsererEditeur(conn);
+    IHMEditeur.demandeSupprimerEditeurNom(conn);
     try {
       await conn.close();
       print("Connexion terminée !");

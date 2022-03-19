@@ -3,37 +3,10 @@ import 'dart:io';
 import 'package:mysql1/mysql1.dart';
 
 import 'editeur.dart';
+import 'ihm.dart';
 
 class IHMEditeur {
   // Methodes
-  static Future<void> demandeInsererEditeur(
-    MySqlConnection conn,
-  ) async {
-    print("Vous voulez saisir un éditeur.");
-    print("Veuillez saisir son nom");
-    String nomEditeur = saisirStringRec();
-    print("Veuillez saisir sa ville");
-    String villeEditeur = saisirStringRec();
-    print("Veuillez saisir son adresse");
-    String adresseEditeur = saisirStringRec();
-    IHMEditeur.insererEditeur(
-        conn, new Editeur.sansId(nomEditeur, adresseEditeur, villeEditeur));
-  }
-
-  static Future<void> select(MySqlConnection conn) async {
-    try {
-      String requete = "SELECT * from EDITEUR;";
-      Results response = await conn.query(requete);
-      for (var row in response) {
-        for (var field in row) {
-          print(field.toString());
-        }
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
   static Future<void> insererEditeur(
       MySqlConnection conn, Editeur lEditeur) async {
     try {
@@ -51,15 +24,55 @@ class IHMEditeur {
     }
   }
 
-  static String saisirStringRec() {
-    String c = "";
-    print("Veuillez indiquer une chaîne de caractère :");
+  static Future<void> demandeInsererEditeur(
+    MySqlConnection conn,
+  ) async {
+    print("Vous voulez saisir un éditeur.");
+    print("Veuillez saisir son nom");
+    String nomEditeur = IHM.saisirStringRec();
+    print("Veuillez saisir sa ville");
+    String villeEditeur = IHM.saisirStringRec();
+    print("Veuillez saisir son adresse");
+    String adresseEditeur = IHM.saisirStringRec();
+    IHMEditeur.insererEditeur(
+        conn, new Editeur.sansId(nomEditeur, adresseEditeur, villeEditeur));
+  }
+
+  static Future<void> supprimerEditeurNom(
+      MySqlConnection conn, String nomEditeur) async {
     try {
-      c = stdin.readLineSync().toString();
+      String requete =
+          "DELETE FROM EDITEUR WHERE nomEditeur='" + nomEditeur + "';";
+      await conn.query(requete);
     } catch (e) {
-      print("Erreur lors de la saisie");
-      c = saisirStringRec();
+      print(e.toString());
     }
-    return c;
+  }
+
+  static Future<void> demandeSupprimerEditeurNom(
+    MySqlConnection conn,
+  ) async {
+    print("Vous voulez supprimer un éditeur.");
+    print("Veuillez saisir son nom");
+    IHMEditeur.supprimerEditeurNom(conn, IHM.saisirStringRec());
+  }
+
+  static Future<void> selectAllEditeur(MySqlConnection conn) async {
+    try {
+      String requete = "SELECT * from EDITEUR;";
+      Results response = await conn.query(requete);
+      for (var row in response) {
+        int i = 0;
+        for (var field in row) {
+          if (i == row.length - 1) {
+            print(field.toString());
+          } else {
+            stdout.write(field.toString());
+          }
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }
