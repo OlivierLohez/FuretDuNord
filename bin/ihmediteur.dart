@@ -7,6 +7,21 @@ import 'ihm.dart';
 
 class IHMEditeur {
   // Methodes
+  // L'affichage permettant de montrant le choix des différentes actions
+  static String choisirTableEditeur() {
+    print("+--------------------------------------------+");
+    print("|                                            |");
+    print("|   Quelle action voulez-vous choisir ?      |");
+    print("|   0 = Retour au début                      |");
+    print("|   1 = Ajouter,                             |");
+    print("|   2 = Supprimer                            |");
+    print("|   Autre = fin                              |");
+    print("|                                            |");
+    print("+--------------------------------------------+");
+    String laTable = IHM.saisirStringRec();
+    return laTable;
+  }
+
   static Future<void> insererEditeur(
       MySqlConnection conn, Editeur lEditeur) async {
     try {

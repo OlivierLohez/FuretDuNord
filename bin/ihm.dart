@@ -2,6 +2,20 @@ import 'dart:io';
 
 class IHM {
   // Méthodes
+  // L'affichage permettant de montrant le choix des différentes tables
+  static String choisirTable() {
+    print("+--------------------------------------------+");
+    print("|                                            |");
+    print("|   Quelle table voulez-vous choisir ?       |");
+    print("|   1 = Auteur,                              |");
+    print("|   2 = Editeur                              |");
+    print("|   Autre = fin                              |");
+    print("|                                            |");
+    print("+--------------------------------------------+");
+    String laTable = IHM.saisirStringRec();
+    return laTable;
+  }
+
   // Saisie des entiers de manière récurssive
   static int saisirIntRec() {
     int i = 0;
