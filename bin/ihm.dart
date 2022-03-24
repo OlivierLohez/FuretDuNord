@@ -3,6 +3,7 @@ import 'dart:io';
 import 'data.dart';
 import 'ihmbdd.dart';
 import 'ihmediteur.dart';
+import 'ihmproduit.dart';
 
 class IHM {
   // Méthodes
@@ -28,14 +29,17 @@ class IHM {
     print("|   1 = Manipuler les BDD                               |");
     print("|   2 = Auteur                                          |");
     print("|   3 = Editeur                                         |");
+    print("|   4 = Produit                                         |");
     print("|                                                       |");
     print("+-------------------------------------------------------+");
-    int laTable = IHM.saisirAction(3);
+    int laTable = IHM.saisirAction(4);
     if (laTable == 1) {
       await IHMBDD.choisirActionBDD();
     } else if (laTable == 2) {
     } else if (laTable == 3) {
       await IHMEditeur.choisirActionEditeur();
+    } else if (laTable == 4) {
+      await IHMPRODUIT.choisirActionProduit();
     } else if (laTable == 0) {
       continuer = false;
     }

@@ -12,7 +12,7 @@ class DBEditeur {
       MySqlConnection conn =
           await MySqlConnection.connect(LaBDFuret.settingsLaBD());
       try {
-        String requete = "SELECT * FROM EDITEUR WHERE id=" +
+        String requete = "SELECT * FROM EDITEUR WHERE idEditeur=" +
             idEditeur.toString() +
             " AND EXISTS (SELECT idEditeur FROM EDITEUR WHERE idEditeur=" +
             idEditeur.toString() +
@@ -43,15 +43,6 @@ class DBEditeur {
           Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
               row['adresseEditeur'], row['villeEditeur']);
           listeEdit.add(edit);
-
-          /*
-          // variante avec création d'étudiant depuis une liste
-          List<String> unEtu = [];
-          for (var field in row) {
-            unEtu.add(field.toString());
-          }
-          listeEtu.add(Etudiant.fromListString(unEtu));
-          */
         }
       } catch (e) {
         log(e.toString());
@@ -89,6 +80,78 @@ class DBEditeur {
     return listeEdit;
   }
 
+  static Future<List<Editeur>> selectEditeursByNom(String nomEditeur) async {
+    List<Editeur> listeEdit = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete =
+            "SELECT * from EDITEUR WHERE nomEditeur='" + nomEditeur + "';";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
+              row['adresseEditeur'], row['villeEditeur']);
+          listeEdit.add(edit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeEdit;
+  }
+
+  static Future<List<int>> selectIdEditeursByVille(String villeEditeur) async {
+    List<int> listeIdEdit = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete = "SELECT idEditeur from EDITEUR WHERE villeEditeur='" +
+            villeEditeur +
+            "';";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          int idEdit = row['idEditeur'];
+          listeIdEdit.add(idEdit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeIdEdit;
+  }
+
+  static Future<List<int>> selectIdEditeursByNom(String nomEditeur) async {
+    List<int> listeIdEdit = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete = "SELECT idEditeur from EDITEUR WHERE nomEditeur='" +
+            nomEditeur +
+            "';";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          int idEdit = row['idEditeur'];
+          listeIdEdit.add(idEdit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeIdEdit;
+  }
+
   static Future<void> insertEditeur(
       String nomEditeur, String adresseEditeur, String villeEditeur) async {
     try {
@@ -122,13 +185,13 @@ class DBEditeur {
       try {
         String requete = "UPDATE EDITEUR SET nomEditeur = '" +
             nomEditeur +
-            ", adresseEditeur = '" +
+            "', adresseEditeur = '" +
             adresseEditeur +
-            ", villeEditeur = '" +
+            "', villeEditeur = '" +
             villeEditeur +
-            ", ' WHERE idEditeur='" +
+            "' WHERE idEditeur = " +
             idEditeur.toString() +
-            "'";
+            ";";
         await conn.query(requete);
       } catch (e) {
         log(e.toString());
@@ -192,7 +255,7 @@ class DBEditeur {
     }
   }
 
-  // verifie l'existance d'un etudiant selon son ID
+  // verifie l'existance d'un éditeur selon son ID
   static Future<bool> exist(int idEditeur) async {
     bool exist = false;
     if (!(await DBEditeur.selectEditeur(idEditeur)).estNull()) {

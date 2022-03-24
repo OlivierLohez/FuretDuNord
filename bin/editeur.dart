@@ -9,7 +9,6 @@ class Editeur implements Data {
   String _villeEditeur = "";
 
   // Constructeurs
-
   Editeur(this._idEditeur, this._nomEditeur, this._adresseEditeur,
       this._villeEditeur);
   Editeur.sansId(this._nomEditeur, this._adresseEditeur, this._villeEditeur);
@@ -52,7 +51,7 @@ class Editeur implements Data {
 
   @override
   String getEntete() {
-    return "| id | name | email | age |";
+    return "| id | nom | adresse | ville |";
   }
 
   @override

@@ -68,7 +68,7 @@ class LaBDFuret {
         }
         if (!checkProduit) {
           requete =
-              "CREATE TABLE PRODUIT (idProduit int NOT NULL AUTO_INCREMENT PRIMARY KEY, nom varchar(30), stock int, dateParution datetime, type varchar(30), prix int, idEditeur int NOT NULL,FOREIGN KEY (idEditeur) REFERENCES EDITEUR(idEditeur));";
+              "CREATE TABLE PRODUIT (idProduit int NOT NULL AUTO_INCREMENT PRIMARY KEY, nomProduit varchar(30), stock int, dateParution varchar(30), type varchar(30), prix double, idEditeur int NOT NULL,FOREIGN KEY (idEditeur) REFERENCES EDITEUR(idEditeur));";
           await conn.query(requete);
         }
         if (!checkCreer) {
