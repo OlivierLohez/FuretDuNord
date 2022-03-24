@@ -48,33 +48,7 @@ class IHMSelectEditeur {
   static Future<void> demandeSelectEditeurByVille() async {
     print("Vous voulez des éditeurs en fonction d'une ville.");
     print("Veuillez saisir le nom de la ville");
-    String villeEditeur = IHM.saisirStringRec();
-    await IHMSelectEditeur.selectEditeurByVille(villeEditeur);
-  }
-
-  static Future<void> selectEditeurByVille(String villeEditeur) async {
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete =
-            "SELECT * from EDITEUR WHERE villeEditeur='" + villeEditeur + "';";
-        Results response = await conn.query(requete);
-        for (var row in response) {
-          //int i = 0;
-          for (var field in row) {
-            //if (i == row.length - 1) {
-            print(field.toString());
-            //} else {
-            //stdout.write(field.toString());
-            //}
-          }
-        }
-      } catch (e) {
-        print(e.toString());
-      }
-    } catch (e) {
-      print(e.toString());
-    }
+    IHM.afficherDesDonnees(
+        await DBEditeur.selectEditeursByVille(IHM.saisirStringRec()));
   }
 }

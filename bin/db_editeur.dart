@@ -64,6 +64,31 @@ class DBEditeur {
     return listeEdit;
   }
 
+  static Future<List<Editeur>> selectEditeursByVille(
+      String villeEditeur) async {
+    List<Editeur> listeEdit = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete =
+            "SELECT * from EDITEUR WHERE villeEditeur='" + villeEditeur + "';";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
+              row['adresseEditeur'], row['villeEditeur']);
+          listeEdit.add(edit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeEdit;
+  }
+
   static Future<void> insertEditeur(
       String nomEditeur, String adresseEditeur, String villeEditeur) async {
     try {
@@ -144,6 +169,7 @@ class DBEditeur {
       } catch (e) {
         print(e.toString());
       }
+      conn.close();
     } catch (e) {
       print(e.toString());
     }
