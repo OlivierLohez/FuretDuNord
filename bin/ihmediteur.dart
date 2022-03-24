@@ -1,47 +1,39 @@
-import 'dart:io';
-
-import 'package:mysql1/mysql1.dart';
-
-import 'editeur.dart';
+import 'db_editeur.dart';
 import 'ihm.dart';
+import 'ihmselectediteur.dart';
 
 class IHMEditeur {
   // Methodes
   // L'affichage permettant de montrant le choix des différentes actions
-  static String choisirTableEditeur() {
-    print("+--------------------------------------------+");
-    print("|                                            |");
-    print("|   Quelle action voulez-vous choisir ?      |");
-    print("|   0 = Retour au début                      |");
-    print("|   1 = Ajouter,                             |");
-    print("|   2 = Supprimer                            |");
-    print("|   Autre = fin                              |");
-    print("|                                            |");
-    print("+--------------------------------------------+");
-    String laTable = IHM.saisirStringRec();
-    return laTable;
-  }
-
-  static Future<void> insererEditeur(
-      MySqlConnection conn, Editeur lEditeur) async {
-    try {
-      String requete =
-          "INSERT INTO EDITEUR (nomEditeur,adresseEditeur,villeEditeur) VALUES('" +
-              lEditeur.getNomEditeur() +
-              "','" +
-              lEditeur.getAdresseEditeur() +
-              "','" +
-              lEditeur.getVilleEditeur() +
-              "') ;";
-      await conn.query(requete);
-    } catch (e) {
-      print(e.toString());
+  static Future<void> choisirActionEditeur() async {
+    print("");
+    print("+-------------------------------------------------------+");
+    print("|                                                       |");
+    print("|   Menu - Gestion Editeur                              |");
+    print("|   Quelle action voulez-vous choisir ?                 |");
+    print("|   0 = Quitter                                         |");
+    print("|   1 = Ajouter un éditeur                              |");
+    print("|   2 = Supprimer un éditeur                            |");
+    print("|   3 = Sélectionner un ou plusieurs éditeurs           |");
+    print("|   4 = Modifier un éditeur                             |");
+    print("|                                                       |");
+    print("+-------------------------------------------------------+");
+    int choix = IHM.saisirAction(4);
+    if (choix == 0) {
+      print("On recommence");
+    }
+    if (choix == 1) {
+      IHMEditeur.demandeInsererEditeur();
+    } else if (choix == 2) {
+      IHMEditeur.demandeSupprimerEditeurNom();
+    } else if (choix == 3) {
+      await IHMSelectEditeur.choisirActionSelectEditeur();
+    } else if (choix == 4) {
+      await IHMEditeur.demandeModifierEditeur();
     }
   }
 
-  static Future<void> demandeInsererEditeur(
-    MySqlConnection conn,
-  ) async {
+  static Future<void> demandeInsererEditeur() async {
     print("Vous voulez saisir un éditeur.");
     print("Veuillez saisir son nom");
     String nomEditeur = IHM.saisirStringRec();
@@ -49,45 +41,33 @@ class IHMEditeur {
     String villeEditeur = IHM.saisirStringRec();
     print("Veuillez saisir son adresse");
     String adresseEditeur = IHM.saisirStringRec();
-    IHMEditeur.insererEditeur(
-        conn, new Editeur.sansId(nomEditeur, adresseEditeur, villeEditeur));
+    DBEditeur.insertEditeur(nomEditeur, adresseEditeur, villeEditeur);
   }
 
-  static Future<void> supprimerEditeurNom(
-      MySqlConnection conn, String nomEditeur) async {
-    try {
-      String requete =
-          "DELETE FROM EDITEUR WHERE nomEditeur='" + nomEditeur + "';";
-      await conn.query(requete);
-    } catch (e) {
-      print(e.toString());
-    }
+  static Future<void> demandeSupprimerEditeurID() async {
+    print("Vous voulez supprimer un éditeur en fonction d'un ID.");
+    print("Veuillez saisir son ID");
+    DBEditeur.deleteEditeur(IHM.saisirIntRec());
   }
 
-  static Future<void> demandeSupprimerEditeurNom(
-    MySqlConnection conn,
-  ) async {
-    print("Vous voulez supprimer un éditeur.");
+  static Future<void> demandeSupprimerEditeurNom() async {
+    print("Vous voulez supprimer un éditeur en fonction d'un nom.");
     print("Veuillez saisir son nom");
-    IHMEditeur.supprimerEditeurNom(conn, IHM.saisirStringRec());
+    DBEditeur.deleteEditeurByName(IHM.saisirStringRec());
   }
 
-  static Future<void> selectAllEditeur(MySqlConnection conn) async {
-    try {
-      String requete = "SELECT * from EDITEUR;";
-      Results response = await conn.query(requete);
-      for (var row in response) {
-        int i = 0;
-        for (var field in row) {
-          if (i == row.length - 1) {
-            print(field.toString());
-          } else {
-            stdout.write(field.toString());
-          }
-        }
-      }
-    } catch (e) {
-      print(e.toString());
-    }
+  static Future<void> demandeModifierEditeur() async {
+    print("Vous voulez modifier un éditeur.");
+    print("Veuillez saisir son ID");
+    int idEditeur = IHM.saisirIntRec();
+
+    print("Veuillez saisir son nom");
+    String nomEditeur = IHM.saisirStringRec();
+    print("Veuillez saisir sa ville");
+    String villeEditeur = IHM.saisirStringRec();
+    print("Veuillez saisir son adresse");
+    String adresseEditeur = IHM.saisirStringRec();
+    DBEditeur.updateEditeur(
+        idEditeur, nomEditeur, adresseEditeur, villeEditeur);
   }
 }
