@@ -1,38 +1,39 @@
 import 'db_produit.dart';
 import 'ihm.dart';
+import 'ihmdeletproduit.dart';
 import 'ihmselectproduit.dart';
 
 class IHMPRODUIT {
   // Methodes
   // L'affichage permettant de montrant le choix des différentes actions
   static Future<void> choisirActionProduit() async {
-    print("");
-    print("+-------------------------------------------------------+");
-    print("|                                                       |");
-    print("|   Menu - Gestion Produit                              |");
-    print("|   Quelle action voulez-vous choisir ?                 |");
-    print("|   0 = Quitter                                         |");
-    print("|   1 = Ajouter un produit                              |");
-    print("|   2 = Supprimer un produit                            |");
-    print("|   3 = Supprimer tous les produits                     |");
-    print("|   4 = Sélectionner un ou plusieurs produits           |");
-    print("|   5 = Modifier un produit                             |");
-    print("|                                                       |");
-    print("+-------------------------------------------------------+");
-    int choix = IHM.saisirAction(5);
-    if (choix == 0) {
-      print("On recommence");
-    }
-    if (choix == 1) {
-      IHMPRODUIT.askInsertProduit();
-    } else if (choix == 2) {
-      IHMPRODUIT.askDeleteProduitName();
-    } else if (choix == 3) {
-      DBProduit.deleteAllProduits();
-    } else if (choix == 4) {
-      await IHMSelectProduit.choisirActionSelectProduit();
-    } else if (choix == 5) {
-      await IHMPRODUIT.askUpdateProduit();
+    int choix = -1;
+    while (choix != 0) {
+      print("");
+      print("+-------------------------------------------------------+");
+      print("|                                                       |");
+      print("|   Menu - Gestion Produit                              |");
+      print("|   Quelle action voulez-vous choisir ?                 |");
+      print("|   0 = Quitter                                         |");
+      print("|   1 = Ajouter un produit                              |");
+      print("|   2 = Supprimer un ou plusieurs produits              |");
+      print("|   3 = Sélectionner un ou plusieurs produits           |");
+      print("|   4 = Modifier un produit                             |");
+      print("|                                                       |");
+      print("+-------------------------------------------------------+");
+      choix = IHM.saisirAction(4);
+      if (choix == 0) {
+        print("On recommence");
+      }
+      if (choix == 1) {
+        IHMPRODUIT.askInsertProduit();
+      } else if (choix == 2) {
+        await IHMDeleteProduit.choisirActionDeleteProduit();
+      } else if (choix == 3) {
+        await IHMSelectProduit.choisirActionSelectProduit();
+      } else if (choix == 4) {
+        await IHMPRODUIT.askUpdateProduit();
+      }
     }
   }
 
@@ -52,55 +53,6 @@ class IHMPRODUIT {
     int idEditeur = IHM.saisirIntRec();
     DBProduit.insertProduit(
         nomProduit, stock, dateParution, type, prix, idEditeur);
-  }
-
-  static Future<void> askDeleteProduitID() async {
-    print("Vous voulez supprimer un produit en fonction d'un ID.");
-    print("Veuillez saisir son ID");
-    int produit = IHM.saisirIntRec();
-    if (IHM.confirmation()) {
-      DBProduit.deleteProduit(produit);
-      print("Produit supprimé.");
-      print("Fin de l'opération.");
-      print("--------------------------------------------------");
-      await Future.delayed(Duration(seconds: 1));
-    } else {
-      print("Annulation de l'opération.");
-      print("--------------------------------------------------");
-      await Future.delayed(Duration(seconds: 1));
-    }
-  }
-
-  static Future<void> askDeleteProduitName() async {
-    print("Vous voulez supprimer un produit en fonction d'un nom.");
-    print("Veuillez saisir son nom");
-    String produit = IHM.saisirStringRec();
-    if (IHM.confirmation()) {
-      DBProduit.deleteProduitByName(produit);
-      print("Produit supprimé.");
-      print("Fin de l'opération.");
-      print("--------------------------------------------------");
-      await Future.delayed(Duration(seconds: 1));
-    } else {
-      print("Annulation de l'opération.");
-      print("--------------------------------------------------");
-      await Future.delayed(Duration(seconds: 1));
-    }
-  }
-
-  static Future<void> askDeleteAllProduits() async {
-    print("Vous voulez supprimer tous les produits.");
-    if (IHM.confirmation()) {
-      DBProduit.deleteAllProduits();
-      print("Tous les produits ont été supprimés.");
-      print("Fin de l'opération.");
-      print("--------------------------------------------------");
-      await Future.delayed(Duration(seconds: 1));
-    } else {
-      print("Annulation de l'opération.");
-      print("--------------------------------------------------");
-      await Future.delayed(Duration(seconds: 1));
-    }
   }
 
   static Future<void> askUpdateProduit() async {

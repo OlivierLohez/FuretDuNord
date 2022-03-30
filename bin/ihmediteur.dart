@@ -7,30 +7,33 @@ class IHMEditeur {
   // Methodes
   // L'affichage permettant de montrant le choix des différentes actions
   static Future<void> choisirActionEditeur() async {
-    print("");
-    print("+-------------------------------------------------------+");
-    print("|                                                       |");
-    print("|   Menu - Gestion Editeur                              |");
-    print("|   Quelle action voulez-vous choisir ?                 |");
-    print("|   0 = Quitter                                         |");
-    print("|   1 = Ajouter un éditeur                              |");
-    print("|   2 = Supprimer un ou plusieurs éditeurs              |");
-    print("|   3 = Sélectionner un ou plusieurs éditeurs           |");
-    print("|   4 = Modifier un éditeur                             |");
-    print("|                                                       |");
-    print("+-------------------------------------------------------+");
-    int choix = IHM.saisirAction(4);
-    if (choix == 0) {
-      print("On recommence");
-    }
-    if (choix == 1) {
-      IHMEditeur.askInsertEditeur();
-    } else if (choix == 2) {
-      IHMDeletEditeur.choisirActionDeletediteur();
-    } else if (choix == 3) {
-      await IHMSelectEditeur.choisirActionSelectEditeur();
-    } else if (choix == 4) {
-      await IHMEditeur.askUpdateEditeur();
+    int choix = -1;
+    while (choix != 0) {
+      print("");
+      print("+-------------------------------------------------------+");
+      print("|                                                       |");
+      print("|   Menu - Gestion Editeur                              |");
+      print("|   Quelle action voulez-vous choisir ?                 |");
+      print("|   0 = Quitter                                         |");
+      print("|   1 = Ajouter un éditeur                              |");
+      print("|   2 = Supprimer un ou plusieurs éditeurs              |");
+      print("|   3 = Sélectionner un ou plusieurs éditeurs           |");
+      print("|   4 = Modifier un éditeur                             |");
+      print("|                                                       |");
+      print("+-------------------------------------------------------+");
+      choix = IHM.saisirAction(4);
+      if (choix == 0) {
+        print("On recommence");
+      }
+      if (choix == 1) {
+        IHMEditeur.askInsertEditeur();
+      } else if (choix == 2) {
+        IHMDeletEditeur.choisirActionDeletediteur();
+      } else if (choix == 3) {
+        await IHMSelectEditeur.choisirActionSelectEditeur();
+      } else if (choix == 4) {
+        await IHMEditeur.askUpdateEditeur();
+      }
     }
   }
 

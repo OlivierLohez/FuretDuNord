@@ -66,21 +66,26 @@ class DBProduit {
 
     return listeProd;
   }
-/*
-  static Future<List<Editeur>> selectEditeursByVille(
-      String villeEditeur) async {
-    List<Editeur> listeEdit = [];
+
+  static Future<List<Produit>> selectProduitsByNom(String nomProduit) async {
+    List<Produit> listeProd = [];
     try {
       MySqlConnection conn =
           await MySqlConnection.connect(LaBDFuret.settingsLaBD());
       try {
         String requete =
-            "SELECT * from EDITEUR WHERE villeEditeur='" + villeEditeur + "';";
+            "SELECT * from PRODUIT WHERE nomProduit='" + nomProduit + "';";
         Results reponse = await conn.query(requete);
         for (var row in reponse) {
-          Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
-              row['adresseEditeur'], row['villeEditeur']);
-          listeEdit.add(edit);
+          Produit produit = Produit(
+              row['idProduit'],
+              row['nomProduit'],
+              row['stock'],
+              row['dateParution'],
+              row['type'],
+              row['prix'],
+              row['idEditeur']);
+          listeProd.add(produit);
         }
       } catch (e) {
         print(e.toString());
@@ -89,8 +94,337 @@ class DBProduit {
     } catch (e) {
       print(e.toString());
     }
-    return listeEdit;
-  }*/
+    return listeProd;
+  }
+
+  static Future<List<Produit>> selectProduitsByStock(int stock) async {
+    List<Produit> listeProd = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete =
+            "SELECT * from PRODUIT WHERE stock=" + stock.toString() + ";";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          Produit produit = Produit(
+              row['idProduit'],
+              row['nomProduit'],
+              row['stock'],
+              row['dateParution'],
+              row['type'],
+              row['prix'],
+              row['idEditeur']);
+          listeProd.add(produit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeProd;
+  }
+
+  static Future<List<Produit>> selectProduitsByDateParution(
+      String dateParution) async {
+    List<Produit> listeProd = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete =
+            "SELECT * from PRODUIT WHERE dateParution=" + dateParution + ";";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          Produit produit = Produit(
+              row['idProduit'],
+              row['nomProduit'],
+              row['stock'],
+              row['dateParution'],
+              row['type'],
+              row['prix'],
+              row['idEditeur']);
+          listeProd.add(produit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeProd;
+  }
+
+  static Future<List<Produit>> selectProduitsByType(String type) async {
+    List<Produit> listeProd = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete = "SELECT * from PRODUIT WHERE type=" + type + ";";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          Produit produit = Produit(
+              row['idProduit'],
+              row['nomProduit'],
+              row['stock'],
+              row['dateParution'],
+              row['type'],
+              row['prix'],
+              row['idEditeur']);
+          listeProd.add(produit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeProd;
+  }
+
+  static Future<List<Produit>> selectProduitsByPrix(double prix) async {
+    List<Produit> listeProd = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete =
+            "SELECT * from PRODUIT WHERE prix=" + prix.toString() + ";";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          Produit produit = Produit(
+              row['idProduit'],
+              row['nomProduit'],
+              row['stock'],
+              row['dateParution'],
+              row['type'],
+              row['prix'],
+              row['idEditeur']);
+          listeProd.add(produit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeProd;
+  }
+
+  static Future<List<Produit>> selectProduitsByNomEditeur(
+      String nomEditeur) async {
+    List<Produit> listeProd = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete = "SELECT * from EDITEUR, PRODUIT WHERE nomEditeur='" +
+            nomEditeur +
+            "' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          Produit produit = Produit(
+              row['idProduit'],
+              row['nomProduit'],
+              row['stock'],
+              row['dateParution'],
+              row['type'],
+              row['prix'],
+              row['idEditeur']);
+          listeProd.add(produit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeProd;
+  }
+
+  static Future<List<Produit>> selectProduitsByVilleEditeur(
+      String villeEditeur) async {
+    List<Produit> listeProd = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete = "SELECT * from EDITEUR, PRODUIT WHERE villeEditeur='" +
+            villeEditeur +
+            "' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          Produit produit = Produit(
+              row['idProduit'],
+              row['nomProduit'],
+              row['stock'],
+              row['dateParution'],
+              row['type'],
+              row['prix'],
+              row['idEditeur']);
+          listeProd.add(produit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeProd;
+  }
+
+  static Future<List<int>> selectIdProduitsByNom(String nomProduit) async {
+    List<int> listeIdProduit = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete =
+            "SELECT idProduit from PRODUIT WHERE stock='" + nomProduit + "';";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          int idProduit = row['idProduit'];
+          listeIdProduit.add(idProduit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeIdProduit;
+  }
+
+  static Future<List<int>> selectIdProduitsByStock(int stock) async {
+    List<int> listeIdProduit = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete = "SELECT idProduit from PRODUIT WHERE stock=" +
+            stock.toString() +
+            ";";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          int idProduit = row['idProduit'];
+          listeIdProduit.add(idProduit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeIdProduit;
+  }
+
+  static Future<List<int>> selectIdProduitsByType(String type) async {
+    List<int> listeIdProduit = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete =
+            "SELECT idProduit from PRODUIT WHERE type='" + type + "';";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          int idProduit = row['idProduit'];
+          listeIdProduit.add(idProduit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeIdProduit;
+  }
+
+  static Future<List<int>> selectIdProduitsByPrix(double prix) async {
+    List<int> listeIdProduit = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete =
+            "SELECT idProduit from PRODUIT WHERE prix=" + prix.toString() + ";";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          int idProduit = row['idProduit'];
+          listeIdProduit.add(idProduit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeIdProduit;
+  }
+
+  static Future<List<int>> selectIdProduitsByNomEditeur(
+      String nomEditeur) async {
+    List<int> listeIdProduit = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete =
+            "SELECT idProduit from EDITEUR, PRODUIT WHERE nomEditeur='" +
+                nomEditeur +
+                "' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          int idProduit = row['idProduit'];
+          listeIdProduit.add(idProduit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeIdProduit;
+  }
+
+  static Future<List<int>> selectIdProduitsByVilleEditeur(
+      String villeEditeur) async {
+    List<int> listeIdProduit = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete =
+            "SELECT idProduit from EDITEUR, PRODUIT WHERE villeEditeur='" +
+                villeEditeur +
+                "' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          int idProduit = row['idProduit'];
+          listeIdProduit.add(idProduit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeIdProduit;
+  }
 
   static Future<void> insertProduit(String nomProduit, int stock,
       String dateParution, String type, double prix, int idEditeur) async {
