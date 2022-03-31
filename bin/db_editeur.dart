@@ -104,6 +104,28 @@ class DBEditeur {
     return listeEdit;
   }
 
+  static Future<List<int>> selectIdEditeurs() async {
+    List<int> listeIdEdit = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete = "SELECT idEditeur from EDITEUR;";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          int idEdit = row['idEditeur'];
+          listeIdEdit.add(idEdit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeIdEdit;
+  }
+
   static Future<List<int>> selectIdEditeursByVille(String villeEditeur) async {
     List<int> listeIdEdit = [];
     try {

@@ -22,11 +22,11 @@ class IHMDeleteProduit {
       print("|   7 = Supprimer tout en fonction d'un éditeur         |");
       print("|   8 = Supprimer un produit en fonction d'un ID        |");
       print("|   9 = Supprimer un produit en fonction d'un nom       |");
-      print("|   10 = Supprimer un produit en fonction d'une quantité |");
-      print("|   11 = Supprimer un produit en fonction d'une type     |");
-      print("|   12 = Supprimer un produit en fonction d'un prix      |");
-      print("|   13 = Supprimer un produit en fonction d'une ville    |");
-      print("|   14 = Supprimer un produit en fonction d'un éditeur   |");
+      print("|   10 = Supprimer un produit en fonction d'une quantité|");
+      print("|   11 = Supprimer un produit en fonction d'une type    |");
+      print("|   12 = Supprimer un produit en fonction d'un prix     |");
+      print("|   13 = Supprimer un produit en fonction d'une ville   |");
+      print("|   14 = Supprimer un produit en fonction d'un éditeur  |");
       print("|                                                       |");
       print("+-------------------------------------------------------+");
       choix = IHM.saisirAction(14);

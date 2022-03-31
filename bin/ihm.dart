@@ -107,18 +107,17 @@ class IHM {
     return action;
   }
 
-  static void afficherUneDonnee(Data data) async {
+  static void afficherUneDonnee(Data data) {
     print(data.getEntete());
     print(data.getInLine());
-    await Future.delayed(Duration(seconds: 3));
   }
 
-  static void afficherDesDonnees(List<Data> dataList) async {
+  static void afficherDesDonnees(List<Data> dataList) {
     print(dataList.first.getEntete());
     for (Data laDonnee in dataList) {
       print(laDonnee.getInLine());
     }
-    await Future.delayed(Duration(seconds: 3));
+    IHM.saisirStringRec();
   }
 
   // retourne un boolean pour demande de confirmation

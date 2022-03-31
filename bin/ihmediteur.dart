@@ -26,7 +26,7 @@ class IHMEditeur {
         print("On recommence");
       }
       if (choix == 1) {
-        IHMEditeur.askInsertEditeur();
+        await IHMEditeur.askInsertEditeur();
       } else if (choix == 2) {
         IHMDeletEditeur.choisirActionDeletediteur();
       } else if (choix == 3) {
@@ -45,41 +45,54 @@ class IHMEditeur {
     String villeEditeur = IHM.saisirStringRec();
     print("Veuillez saisir son adresse");
     String adresseEditeur = IHM.saisirStringRec();
-    DBEditeur.insertEditeur(nomEditeur, adresseEditeur, villeEditeur);
+    await DBEditeur.insertEditeur(nomEditeur, adresseEditeur, villeEditeur);
   }
 
   static Future<void> askUpdateEditeur() async {
     print("Vous voulez modifier un éditeur.");
     print("Veuillez saisir son ID");
     int idEditeur = IHM.saisirIntRec();
-    //print(idEditeur);
-    print("Vous souhaitez modifier l'éditeur :");
-    IHM.afficherUneDonnee(await DBEditeur.selectEditeur(idEditeur));
-    print("Veuillez saisir son nom");
-    String nomEditeur = IHM.saisirStringRec();
-    print("Veuillez saisir sa ville");
-    String villeEditeur = IHM.saisirStringRec();
-    print("Veuillez saisir son adresse");
-    String adresseEditeur = IHM.saisirStringRec();
-    if (IHM.confirmation()) {
-      if (await DBEditeur.exist(idEditeur)) {
-        DBEditeur.updateEditeur(
-            idEditeur, nomEditeur, adresseEditeur, villeEditeur);
-        print("Editeur modifié.");
-        print("Fin de l'opération.");
-        print("--------------------------------------------------");
-        print("");
-        await Future.delayed(Duration(seconds: 1));
-        print("L'éditeur a été changé en :");
-        IHM.afficherUneDonnee(await DBEditeur.selectEditeur(idEditeur));
-        await Future.delayed(Duration(seconds: 1));
+    //L'éditeur est présent ?
+    bool editeurPresent = false;
+    List<int> laListeIdEditeur = await DBEditeur.selectIdEditeurs();
+    int i = 0;
+    while (editeurPresent == false && i < laListeIdEditeur.length) {
+      if (idEditeur == laListeIdEditeur[i]) {
+        editeurPresent = true;
+      }
+      i++;
+    }
+    if (editeurPresent) {
+      print("Vous souhaitez modifier l'éditeur :");
+      IHM.afficherUneDonnee(await DBEditeur.selectEditeur(idEditeur));
+      print("Veuillez saisir son nom");
+      String nomEditeur = IHM.saisirStringRec();
+      print("Veuillez saisir sa ville");
+      String villeEditeur = IHM.saisirStringRec();
+      print("Veuillez saisir son adresse");
+      String adresseEditeur = IHM.saisirStringRec();
+      if (IHM.confirmation()) {
+        if (await DBEditeur.exist(idEditeur)) {
+          DBEditeur.updateEditeur(
+              idEditeur, nomEditeur, adresseEditeur, villeEditeur);
+          print("Editeur modifié.");
+          print("Fin de l'opération.");
+          print("--------------------------------------------------");
+          print("");
+          await Future.delayed(Duration(seconds: 1));
+          print("L'éditeur a été changé en :");
+          IHM.afficherUneDonnee(await DBEditeur.selectEditeur(idEditeur));
+          await Future.delayed(Duration(seconds: 1));
+        } else {
+          print("L'éditeur n'existe pas.");
+        }
       } else {
-        print("L'éditeur n'existe pas.");
+        print("Annulation de l'opération.");
+        print("--------------------------------------------------");
+        await Future.delayed(Duration(seconds: 1));
       }
     } else {
-      print("Annulation de l'opération.");
-      print("--------------------------------------------------");
-      await Future.delayed(Duration(seconds: 1));
+      print("Id de l'éditeur non reconnu");
     }
   }
 }

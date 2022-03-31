@@ -281,6 +281,28 @@ class DBProduit {
     return listeProd;
   }
 
+  static Future<List<int>> selectIdProduits() async {
+    List<int> listeIdProduit = [];
+    try {
+      MySqlConnection conn =
+          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      try {
+        String requete = "SELECT idProduit from PRODUIT;";
+        Results reponse = await conn.query(requete);
+        for (var row in reponse) {
+          int idProduit = row['idProduit'];
+          listeIdProduit.add(idProduit);
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+      conn.close();
+    } catch (e) {
+      print(e.toString());
+    }
+    return listeIdProduit;
+  }
+
   static Future<List<int>> selectIdProduitsByNom(String nomProduit) async {
     List<int> listeIdProduit = [];
     try {
