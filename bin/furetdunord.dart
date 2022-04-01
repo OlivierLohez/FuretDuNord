@@ -4,5 +4,8 @@ import 'ihm.dart';
 
 void main(List<String> args) async {
   ConnectionSettings settings = IHM.setting();
-  await IHM.boucleSaisie(settings);
+  bool connectionPossible = await IHM.testConnection(settings);
+  if (connectionPossible) {
+    await IHM.boucleSaisie(settings);
+  }
 }

@@ -42,7 +42,7 @@ class IHM {
     } else if (laTable == 3) {
       await IHMEditeur.choisirActionEditeur(settings);
     } else if (laTable == 4) {
-      //await IHMPRODUIT.choisirActionProduit();
+      await IHMPRODUIT.choisirActionProduit(settings);
     } else if (laTable == 0) {
       continuer = false;
     }
@@ -157,6 +157,20 @@ class IHM {
       password: mdp, // dartmdp
       db: bdd, // DartDB
     );
+  }
+
+  static Future<bool> testConnection(ConnectionSettings settings) async {
+    bool connectionPossible = false;
+    try {
+      MySqlConnection conn = await MySqlConnection.connect(settings);
+      connectionPossible = true;
+      conn.close();
+    } catch (e) {
+      print("");
+      print("La connection n'est pas valide.");
+      print("Arrêt du programme.");
+    }
+    return connectionPossible;
   }
 
   static void afficherUneDonnee(Data data) {
