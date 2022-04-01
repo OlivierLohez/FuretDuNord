@@ -1,10 +1,13 @@
+import 'package:mysql1/mysql1.dart';
+
 import 'db_editeur.dart';
 import 'ihm.dart';
 
 class IHMSelectEditeur {
   // Methodes
   // L'affichage permettant de montrant le choix des différentes actions
-  static Future<void> choisirActionSelectEditeur() async {
+  static Future<void> choisirActionSelectEditeur(
+      ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
       print("");
@@ -23,34 +26,33 @@ class IHMSelectEditeur {
         print("On retourne au début");
       }
       if (choix == 1) {
-        await IHMSelectEditeur.showAllEditeur();
+        await IHMSelectEditeur.showAllEditeur(settings);
       } else if (choix == 2) {
-        await IHMSelectEditeur.askSelectEditeurByVille();
+        await IHMSelectEditeur.askSelectEditeurByVille(settings);
       } else if (choix == 3) {
-        await IHMSelectEditeur.askSelectEditeurByNom();
+        await IHMSelectEditeur.askSelectEditeurByNom(settings);
       }
     }
   }
 
-  static Future<void> showAllEditeur() async {
+  static Future<void> showAllEditeur(ConnectionSettings settings) async {
     try {
-      IHM.afficherDesDonnees(await DBEditeur.selectAllEditeurs());
+      IHM.afficherDesDonnees(await DBEditeur.selectAllEditeurs(settings));
     } catch (e) {
       print(e.toString());
     }
   }
 
-  static Future<void> askSelectEditeurByVille() async {
+  static Future<void> askSelectEditeurByVille(
+      ConnectionSettings settings) async {
     print("Vous voulez des éditeurs en fonction d'une ville.");
-    print("Veuillez saisir le nom de la ville.");
-    IHM.afficherDesDonnees(
-        await DBEditeur.selectEditeursByVille(IHM.saisirStringRec()));
+    IHM.afficherDesDonnees(await DBEditeur.selectEditeursByVille(
+        settings, IHM.saisirString("le nom de la ville.")));
   }
 
-  static Future<void> askSelectEditeurByNom() async {
+  static Future<void> askSelectEditeurByNom(ConnectionSettings settings) async {
     print("Vous voulez des éditeurs en fonction d'un nom.");
-    print("Veuillez saisir le nom de l'éditeur.'");
-    IHM.afficherDesDonnees(
-        await DBEditeur.selectEditeursByNom(IHM.saisirStringRec()));
+    IHM.afficherDesDonnees(await DBEditeur.selectEditeursByNom(
+        settings, IHM.saisirString("le nom de l'éditeur.")));
   }
 }

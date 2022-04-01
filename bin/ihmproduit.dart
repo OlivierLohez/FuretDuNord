@@ -1,3 +1,5 @@
+import 'package:mysql1/mysql1.dart';
+
 import 'db_editeur.dart';
 import 'db_produit.dart';
 import 'ihm.dart';
@@ -7,7 +9,7 @@ import 'ihmselectproduit.dart';
 class IHMPRODUIT {
   // Methodes
   // L'affichage permettant de montrant le choix des différentes actions
-  static Future<void> choisirActionProduit() async {
+  static Future<void> choisirActionProduit(ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
       print("");
@@ -27,32 +29,29 @@ class IHMPRODUIT {
         print("On recommence");
       }
       if (choix == 1) {
-        await IHMPRODUIT.askInsertProduit();
+        await IHMPRODUIT.askInsertProduit(settings);
       } else if (choix == 2) {
-        await IHMDeleteProduit.choisirActionDeleteProduit();
+        await IHMDeleteProduit.choisirActionDeleteProduit(settings);
       } else if (choix == 3) {
-        await IHMSelectProduit.choisirActionSelectProduit();
+        await IHMSelectProduit.choisirActionSelectProduit(settings);
       } else if (choix == 4) {
-        await IHMPRODUIT.askUpdateProduit();
+        await IHMPRODUIT.askUpdateProduit(settings);
       }
     }
   }
 
-  static Future<void> askInsertProduit() async {
+  static Future<void> askInsertProduit(ConnectionSettings settings) async {
     print("Vous voulez saisir un produit.");
-    print("Veuillez saisir son nom");
-    String nomProduit = IHM.saisirStringRec();
+    String nomProduit = IHM.saisirString("son nom");
     print("Veuillez saisir sa quantité");
     int stock = IHM.saisirIntRec();
-    print("Veuillez saisir sa date de parution");
-    String dateParution = IHM.saisirStringRec();
-    print("Veuillez saisir son type");
-    String type = IHM.saisirStringRec();
+    String dateParution = IHM.saisirString("sa date de parution");
+    String type = IHM.saisirString("son type");
     print("Veuillez saisir son prix");
     double prix = IHM.saisirDoubleRec();
     bool editeurValide = false;
     bool editeurPresent = false;
-    List<int> laListeIdEditeur = await DBEditeur.selectIdEditeurs();
+    List<int> laListeIdEditeur = await DBEditeur.selectIdEditeurs(settings);
     while (editeurValide == false) {
       print("Veuillez saisir l'id de son éditeur");
       int idEditeur = IHM.saisirIntRec();
@@ -70,7 +69,7 @@ class IHMPRODUIT {
         }
         if (editeurPresent) {
           await DBProduit.insertProduit(
-              nomProduit, stock, dateParution, type, prix, idEditeur);
+              settings, nomProduit, stock, dateParution, type, prix, idEditeur);
           editeurValide = true;
         } else {
           print("Id de l'éditeur non reconnu");
@@ -79,14 +78,14 @@ class IHMPRODUIT {
     }
   }
 
-  static Future<void> askUpdateProduit() async {
+  static Future<void> askUpdateProduit(ConnectionSettings settings) async {
     print("Vous voulez modifier un produit.");
     print("Veuillez saisir son ID");
     int idProduit = IHM.saisirIntRec();
     print(idProduit);
     //Le produit est présent ?
     bool produitPresent = false;
-    List<int> laListeIdProduit = await DBProduit.selectIdProduits();
+    List<int> laListeIdProduit = await DBProduit.selectIdProduits(settings);
     int i = 0;
     while (produitPresent == false && i < laListeIdProduit.length) {
       if (idProduit == laListeIdProduit[i]) {
@@ -96,30 +95,28 @@ class IHMPRODUIT {
     }
     if (produitPresent) {
       print("Vous souhaitez modifier le produit :");
-      IHM.afficherUneDonnee(await DBProduit.selectProduit(idProduit));
-      print("Veuillez saisir son nom");
-      String nomProduit = IHM.saisirStringRec();
+      IHM.afficherUneDonnee(await DBProduit.selectProduit(settings, idProduit));
+      String nomProduit = IHM.saisirString("son nom");
       print("Veuillez saisir sa quantité");
       int stock = IHM.saisirIntRec();
-      print("Veuillez saisir sa date de parution");
-      String dateParution = IHM.saisirStringRec();
-      print("Veuillez saisir son type");
-      String type = IHM.saisirStringRec();
+      String dateParution = IHM.saisirString("sa date de parution");
+      String type = IHM.saisirString("son type");
       print("Veuillez saisir son prix");
       double prix = IHM.saisirDoubleRec();
       print("Veuillez saisir l'id de son éditeur");
       int idEditeur = IHM.saisirIntRec();
       if (IHM.confirmation()) {
-        if (await DBProduit.exist(idProduit)) {
-          DBProduit.updateProduit(idProduit, nomProduit, stock, dateParution,
-              type, prix, idEditeur);
+        if (await DBProduit.exist(settings, idProduit)) {
+          DBProduit.updateProduit(settings, idProduit, nomProduit, stock,
+              dateParution, type, prix, idEditeur);
           print("Produit modifié.");
           print("Fin de l'opération.");
           print("--------------------------------------------------");
           print("");
           await Future.delayed(Duration(seconds: 1));
           print("Le produit a été changé en :");
-          IHM.afficherUneDonnee(await DBProduit.selectProduit(idProduit));
+          IHM.afficherUneDonnee(
+              await DBProduit.selectProduit(settings, idProduit));
           await Future.delayed(Duration(seconds: 1));
         } else {
           print("Le produit n'existe pas.");

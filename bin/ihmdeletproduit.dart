@@ -1,10 +1,13 @@
+import 'package:mysql1/mysql1.dart';
+
 import 'db_produit.dart';
 import 'ihm.dart';
 
 class IHMDeleteProduit {
   // Methodes
   // L'affichage permettant de montrant le choix des différentes actions
-  static Future<void> choisirActionDeleteProduit() async {
+  static Future<void> choisirActionDeleteProduit(
+      ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
       print("");
@@ -34,41 +37,41 @@ class IHMDeleteProduit {
         print("On retourne au début");
       }
       if (choix == 1) {
-        await IHMDeleteProduit.askDeleteAllProduits();
+        await IHMDeleteProduit.askDeleteAllProduits(settings);
       } else if (choix == 2) {
-        await IHMDeleteProduit.askDeleteAllProduitsNom();
+        await IHMDeleteProduit.askDeleteAllProduitsNom(settings);
       } else if (choix == 3) {
-        await IHMDeleteProduit.askDeleteAllProduitsStock();
+        await IHMDeleteProduit.askDeleteAllProduitsStock(settings);
       } else if (choix == 4) {
-        await IHMDeleteProduit.askDeleteAllProduitsType();
+        await IHMDeleteProduit.askDeleteAllProduitsType(settings);
       } else if (choix == 5) {
-        await IHMDeleteProduit.askDeleteAllProduitsStock();
+        await IHMDeleteProduit.askDeleteAllProduitsStock(settings);
       } else if (choix == 6) {
-        await IHMDeleteProduit.askDeleteAllProduitsVilleEditeur();
+        await IHMDeleteProduit.askDeleteAllProduitsVilleEditeur(settings);
       } else if (choix == 7) {
-        await IHMDeleteProduit.askDeleteAllProduitsNomEditeur();
+        await IHMDeleteProduit.askDeleteAllProduitsNomEditeur(settings);
       } else if (choix == 8) {
-        await IHMDeleteProduit.askDeleteProduitID();
+        await IHMDeleteProduit.askDeleteProduitID(settings);
       } else if (choix == 9) {
-        await IHMDeleteProduit.askDeleteProduitNom();
+        await IHMDeleteProduit.askDeleteProduitNom(settings);
       } else if (choix == 10) {
-        await IHMDeleteProduit.askDeleteProduitStock();
+        await IHMDeleteProduit.askDeleteProduitStock(settings);
       } else if (choix == 11) {
-        await IHMDeleteProduit.askDeleteProduitType();
+        await IHMDeleteProduit.askDeleteProduitType(settings);
       } else if (choix == 12) {
-        await IHMDeleteProduit.askDeleteProduitPrix();
+        await IHMDeleteProduit.askDeleteProduitPrix(settings);
       } else if (choix == 13) {
-        await IHMDeleteProduit.askDeleteProduitNomVille();
+        await IHMDeleteProduit.askDeleteProduitNomVille(settings);
       } else if (choix == 14) {
-        await IHMDeleteProduit.askDeleteProduitNomEditeur();
+        await IHMDeleteProduit.askDeleteProduitNomEditeur(settings);
       }
     }
   }
 
-  static Future<void> askDeleteAllProduits() async {
+  static Future<void> askDeleteAllProduits(ConnectionSettings settings) async {
     print("Vous voulez supprimer tous les produits.");
     if (IHM.confirmation()) {
-      DBProduit.deleteAllProduits();
+      DBProduit.deleteAllProduits(settings);
       print("Tous les produits ont été supprimés.");
       print("Fin de l'opération.");
       print("--------------------------------------------------");
@@ -80,12 +83,12 @@ class IHMDeleteProduit {
     }
   }
 
-  static Future<void> askDeleteProduitID() async {
+  static Future<void> askDeleteProduitID(ConnectionSettings settings) async {
     print("Vous voulez supprimer un produit en fonction d'un ID.");
     print("Veuillez saisir son ID");
     int produit = IHM.saisirIntRec();
     if (IHM.confirmation()) {
-      await DBProduit.deleteProduit(produit);
+      await DBProduit.deleteProduit(settings, produit);
       print("Produit supprimé.");
       print("Fin de l'opération.");
       print("--------------------------------------------------");
@@ -97,11 +100,11 @@ class IHMDeleteProduit {
     }
   }
 
-  static Future<void> deleteUnProduit() async {
+  static Future<void> deleteUnProduit(ConnectionSettings settings) async {
     print("Veuillez saisir l'ID du produit à supprimer.");
     int produit = IHM.saisirIntRec();
     if (IHM.confirmation()) {
-      DBProduit.deleteProduit(produit);
+      DBProduit.deleteProduit(settings, produit);
       print("Produit supprimé.");
       print("Fin de l'opération.");
       print("--------------------------------------------------");
@@ -113,71 +116,74 @@ class IHMDeleteProduit {
     }
   }
 
-  static Future<void> askDeleteProduitNom() async {
+  static Future<void> askDeleteProduitNom(ConnectionSettings settings) async {
     print("Vous voulez supprimer un produit en fonction de son nom.");
-    print("Veuillez saisir son nom.");
-    String nomProduit = IHM.saisirStringRec();
+    String nomProduit = IHM.saisirString("son nom.");
     print("Voici la liste des différents produits avec ce nom là");
-    IHM.afficherDesDonnees(await DBProduit.selectProduitsByNom(nomProduit));
-    await IHMDeleteProduit.deleteUnProduit();
+    IHM.afficherDesDonnees(
+        await DBProduit.selectProduitsByNom(settings, nomProduit));
+    await IHMDeleteProduit.deleteUnProduit(settings);
   }
 
-  static Future<void> askDeleteProduitStock() async {
+  static Future<void> askDeleteProduitStock(ConnectionSettings settings) async {
     print("Vous voulez supprimer un produit en fonction de son stock.");
     print("Veuillez saisir sa quantité.");
     int stock = IHM.saisirIntRec();
     print("Voici la liste des différents produits avec cette quantité là");
-    IHM.afficherDesDonnees(await DBProduit.selectProduitsByStock(stock));
-    await IHMDeleteProduit.deleteUnProduit();
+    IHM.afficherDesDonnees(
+        await DBProduit.selectProduitsByStock(settings, stock));
+    await IHMDeleteProduit.deleteUnProduit(settings);
   }
 
-  static Future<void> askDeleteProduitType() async {
+  static Future<void> askDeleteProduitType(ConnectionSettings settings) async {
     print("Vous voulez supprimer un produit en fonction de son type.");
-    print("Veuillez saisir son type.");
-    String type = IHM.saisirStringRec();
+    String type = IHM.saisirString("son type.");
     print("Voici la liste des différents produits avec ce type là");
-    IHM.afficherDesDonnees(await DBProduit.selectProduitsByType(type));
-    await IHMDeleteProduit.deleteUnProduit();
+    IHM.afficherDesDonnees(
+        await DBProduit.selectProduitsByType(settings, type));
+    await IHMDeleteProduit.deleteUnProduit(settings);
   }
 
-  static Future<void> askDeleteProduitPrix() async {
+  static Future<void> askDeleteProduitPrix(ConnectionSettings settings) async {
     print("Vous voulez supprimer un produit en fonction de son prix.");
     print("Veuillez saisir son prix.");
     double prix = IHM.saisirDoubleRec();
     print("Voici la liste des différents produits avec ce prix là");
-    IHM.afficherDesDonnees(await DBProduit.selectProduitsByPrix(prix));
-    await IHMDeleteProduit.deleteUnProduit();
+    IHM.afficherDesDonnees(
+        await DBProduit.selectProduitsByPrix(settings, prix));
+    await IHMDeleteProduit.deleteUnProduit(settings);
   }
 
-  static Future<void> askDeleteProduitNomVille() async {
+  static Future<void> askDeleteProduitNomVille(
+      ConnectionSettings settings) async {
     print(
         "Vous voulez supprimer un produit en fonction de la ville de l'éditeur.");
-    print("Veuillez saisir la ville de l'éditeur.");
-    String villeEditeur = IHM.saisirStringRec();
+    String villeEditeur = IHM.saisirString("la ville de l'éditeur.");
     print(
         "Voici la liste des différents éditeurs présente dans cette ville-là");
     IHM.afficherDesDonnees(
-        await DBProduit.selectProduitsByVilleEditeur(villeEditeur));
-    await IHMDeleteProduit.deleteUnProduit();
+        await DBProduit.selectProduitsByVilleEditeur(settings, villeEditeur));
+    await IHMDeleteProduit.deleteUnProduit(settings);
   }
 
-  static Future<void> askDeleteProduitNomEditeur() async {
+  static Future<void> askDeleteProduitNomEditeur(
+      ConnectionSettings settings) async {
     print("Vous voulez supprimer un produit en fonction du nom de l'éditeur.");
-    print("Veuillez saisir son nom.");
-    String nomEditeur = IHM.saisirStringRec();
+    String nomEditeur = IHM.saisirString("son nom.");
     print("Voici la liste des différents éditeurs avec ce nom là");
     IHM.afficherDesDonnees(
-        await DBProduit.selectProduitsByNomEditeur(nomEditeur));
-    await IHMDeleteProduit.deleteUnProduit();
+        await DBProduit.selectProduitsByNomEditeur(settings, nomEditeur));
+    await IHMDeleteProduit.deleteUnProduit(settings);
   }
 
-  static Future<void> askDeleteAllProduitsNom() async {
+  static Future<void> askDeleteAllProduitsNom(
+      ConnectionSettings settings) async {
     print("Vous voulez supprimer tous les produits du même nom.");
-    print("Veuillez saisir le nom.");
-    String nomProduit = IHM.saisirStringRec();
+    String nomProduit = IHM.saisirString("le nom.");
     if (IHM.confirmation()) {
-      for (int idProduit in await DBProduit.selectIdProduitsByNom(nomProduit)) {
-        await DBProduit.deleteProduit(idProduit);
+      for (int idProduit
+          in await DBProduit.selectIdProduitsByNom(settings, nomProduit)) {
+        await DBProduit.deleteProduit(settings, idProduit);
       }
       print("Les produits ont été supprimés.");
       print("Fin de l'opération.");
@@ -190,14 +196,16 @@ class IHMDeleteProduit {
     }
   }
 
-  static Future<void> askDeleteAllProduitsStock() async {
+  static Future<void> askDeleteAllProduitsStock(
+      ConnectionSettings settings) async {
     print(
         "Vous voulez supprimer tous les produits ayant la même quantié de stock.");
     print("Veuillez saisir la quantité.");
     int stock = IHM.saisirIntRec();
     if (IHM.confirmation()) {
-      for (int idProduit in await DBProduit.selectIdProduitsByStock(stock)) {
-        await DBProduit.deleteProduit(idProduit);
+      for (int idProduit
+          in await DBProduit.selectIdProduitsByStock(settings, stock)) {
+        await DBProduit.deleteProduit(settings, idProduit);
       }
       print("Les produits ont été supprimés.");
       print("Fin de l'opération.");
@@ -210,13 +218,14 @@ class IHMDeleteProduit {
     }
   }
 
-  static Future<void> askDeleteAllProduitsType() async {
+  static Future<void> askDeleteAllProduitsType(
+      ConnectionSettings settings) async {
     print("Vous voulez supprimer tous les produits du même type.");
-    print("Veuillez saisir le type.");
-    String type = IHM.saisirStringRec();
+    String type = IHM.saisirString("le type.");
     if (IHM.confirmation()) {
-      for (int idProduit in await DBProduit.selectIdProduitsByType(type)) {
-        await DBProduit.deleteProduit(idProduit);
+      for (int idProduit
+          in await DBProduit.selectIdProduitsByType(settings, type)) {
+        await DBProduit.deleteProduit(settings, idProduit);
       }
       print("Les produits ont été supprimés.");
       print("Fin de l'opération.");
@@ -229,13 +238,15 @@ class IHMDeleteProduit {
     }
   }
 
-  static Future<void> askDeleteAllProduitsPrix() async {
+  static Future<void> askDeleteAllProduitsPrix(
+      ConnectionSettings settings) async {
     print("Vous voulez supprimer tous les produits ayant le même prix.");
     print("Veuillez saisir le prix.");
     double prix = IHM.saisirDoubleRec();
     if (IHM.confirmation()) {
-      for (int idProduit in await DBProduit.selectIdProduitsByPrix(prix)) {
-        await DBProduit.deleteProduit(idProduit);
+      for (int idProduit
+          in await DBProduit.selectIdProduitsByPrix(settings, prix)) {
+        await DBProduit.deleteProduit(settings, idProduit);
       }
       print("Les produits ont été supprimés.");
       print("Fin de l'opération.");
@@ -248,15 +259,15 @@ class IHMDeleteProduit {
     }
   }
 
-  static Future<void> askDeleteAllProduitsVilleEditeur() async {
+  static Future<void> askDeleteAllProduitsVilleEditeur(
+      ConnectionSettings settings) async {
     print(
         "Vous voulez supprimer tous les produits dont l'éditeur vient de la même ville.");
-    print("Veuillez saisir la ville.");
-    String villeEditeur = IHM.saisirStringRec();
+    String villeEditeur = IHM.saisirString("la ville.");
     if (IHM.confirmation()) {
-      for (int idProduit
-          in await DBProduit.selectIdProduitsByVilleEditeur(villeEditeur)) {
-        await DBProduit.deleteProduit(idProduit);
+      for (int idProduit in await DBProduit.selectIdProduitsByVilleEditeur(
+          settings, villeEditeur)) {
+        await DBProduit.deleteProduit(settings, idProduit);
       }
       print("Les produits ont été supprimés.");
       print("Fin de l'opération.");
@@ -269,14 +280,14 @@ class IHMDeleteProduit {
     }
   }
 
-  static Future<void> askDeleteAllProduitsNomEditeur() async {
+  static Future<void> askDeleteAllProduitsNomEditeur(
+      ConnectionSettings settings) async {
     print("Vous voulez supprimer tous les produits portant le même éditeur.");
-    print("Veuillez saisir le nom de l'éditeur.");
-    String nomEditeur = IHM.saisirStringRec();
+    String nomEditeur = IHM.saisirString("le nom de l'éditeur.");
     if (IHM.confirmation()) {
-      for (int idProduit
-          in await DBProduit.selectIdProduitsByNomEditeur(nomEditeur)) {
-        await DBProduit.deleteProduit(idProduit);
+      for (int idProduit in await DBProduit.selectIdProduitsByNomEditeur(
+          settings, nomEditeur)) {
+        await DBProduit.deleteProduit(settings, idProduit);
       }
       print("Les produits ont été supprimés.");
       print("Fin de l'opération.");

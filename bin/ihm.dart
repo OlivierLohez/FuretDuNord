@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:mysql1/mysql1.dart';
+
 import 'data.dart';
+import 'furetbd.dart';
 import 'ihmbdd.dart';
 import 'ihmediteur.dart';
 import 'ihmproduit.dart';
@@ -8,17 +11,17 @@ import 'ihmproduit.dart';
 class IHM {
   // Méthodes
   // La boucle permettant de faire des saisies jusqu'à ce que l'on ne souhaite plus continuer
-  static Future<void> boucleSaisie() async {
+  static Future<void> boucleSaisie(ConnectionSettings settings) async {
     print("Bonjour, utilisateur !");
     bool continuer = true;
     while (continuer) {
-      continuer = await IHM.choisirAction();
+      continuer = await IHM.choisirAction(settings);
     }
     print("Au revoir, utilisateur !");
   }
 
   // L'affichage permettant de montrant le choix des différentes tables
-  static Future<bool> choisirAction() async {
+  static Future<bool> choisirAction(ConnectionSettings settings) async {
     bool continuer = true;
     print("");
     print("+-------------------------------------------------------+");
@@ -34,12 +37,12 @@ class IHM {
     print("+-------------------------------------------------------+");
     int laTable = IHM.saisirAction(4);
     if (laTable == 1) {
-      await IHMBDD.choisirActionBDD();
+      await IHMBDD.choisirActionBDD(settings);
     } else if (laTable == 2) {
     } else if (laTable == 3) {
-      await IHMEditeur.choisirActionEditeur();
+      await IHMEditeur.choisirActionEditeur(settings);
     } else if (laTable == 4) {
-      await IHMPRODUIT.choisirActionProduit();
+      //await IHMPRODUIT.choisirActionProduit();
     } else if (laTable == 0) {
       continuer = false;
     }
@@ -74,6 +77,7 @@ class IHM {
     return i;
   }
 
+/*
   // Saisie des strings de manière récurssive
   static String saisirStringRec() {
     print("");
@@ -86,6 +90,39 @@ class IHM {
       c = saisirStringRec();
     }
     return c;
+  }
+*/
+  static String saisirString(String objectifSaisie) {
+    bool saisieValide = false;
+    String s = "";
+    while (!saisieValide) {
+      print("> Veuillez saisir $objectifSaisie :");
+      try {
+        s = stdin.readLineSync().toString();
+        saisieValide = true;
+      } catch (e) {
+        print("Erreur dans la saisie.");
+      }
+    }
+    return s;
+  }
+
+  static String saisirMDP() {
+    print("");
+    bool saisieValide = false;
+    String s = "";
+    while (!saisieValide) {
+      print("> Veuillez saisir le mot de passe :");
+      try {
+        stdin.echoMode = false;
+        s = stdin.readLineSync().toString();
+        saisieValide = true;
+        stdin.echoMode = true;
+      } catch (e) {
+        print("Erreur dans la saisie.");
+      }
+    }
+    return s;
   }
 
   // Saisie d'une action en fonction du nombre d'action autre que quitter
@@ -107,6 +144,21 @@ class IHM {
     return action;
   }
 
+  // menu setting
+  static ConnectionSettings setting() {
+    String bdd = IHM.saisirString("le nom de la BDD");
+    String user = IHM.saisirString("l'utilisateur");
+    String mdp = IHM.saisirMDP();
+
+    return ConnectionSettings(
+      host: 'localhost',
+      port: 3306,
+      user: user, // DartUser
+      password: mdp, // dartmdp
+      db: bdd, // DartDB
+    );
+  }
+
   static void afficherUneDonnee(Data data) {
     print(data.getEntete());
     print(data.getInLine());
@@ -117,7 +169,7 @@ class IHM {
     for (Data laDonnee in dataList) {
       print(laDonnee.getInLine());
     }
-    IHM.saisirStringRec();
+    stdin.readLineSync().toString();
   }
 
   // retourne un boolean pour demande de confirmation
