@@ -5,276 +5,135 @@ import 'auteur.dart';
 import 'furetbd.dart';
 
 class DBAuteur {
-  static Future<Auteur> selectAuteur(int idAuteur) async {
+  static Future<Auteur> selectAuteur(
+      ConnectionSettings settings, int idAuteur) async {
     Auteur edit = Auteur.vide();
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete = "SELECT * FROM AUTEUR WHERE idAuteur=" +
-            idAuteur.toString() +
-            " AND EXISTS (SELECT idEditeur FROM EDITEUR WHERE idEditeur=" +
-            idAuteur.toString() +
-            " );";
-        Results reponse = await conn.query(requete);
-        edit = Auteur(reponse.first['idAuteur'], reponse.first['nomAuteur'],
-            reponse.first['prenomAuteur']);
-      } catch (e) {
-        log(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      log(e.toString());
-    }
+    String requete =
+        "SELECT * FROM AUTEUR WHERE idAuteur=$idAuteur AND EXISTS (SELECT idEditeur FROM EDITEUR WHERE idEditeur=$idAuteur );";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    edit = Auteur(reponse.first['idAuteur'], reponse.first['nomAuteur'],
+        reponse.first['prenomAuteur']);
 
     return edit;
   }
 
-  static Future<List<Auteur>> selectAllAuteurs() async {
+  static Future<List<Auteur>> selectAllAuteurs(
+      ConnectionSettings settings) async {
     List<Auteur> listeAut = [];
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete = "SELECT * FROM EDITEUR;";
-        Results reponse = await conn.query(requete);
-        for (var row in reponse) {
-          Auteur edit =
-              Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
-          listeAut.add(edit);
-        }
-      } catch (e) {
-        log(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      log(e.toString());
+    String requete = "SELECT * FROM EDITEUR;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      Auteur edit =
+          Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
+      listeAut.add(edit);
     }
 
     return listeAut;
   }
 
-  static Future<List<Auteur>> selectAuteursByPrenom(String prenomAuteur) async {
+  static Future<List<Auteur>> selectAuteursByPrenom(
+      ConnectionSettings settings, String prenomAuteur) async {
     List<Auteur> listeAut = [];
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete =
-            "SELECT * from AUTEUR WHERE villeAuteur='" + prenomAuteur + "';";
-        Results reponse = await conn.query(requete);
-        for (var row in reponse) {
-          Auteur edit =
-              Auteur(row['idEditeur'], row['nomEditeur'], row['prenomAuteur']);
-          listeAut.add(edit);
-        }
-      } catch (e) {
-        print(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      print(e.toString());
+    String requete = "SELECT * from AUTEUR WHERE villeAuteur='$prenomAuteur';";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      Auteur edit =
+          Auteur(row['idEditeur'], row['nomEditeur'], row['prenomAuteur']);
+      listeAut.add(edit);
     }
     return listeAut;
   }
 
-  static Future<List<Auteur>> selectAuteursByNom(String nomAuteur) async {
+  static Future<List<Auteur>> selectAuteursByNom(
+      ConnectionSettings settings, String nomAuteur) async {
     List<Auteur> listeAut = [];
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete =
-            "SELECT * from AUTEUR WHERE nomAuteur='" + nomAuteur + "';";
-        Results reponse = await conn.query(requete);
-        for (var row in reponse) {
-          Auteur aut =
-              Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
-          listeAut.add(aut);
-        }
-      } catch (e) {
-        print(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      print(e.toString());
+    String requete = "SELECT * from AUTEUR WHERE nomAuteur='$nomAuteur';";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      Auteur aut =
+          Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
+      listeAut.add(aut);
     }
     return listeAut;
   }
 
-  static Future<List<int>> selectIdAuteursByPrenom(String prenomAuteur) async {
+  static Future<List<int>> selectIdAuteursByPrenom(
+      ConnectionSettings settings, String prenomAuteur) async {
     List<int> listeIdAut = [];
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete = "SELECT idAuteur from AUTEUR WHERE prenomAuteur='" +
-            prenomAuteur +
-            "';";
-        Results reponse = await conn.query(requete);
-        for (var row in reponse) {
-          int idAut = row['idAuteur'];
-          listeIdAut.add(idAut);
-        }
-      } catch (e) {
-        print(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      print(e.toString());
+    String requete =
+        "SELECT idAuteur from AUTEUR WHERE prenomAuteur='$prenomAuteur';";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      int idAut = row['idAuteur'];
+      listeIdAut.add(idAut);
     }
     return listeIdAut;
   }
 
-  static Future<List<int>> selectIdAuteursByNom(String nomAuteur) async {
+  static Future<List<int>> selectIdAuteursByNom(
+      ConnectionSettings settings, String nomAuteur) async {
     List<int> listeIdAut = [];
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete =
-            "SELECT idAuteur from AUTEUR WHERE nomAuteur='" + nomAuteur + "';";
-        Results reponse = await conn.query(requete);
-        for (var row in reponse) {
-          int idAut = row['idAuteur'];
-          listeIdAut.add(idAut);
-        }
-      } catch (e) {
-        print(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      print(e.toString());
+    String requete =
+        "SELECT idAuteur from AUTEUR WHERE nomAuteur='$nomAuteur';";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      int idAut = row['idAuteur'];
+      listeIdAut.add(idAut);
     }
     return listeIdAut;
   }
 
-  static Future<void> insertAuteur(
+  static Future<void> insertAuteur(ConnectionSettings settings,
       String nomAuteur, String prenomAuteur) async {
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete =
-            "INSERT INTO AUTEUR (nomAuteur, prenomAuteur) VALUES('" +
-                nomAuteur +
-                "', '" +
-                prenomAuteur +
-                "');";
-        await conn.query(requete);
-      } catch (e) {
-        log(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      log(e.toString());
-    }
+    String requete =
+        "INSERT INTO AUTEUR (nomAuteur, prenomAuteur) VALUES('$nomAuteur', '$prenomAuteur');";
+    await LaBDFuret.executerRequete(settings, requete);
   }
 
   //update auteur
-  static Future<void> updateAuteur(
-      int idAuteur, String nomAuteur, String prenomAuteur) async {
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete = "UPDATE AUTEUR SET nomAuteur = '" +
-            nomAuteur +
-            "', prenomAuteur = '" +
-            prenomAuteur +
-            "' WHERE idAuteur = " +
-            idAuteur.toString() +
-            ";";
-        await conn.query(requete);
-      } catch (e) {
-        log(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      log(e.toString());
-    }
+  static Future<void> updateAuteur(ConnectionSettings settings, int idAuteur,
+      String nomAuteur, String prenomAuteur) async {
+    String requete =
+        "UPDATE AUTEUR SET nomAuteur = '$nomAuteur', prenomAuteur = '$prenomAuteur' WHERE idAuteur = $idAuteur;";
+    await LaBDFuret.executerRequete(settings, requete);
   }
 
   //delete
-  static Future<void> deleteAuteur(int idAuteur) async {
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete =
-            "DELETE FROM AUTEUR WHERE idAuteur='" + idAuteur.toString() + "'";
-        await conn.query(requete);
-      } catch (e) {
-        log(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      log(e.toString());
-    }
+  static Future<void> deleteAuteur(
+      ConnectionSettings settings, int idAuteur) async {
+    String requete = "DELETE FROM AUTEUR WHERE idAuteur=$idAuteur;";
+    await LaBDFuret.executerRequete(settings, requete);
   }
 
-  static Future<void> deleteAuteurByName(String nomAuteur) async {
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete =
-            "DELETE FROM AUTEUR WHERE nomAuteur='" + nomAuteur + "';";
-        await conn.query(requete);
-      } catch (e) {
-        print(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      print(e.toString());
-    }
+  static Future<void> deleteAuteurByName(
+      ConnectionSettings settings, String nomAuteur) async {
+    String requete = "DELETE FROM AUTEUR WHERE nomAuteur='$nomAuteur';";
+    await LaBDFuret.executerRequete(settings, requete);
   }
 
-  static Future<void> deleteAuteurByPrenom(String prenomAuteur) async {
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete =
-            "DELETE FROM AUTEUR WHERE prenomAuteur='" + prenomAuteur + "';";
-        await conn.query(requete);
-      } catch (e) {
-        print(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      print(e.toString());
-    }
+  static Future<void> deleteAuteurByPrenom(
+      ConnectionSettings settings, String prenomAuteur) async {
+    String requete = "DELETE FROM AUTEUR WHERE prenomAuteur='$prenomAuteur';";
+    await LaBDFuret.executerRequete(settings, requete);
   }
 
   //delete all auteur
-  static Future<void> deleteAllAuteurs() async {
-    try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
-      try {
-        String requete = "TRUNCATE TABLE AUTEUR;";
-        await conn.query(requete);
-      } catch (e) {
-        log(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      log(e.toString());
-    }
+  static Future<void> deleteAllAuteurs(ConnectionSettings settings) async {
+    String requete = "TRUNCATE TABLE AUTEUR;";
+    await LaBDFuret.executerRequete(settings, requete);
   }
 
-  static Future<bool> exist(int idAuteur) async {
+  static Future<bool> exist(ConnectionSettings settings, int idAuteur) async {
     bool exist = false;
-    if (!(await DBAuteur.selectAuteur(idAuteur)).estNull()) {
+    if (!(await DBAuteur.selectAuteur(settings, idAuteur)).estNull()) {
       exist = true;
     }
     return exist;
   }
 
   //getAuteur
-  static Future<Auteur> getAuteur(int id) async {
-    dynamic r = await selectAuteur(id);
+  static Future<Auteur> getAuteur(ConnectionSettings settings, int id) async {
+    dynamic r = await selectAuteur(settings, id);
     ResultRow rr = r.first;
     return Auteur(rr['idAuteur'], rr['nomAuteur'], rr['prenomAuteur']);
   }

@@ -1,8 +1,11 @@
+import 'package:mysql1/mysql1.dart';
+
 import 'db_auteur.dart';
 import 'ihm.dart';
 
 class IHMDeleteAuteur {
-  static Future<void> choisirActionDeletediteur() async {
+  static Future<void> choisirActionDeletediteur(
+      ConnectionSettings settings) async {
     print("");
     print("+-------------------------------------------------------+");
     print("|                                                       |");
@@ -22,24 +25,24 @@ class IHMDeleteAuteur {
       print("On retourne au début");
     }
     if (laTable == 1) {
-      await IHMDeleteAuteur.askDeleteAllAuteurs();
+      await IHMDeleteAuteur.askDeleteAllAuteurs(settings);
     } else if (laTable == 2) {
-      await IHMDeleteAuteur.askDeleteAllAuteursNom();
+      await IHMDeleteAuteur.askDeleteAllAuteursNom(settings);
     } else if (laTable == 3) {
-      await IHMDeleteAuteur.askDeleteAllAuteursPrenom();
+      await IHMDeleteAuteur.askDeleteAllAuteursPrenom(settings);
     } else if (laTable == 4) {
-      await IHMDeleteAuteur.askDeleteAuteurID();
+      await IHMDeleteAuteur.askDeleteAuteurID(settings);
     } else if (laTable == 5) {
-      await IHMDeleteAuteur.askDeleteAuteurNom();
+      await IHMDeleteAuteur.askDeleteAuteurNom(settings);
     } else if (laTable == 6) {
-      await IHMDeleteAuteur.askDeleteAuteurPrenom();
+      await IHMDeleteAuteur.askDeleteAuteurPrenom(settings);
     }
   }
 
-  static Future<void> askDeleteAllAuteurs() async {
+  static Future<void> askDeleteAllAuteurs(ConnectionSettings settings) async {
     print("Vous voulez supprimer tous les auteurs.");
     if (IHM.confirmation()) {
-      DBAuteur.deleteAllAuteurs();
+      DBAuteur.deleteAllAuteurs(settings);
       print("Tous les Auteurs ont été supprimés.");
       print("Fin de l'opération.");
       print("--------------------------------------------------");
@@ -51,12 +54,12 @@ class IHMDeleteAuteur {
     }
   }
 
-  static Future<void> askDeleteAuteurID() async {
+  static Future<void> askDeleteAuteurID(ConnectionSettings settings) async {
     print("Vous voulez supprimer un auteur en fonction d'un ID.");
     print("Veuillez saisir son ID");
     int auteur = IHM.saisirIntRec();
     if (IHM.confirmation()) {
-      await DBAuteur.deleteAuteur(auteur);
+      await DBAuteur.deleteAuteur(settings, auteur);
       print("Auteur supprimé.");
       print("Fin de l'opération.");
       print("--------------------------------------------------");
@@ -68,16 +71,16 @@ class IHMDeleteAuteur {
     }
   }
 
-  static Future<void> askDeleteAuteurPrenom() async {
+  static Future<void> askDeleteAuteurPrenom(ConnectionSettings settings) async {
     print("Vous voulez supprimer un auteur en fonction d'un prénom.");
-    print("Veuillez saisir le prenom de l'auteur.");
-    String prenomAuteur = IHM.saisirStringRec();
+    String prenomAuteur = IHM.saisirString("le prénom de l'auteur");
     print("Voici la liste des différents auteurs présente avec ce prénom");
-    IHM.afficherDesDonnees(await DBAuteur.selectAuteursByPrenom(prenomAuteur));
+    IHM.afficherDesDonnees(
+        await DBAuteur.selectAuteursByPrenom(settings, prenomAuteur));
     print("Veuillez saisir l'ID de l'Auteur à supprimer.");
     int editeur = IHM.saisirIntRec();
     if (IHM.confirmation()) {
-      await DBAuteur.deleteAuteur(editeur);
+      await DBAuteur.deleteAuteur(settings, editeur);
       print("Auteur supprimé.");
       print("Fin de l'opération.");
       print("--------------------------------------------------");
@@ -89,16 +92,16 @@ class IHMDeleteAuteur {
     }
   }
 
-  static Future<void> askDeleteAuteurNom() async {
+  static Future<void> askDeleteAuteurNom(ConnectionSettings settings) async {
     print("Vous voulez supprimer un auteur en fonction d'un Nom.");
-    print("Veuillez saisir le Nom de l'auteur.");
-    String nomAuteur = IHM.saisirStringRec();
+    String nomAuteur = IHM.saisirString("le nom de l'auteur");
     print("Voici la liste des différents auteurs présente avec ce nom");
-    IHM.afficherDesDonnees(await DBAuteur.selectAuteursByNom(nomAuteur));
+    IHM.afficherDesDonnees(
+        await DBAuteur.selectAuteursByNom(settings, nomAuteur));
     print("Veuillez saisir l'ID de l'Auteur à supprimer.");
     int editeur = IHM.saisirIntRec();
     if (IHM.confirmation()) {
-      await DBAuteur.deleteAuteur(editeur);
+      await DBAuteur.deleteAuteur(settings, editeur);
       print("Auteur supprimé.");
       print("Fin de l'opération.");
       print("--------------------------------------------------");
@@ -110,14 +113,14 @@ class IHMDeleteAuteur {
     }
   }
 
-  static Future<void> askDeleteAllAuteursPrenom() async {
+  static Future<void> askDeleteAllAuteursPrenom(
+      ConnectionSettings settings) async {
     print("Vous voulez supprimer tous les Auteurs ayant le même prénom");
-    print("Veuillez saisir le prénom.");
-    String prenomAuteur = IHM.saisirStringRec();
+    String prenomAuteur = IHM.saisirString("le prénom");
     if (IHM.confirmation()) {
       for (int idAuteur
-          in await DBAuteur.selectIdAuteursByPrenom(prenomAuteur)) {
-        await DBAuteur.deleteAuteur(idAuteur);
+          in await DBAuteur.selectIdAuteursByPrenom(settings, prenomAuteur)) {
+        await DBAuteur.deleteAuteur(settings, idAuteur);
       }
       print("Les auteurs ont été supprimés.");
       print("Fin de l'opération.");
@@ -130,13 +133,14 @@ class IHMDeleteAuteur {
     }
   }
 
-  static Future<void> askDeleteAllAuteursNom() async {
+  static Future<void> askDeleteAllAuteursNom(
+      ConnectionSettings settings) async {
     print("Vous voulez supprimer tous les Auteurs ayant le même nom");
-    print("Veuillez saisir le nom.");
-    String nomAuteur = IHM.saisirStringRec();
+    String nomAuteur = IHM.saisirString("le nom");
     if (IHM.confirmation()) {
-      for (int idAuteur in await DBAuteur.selectIdAuteursByNom(nomAuteur)) {
-        await DBAuteur.deleteAuteur(idAuteur);
+      for (int idAuteur
+          in await DBAuteur.selectIdAuteursByNom(settings, nomAuteur)) {
+        await DBAuteur.deleteAuteur(settings, idAuteur);
       }
       print("Les auteurs ont été supprimés.");
       print("Fin de l'opération.");

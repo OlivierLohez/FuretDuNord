@@ -1,10 +1,12 @@
+import 'package:mysql1/mysql1.dart';
+
 import 'db_auteur.dart';
 import 'ihm.dart';
 import 'ihmdeleteauteur.dart';
 import 'ihmselectauteur.dart';
 
 class IHMAuteur {
-  static Future<void> choisirActionAuteur() async {
+  static Future<void> choisirActionAuteur(ConnectionSettings settings) async {
     print("");
     print("+-------------------------------------------------------+");
     print("|                                                       |");
@@ -22,46 +24,42 @@ class IHMAuteur {
       print("On recommence");
     }
     if (choix == 1) {
-      IHMAuteur.askInsertAuteur();
+      IHMAuteur.askInsertAuteur(settings);
     } else if (choix == 2) {
-      IHMDeleteAuteur.choisirActionDeletediteur();
+      IHMDeleteAuteur.choisirActionDeletediteur(settings);
     } else if (choix == 3) {
-      await IHMSelectAuteur.choisirActionSelectAuteur();
+      await IHMSelectAuteur.choisirActionSelectAuteur(settings);
     } else if (choix == 4) {
-      await IHMAuteur.askUpdateAuteur();
+      await IHMAuteur.askUpdateAuteur(settings);
     }
   }
 
-  static Future<void> askInsertAuteur() async {
+  static Future<void> askInsertAuteur(ConnectionSettings settings) async {
     print("Vous voulez saisir un Auteur.");
-    print("Veuillez saisir son nom");
-    String nomAuteur = IHM.saisirStringRec();
-    print("Veuillez saisir son prénom");
-    String prenomAuteur = IHM.saisirStringRec();
-    DBAuteur.insertAuteur(nomAuteur, prenomAuteur);
+    String nomAuteur = IHM.saisirString("son nom");
+    String prenomAuteur = IHM.saisirString("son prénom");
+    DBAuteur.insertAuteur(settings, nomAuteur, prenomAuteur);
   }
 
-  static Future<void> askUpdateAuteur() async {
+  static Future<void> askUpdateAuteur(ConnectionSettings settings) async {
     print("Vous voulez modifier un auteur.");
     print("Veuillez saisir son ID");
     int idAuteur = IHM.saisirIntRec();
     //print(idEditeur);
     print("Vous souhaitez modifier l'éditeur :");
-    IHM.afficherUneDonnee(await DBAuteur.selectAuteur(idAuteur));
-    print("Veuillez saisir son nom");
-    String nomAuteur = IHM.saisirStringRec();
-    print("Veuillez saisir son prénom");
-    String prenomAuteur = IHM.saisirStringRec();
+    IHM.afficherUneDonnee(await DBAuteur.selectAuteur(settings, idAuteur));
+    String nomAuteur = IHM.saisirString("son nom");
+    String prenomAuteur = IHM.saisirString("son prénom");
     if (IHM.confirmation()) {
-      if (await DBAuteur.exist(idAuteur)) {
-        DBAuteur.updateAuteur(idAuteur, nomAuteur, prenomAuteur);
+      if (await DBAuteur.exist(settings, idAuteur)) {
+        DBAuteur.updateAuteur(settings, idAuteur, nomAuteur, prenomAuteur);
         print("Editeur modifié.");
         print("Fin de l'opération.");
         print("--------------------------------------------------");
         print("");
         await Future.delayed(Duration(seconds: 1));
         print("L'éditeur a été changé en :");
-        IHM.afficherUneDonnee(await DBAuteur.selectAuteur(idAuteur));
+        IHM.afficherUneDonnee(await DBAuteur.selectAuteur(settings, idAuteur));
         await Future.delayed(Duration(seconds: 1));
       } else {
         print("L'éditeur n'existe pas.");

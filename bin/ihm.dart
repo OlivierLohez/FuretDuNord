@@ -4,6 +4,7 @@ import 'package:mysql1/mysql1.dart';
 
 import 'data.dart';
 import 'furetbd.dart';
+import 'ihmauteur.dart';
 import 'ihmbdd.dart';
 import 'ihmediteur.dart';
 import 'ihmproduit.dart';
@@ -39,6 +40,7 @@ class IHM {
     if (laTable == 1) {
       await IHMBDD.choisirActionBDD(settings);
     } else if (laTable == 2) {
+      IHMAuteur.choisirActionAuteur(settings);
     } else if (laTable == 3) {
       await IHMEditeur.choisirActionEditeur(settings);
     } else if (laTable == 4) {

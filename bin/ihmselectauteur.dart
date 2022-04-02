@@ -1,10 +1,13 @@
+import 'package:mysql1/mysql1.dart';
+
 import 'db_auteur.dart';
 import 'ihm.dart';
 
 class IHMSelectAuteur {
   // Methodes
   // L'affichage permettant de montrant le choix des différentes actions
-  static Future<void> choisirActionSelectAuteur() async {
+  static Future<void> choisirActionSelectAuteur(
+      ConnectionSettings settings) async {
     print("");
     print("+-------------------------------------------------------+");
     print("|                                                       |");
@@ -21,33 +24,32 @@ class IHMSelectAuteur {
       print("On retourne au début");
     }
     if (laTable == 1) {
-      await IHMSelectAuteur.showAllAuteur();
+      await IHMSelectAuteur.showAllAuteur(settings);
     } else if (laTable == 2) {
-      await IHMSelectAuteur.askSelectAuteurByPrenom();
+      await IHMSelectAuteur.askSelectAuteurByPrenom(settings);
     } else if (laTable == 3) {
-      await IHMSelectAuteur.askSelectAuteurByNom();
+      await IHMSelectAuteur.askSelectAuteurByNom(settings);
     }
   }
 
-  static Future<void> showAllAuteur() async {
+  static Future<void> showAllAuteur(ConnectionSettings settings) async {
     try {
-      IHM.afficherDesDonnees(await DBAuteur.selectAllAuteurs());
+      IHM.afficherDesDonnees(await DBAuteur.selectAllAuteurs(settings));
     } catch (e) {
       print(e.toString());
     }
   }
 
-  static Future<void> askSelectAuteurByPrenom() async {
+  static Future<void> askSelectAuteurByPrenom(
+      ConnectionSettings settings) async {
     print("Vous voulez des éditeurs en fonction d'un prénom.");
-    print("Veuillez saisir le prénom.");
-    IHM.afficherDesDonnees(
-        await DBAuteur.selectAuteursByPrenom(IHM.saisirStringRec()));
+    IHM.afficherDesDonnees(await DBAuteur.selectAuteursByPrenom(
+        settings, IHM.saisirString("le prénom")));
   }
 
-  static Future<void> askSelectAuteurByNom() async {
+  static Future<void> askSelectAuteurByNom(ConnectionSettings settings) async {
     print("Vous voulez des auteurs en fonction d'un nom.");
-    print("Veuillez saisir le nom de l'auteur.'");
-    IHM.afficherDesDonnees(
-        await DBAuteur.selectAuteursByNom(IHM.saisirStringRec()));
+    IHM.afficherDesDonnees(await DBAuteur.selectAuteursByNom(
+        settings, IHM.saisirString("le nom de l'auteur")));
   }
 }
