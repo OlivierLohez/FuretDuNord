@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:mysql1/mysql1.dart';
 import 'auteur.dart';
 import 'furetbd.dart';
@@ -13,21 +11,19 @@ class DBAuteur {
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
     edit = Auteur(reponse.first['idAuteur'], reponse.first['nomAuteur'],
         reponse.first['prenomAuteur']);
-
     return edit;
   }
 
   static Future<List<Auteur>> selectAllAuteurs(
       ConnectionSettings settings) async {
     List<Auteur> listeAut = [];
-    String requete = "SELECT * FROM EDITEUR;";
+    String requete = "SELECT * FROM AUTEUR;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
     for (var row in reponse) {
-      Auteur edit =
+      Auteur aut =
           Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
-      listeAut.add(edit);
+      listeAut.add(aut);
     }
-
     return listeAut;
   }
 

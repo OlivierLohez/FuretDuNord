@@ -7,30 +7,33 @@ import 'ihmselectauteur.dart';
 
 class IHMAuteur {
   static Future<void> choisirActionAuteur(ConnectionSettings settings) async {
-    print("");
-    print("+-------------------------------------------------------+");
-    print("|                                                       |");
-    print("|   Menu - Gestion Auteur                               |");
-    print("|   Quelle action voulez-vous choisir ?                 |");
-    print("|   0 = Quitter                                         |");
-    print("|   1 = Ajouter un auteur                               |");
-    print("|   2 = Supprimer un ou plusieurs auteurs               |");
-    print("|   3 = Sélectionner un ou plusieurs auteurs            |");
-    print("|   4 = Modifier un auteur                              |");
-    print("|                                                       |");
-    print("+-------------------------------------------------------+");
-    int choix = IHM.saisirAction(4);
-    if (choix == 0) {
-      print("On recommence");
-    }
-    if (choix == 1) {
-      IHMAuteur.askInsertAuteur(settings);
-    } else if (choix == 2) {
-      IHMDeleteAuteur.choisirActionDeletediteur(settings);
-    } else if (choix == 3) {
-      await IHMSelectAuteur.choisirActionSelectAuteur(settings);
-    } else if (choix == 4) {
-      await IHMAuteur.askUpdateAuteur(settings);
+    int choix = -1;
+    while (choix != 0) {
+      print("");
+      print("+-------------------------------------------------------+");
+      print("|                                                       |");
+      print("|   Menu - Gestion Auteur                               |");
+      print("|   Quelle action voulez-vous choisir ?                 |");
+      print("|   0 = Quitter                                         |");
+      print("|   1 = Ajouter un auteur                               |");
+      print("|   2 = Supprimer un ou plusieurs auteurs               |");
+      print("|   3 = Sélectionner un ou plusieurs auteurs            |");
+      print("|   4 = Modifier un auteur                              |");
+      print("|                                                       |");
+      print("+-------------------------------------------------------+");
+      choix = IHM.saisirAction(4);
+      if (choix == 0) {
+        print("On recommence");
+      }
+      if (choix == 1) {
+        await IHMAuteur.askInsertAuteur(settings);
+      } else if (choix == 2) {
+        await IHMDeleteAuteur.choisirActionDeletAuteur(settings);
+      } else if (choix == 3) {
+        await IHMSelectAuteur.choisirActionSelectAuteur(settings);
+      } else if (choix == 4) {
+        await IHMAuteur.askUpdateAuteur(settings);
+      }
     }
   }
 

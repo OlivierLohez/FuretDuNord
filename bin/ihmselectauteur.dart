@@ -8,27 +8,30 @@ class IHMSelectAuteur {
   // L'affichage permettant de montrant le choix des différentes actions
   static Future<void> choisirActionSelectAuteur(
       ConnectionSettings settings) async {
-    print("");
-    print("+-------------------------------------------------------+");
-    print("|                                                       |");
-    print("|   Menu - Sélection Auteur                             |");
-    print("|   Quelle action voulez-vous choisir ?                 |");
-    print("|   0 = Quitter                                         |");
-    print("|   1 = Afficher tout                                   |");
-    print("|   2 = Afficher tout en fonction d'un prenom           |");
-    print("|   2 = Afficher tout en fonction d'un nom              |");
-    print("|                                                       |");
-    print("+-------------------------------------------------------+");
-    int laTable = IHM.saisirAction(3);
-    if (laTable == 0) {
-      print("On retourne au début");
-    }
-    if (laTable == 1) {
-      await IHMSelectAuteur.showAllAuteur(settings);
-    } else if (laTable == 2) {
-      await IHMSelectAuteur.askSelectAuteurByPrenom(settings);
-    } else if (laTable == 3) {
-      await IHMSelectAuteur.askSelectAuteurByNom(settings);
+    int choix = -1;
+    while (choix != 0) {
+      print("");
+      print("+-------------------------------------------------------+");
+      print("|                                                       |");
+      print("|   Menu - Sélection Auteur                             |");
+      print("|   Quelle action voulez-vous choisir ?                 |");
+      print("|   0 = Quitter                                         |");
+      print("|   1 = Afficher tout                                   |");
+      print("|   2 = Afficher tout en fonction d'un prenom           |");
+      print("|   2 = Afficher tout en fonction d'un nom              |");
+      print("|                                                       |");
+      print("+-------------------------------------------------------+");
+      choix = IHM.saisirAction(3);
+      if (choix == 0) {
+        print("On retourne au début");
+      }
+      if (choix == 1) {
+        await IHMSelectAuteur.showAllAuteur(settings);
+      } else if (choix == 2) {
+        await IHMSelectAuteur.askSelectAuteurByPrenom(settings);
+      } else if (choix == 3) {
+        await IHMSelectAuteur.askSelectAuteurByNom(settings);
+      }
     }
   }
 

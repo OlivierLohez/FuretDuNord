@@ -4,38 +4,41 @@ import 'db_auteur.dart';
 import 'ihm.dart';
 
 class IHMDeleteAuteur {
-  static Future<void> choisirActionDeletediteur(
+  static Future<void> choisirActionDeletAuteur(
       ConnectionSettings settings) async {
-    print("");
-    print("+-------------------------------------------------------+");
-    print("|                                                       |");
-    print("|   Menu - Suppression Auteur                           |");
-    print("|   Quelle action voulez-vous choisir ?                 |");
-    print("|   0 = Quitter                                         |");
-    print("|   1 = Supprimer tout                                  |");
-    print("|   2 = Supprimer tout en fonction d'un nom             |");
-    print("|   3 = Supprimer tout en fonction d'un prenom          |");
-    print("|   4 = Supprimer un éditeur en fonction d'un ID        |");
-    print("|   5 = Supprimer un éditeur en fonction d'un nom       |");
-    print("|   6 = Supprimer un éditeur en fonction d'un prenom    |");
-    print("|                                                       |");
-    print("+-------------------------------------------------------+");
-    int laTable = IHM.saisirAction(6);
-    if (laTable == 0) {
-      print("On retourne au début");
-    }
-    if (laTable == 1) {
-      await IHMDeleteAuteur.askDeleteAllAuteurs(settings);
-    } else if (laTable == 2) {
-      await IHMDeleteAuteur.askDeleteAllAuteursNom(settings);
-    } else if (laTable == 3) {
-      await IHMDeleteAuteur.askDeleteAllAuteursPrenom(settings);
-    } else if (laTable == 4) {
-      await IHMDeleteAuteur.askDeleteAuteurID(settings);
-    } else if (laTable == 5) {
-      await IHMDeleteAuteur.askDeleteAuteurNom(settings);
-    } else if (laTable == 6) {
-      await IHMDeleteAuteur.askDeleteAuteurPrenom(settings);
+    int choix = -1;
+    while (choix != 0) {
+      print("");
+      print("+-------------------------------------------------------+");
+      print("|                                                       |");
+      print("|   Menu - Suppression Auteur                           |");
+      print("|   Quelle action voulez-vous choisir ?                 |");
+      print("|   0 = Quitter                                         |");
+      print("|   1 = Supprimer tout                                  |");
+      print("|   2 = Supprimer tout en fonction d'un nom             |");
+      print("|   3 = Supprimer tout en fonction d'un prenom          |");
+      print("|   4 = Supprimer un éditeur en fonction d'un ID        |");
+      print("|   5 = Supprimer un éditeur en fonction d'un nom       |");
+      print("|   6 = Supprimer un éditeur en fonction d'un prenom    |");
+      print("|                                                       |");
+      print("+-------------------------------------------------------+");
+      choix = IHM.saisirAction(6);
+      if (choix == 0) {
+        print("On retourne au début");
+      }
+      if (choix == 1) {
+        await IHMDeleteAuteur.askDeleteAllAuteurs(settings);
+      } else if (choix == 2) {
+        await IHMDeleteAuteur.askDeleteAllAuteursNom(settings);
+      } else if (choix == 3) {
+        await IHMDeleteAuteur.askDeleteAllAuteursPrenom(settings);
+      } else if (choix == 4) {
+        await IHMDeleteAuteur.askDeleteAuteurID(settings);
+      } else if (choix == 5) {
+        await IHMDeleteAuteur.askDeleteAuteurNom(settings);
+      } else if (choix == 6) {
+        await IHMDeleteAuteur.askDeleteAuteurPrenom(settings);
+      }
     }
   }
 

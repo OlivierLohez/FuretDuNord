@@ -1,10 +1,4 @@
-import 'dart:html';
-import 'dart:io';
-
-import 'package:mysql1/mysql1.dart';
-
 import 'data.dart';
-import 'furetbd.dart';
 
 class Auteur implements Data {
   //Attributs
@@ -58,6 +52,7 @@ class Auteur implements Data {
         " | " +
         _nomAuteur +
         " | " +
-        _prenomAuteur;
+        _prenomAuteur +
+        " |";
   }
 }

@@ -40,7 +40,7 @@ class IHM {
     if (laTable == 1) {
       await IHMBDD.choisirActionBDD(settings);
     } else if (laTable == 2) {
-      IHMAuteur.choisirActionAuteur(settings);
+      await IHMAuteur.choisirActionAuteur(settings);
     } else if (laTable == 3) {
       await IHMEditeur.choisirActionEditeur(settings);
     } else if (laTable == 4) {
