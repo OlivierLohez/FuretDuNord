@@ -1,9 +1,11 @@
+import 'package:mysql1/mysql1.dart';
+
 import 'furetbd.dart';
 import 'ihm.dart';
 
 class IHMBDD {
   // menu pour la gestion basic de la BDD
-  static Future<void> choisirActionBDD() async {
+  static Future<void> choisirActionBDD(ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
       print("");
@@ -24,15 +26,15 @@ class IHMBDD {
       print("--------------------------------------------------");
 
       if (choix == 1) {
-        await IHMBDD.createTable();
+        await IHMBDD.createTable(settings);
       } else if (choix == 2) {
-        await IHMBDD.checkTable();
+        await IHMBDD.checkTable(settings);
       } else if (choix == 3) {
-        await IHMBDD.selectTable();
+        await IHMBDD.selectTable(settings);
       } else if (choix == 4) {
-        await IHMBDD.deleteTable();
+        await IHMBDD.deleteTable(settings);
       } else if (choix == 5) {
-        await IHMBDD.deleteAllTables();
+        await IHMBDD.deleteAllTables(settings);
       }
     }
     print("Retour menu précédent.");
@@ -41,18 +43,18 @@ class IHMBDD {
   }
 
   // action pour creer les tables
-  static Future<void> createTable() async {
+  static Future<void> createTable(ConnectionSettings settings) async {
     print("Création des tables manquantes dans la BDD ...");
-    await LaBDFuret.createTables();
+    await LaBDFuret.createTables(settings);
     print("Fin de l'opération.");
     print("--------------------------------------------------");
     await Future.delayed(Duration(seconds: 1));
   }
 
 // action pour vérifier les tables
-  static Future<void> checkTable() async {
+  static Future<void> checkTable(ConnectionSettings settings) async {
     print("Verification des tables dans la BDD ...");
-    if (await LaBDFuret.checkTables()) {
+    if (await LaBDFuret.checkTables(settings)) {
       print("Toutes les tables sont présentes dans la BDD.");
     } else {
       print("Il manque des tables dans la BDD.");
@@ -63,8 +65,8 @@ class IHMBDD {
   }
 
 // action pour afficher les tables
-  static Future<void> selectTable() async {
-    List<String> listTable = await LaBDFuret.selectTables();
+  static Future<void> selectTable(ConnectionSettings settings) async {
+    List<String> listTable = await LaBDFuret.selectTables(settings);
     print("Liste des tables :");
     for (var table in listTable) {
       print("- $table");
@@ -75,11 +77,10 @@ class IHMBDD {
   }
 
 // action pour supprimer une table
-  static Future<void> deleteTable() async {
-    print("Quelle table voulez vous supprimer ?");
-    String table = IHM.saisirStringRec();
+  static Future<void> deleteTable(ConnectionSettings settings) async {
+    String table = IHM.saisirString("la table à supprimer");
     if (IHM.confirmation()) {
-      LaBDFuret.dropTable(table);
+      LaBDFuret.dropTable(settings, table);
       print("Table supprimée.");
       print("Fin de l'opération.");
       print("--------------------------------------------------");
@@ -92,9 +93,9 @@ class IHMBDD {
   }
 
 // action pour supprimer les tables
-  static Future<void> deleteAllTables() async {
+  static Future<void> deleteAllTables(ConnectionSettings settings) async {
     if (IHM.confirmation()) {
-      LaBDFuret.dropAllTable();
+      LaBDFuret.dropAllTable(settings);
       print("Tables supprimées.");
       print("Fin de l'opération.");
       print("--------------------------------------------------");

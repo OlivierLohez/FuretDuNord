@@ -6,37 +6,23 @@ import 'editeur.dart';
 
 class LaBDFuret {
   // Attribut
+  /*
   static final String _host = 'localhost';
   static final int _port = 3306;
   static final String _user = 'dartFuret';
   static final String _password = 'btsinfo';
   static final String _db = 'dbFuret';
-
-  // Constructeur
-  //LaBDFuret();
+  */
 
   // Méthodes
-  // On fait une méthode statique qui donne tous les paramètres nécessaires à la connexion sur la base de donnée
-  static ConnectionSettings settingsLaBD() {
-    ConnectionSettings settings = new ConnectionSettings(
-      host: _host,
-      port: _port,
-      user: _user,
-      password: _password,
-      db: _db,
-    );
-    return settings;
-  }
-
-  static Future<void> createTables() async {
+  static Future<void> createTables(ConnectionSettings settings) async {
     bool checkEditeur = false;
     bool checkAuteur = false;
     bool checkProduit = false;
     bool checkCreer = false;
 
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         String requete = "SHOW TABLES;";
         Results reponse = await conn.query(requete);
@@ -86,15 +72,14 @@ class LaBDFuret {
   }
 
   // retourne vrai si toute les tables sont créé, faux sinon
-  static Future<bool> checkTables() async {
+  static Future<bool> checkTables(ConnectionSettings settings) async {
     bool checkAll = false;
     bool checkEditeur = false;
     bool checkAuteur = false;
     bool checkProduit = false;
     bool checkCreer = false;
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       String requete = "SHOW TABLES;";
       try {
         Results reponse = await conn.query(requete);
@@ -129,11 +114,10 @@ class LaBDFuret {
   }
 
   // retourne la liste des noms des tables dans la BDD;
-  static Future<List<String>> selectTables() async {
+  static Future<List<String>> selectTables(ConnectionSettings settings) async {
     List<String> listTable = [];
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         String requete = "SHOW TABLES;";
         Results reponse = await conn.query(requete);
@@ -153,10 +137,10 @@ class LaBDFuret {
   }
 
   // permet de supprimer une table via son nom passé en parametre, si elle existe dans la database
-  static Future<void> dropTable(String table) async {
+  static Future<void> dropTable(
+      ConnectionSettings settings, String table) async {
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         await conn.query("DROP TABLES IF EXISTS " + table + ";");
       } catch (e) {
@@ -169,10 +153,9 @@ class LaBDFuret {
   }
 
   // supprime toute les tables dans la DB
-  static Future<void> dropAllTable() async {
+  static Future<void> dropAllTable(ConnectionSettings settings) async {
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         String requete = "SHOW TABLES;";
         Results reponse = await conn.query(requete);
@@ -191,11 +174,11 @@ class LaBDFuret {
     }
   }
 
-  static Future<dynamic> executerRequete(String requete) async {
+  static Future<dynamic> executerRequete(
+      ConnectionSettings settings, String requete) async {
     Results? reponse;
     try {
-      MySqlConnection conn =
-          await MySqlConnection.connect(LaBDFuret.settingsLaBD());
+      MySqlConnection conn = await MySqlConnection.connect(settings);
       try {
         reponse = await conn.query(requete);
       } catch (e) {
