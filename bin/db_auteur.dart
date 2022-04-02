@@ -31,7 +31,7 @@ class DBAuteur {
   }
 
   static Future<List<Auteur>> selectAllAuteurs() async {
-    List<Auteur> listeEdit = [];
+    List<Auteur> listeAut = [];
     try {
       MySqlConnection conn =
           await MySqlConnection.connect(LaBDFuret.settingsLaBD());
@@ -41,7 +41,7 @@ class DBAuteur {
         for (var row in reponse) {
           Auteur edit =
               Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
-          listeEdit.add(edit);
+          listeAut.add(edit);
         }
       } catch (e) {
         log(e.toString());
@@ -51,12 +51,11 @@ class DBAuteur {
       log(e.toString());
     }
 
-    return listeEdit;
+    return listeAut;
   }
 
-  static Future<List<Auteur>> selectEditeursByPrenom(
-      String prenomAuteur) async {
-    List<Auteur> listeEdit = [];
+  static Future<List<Auteur>> selectAuteursByPrenom(String prenomAuteur) async {
+    List<Auteur> listeAut = [];
     try {
       MySqlConnection conn =
           await MySqlConnection.connect(LaBDFuret.settingsLaBD());
@@ -67,7 +66,7 @@ class DBAuteur {
         for (var row in reponse) {
           Auteur edit =
               Auteur(row['idEditeur'], row['nomEditeur'], row['prenomAuteur']);
-          listeEdit.add(edit);
+          listeAut.add(edit);
         }
       } catch (e) {
         print(e.toString());
@@ -76,11 +75,11 @@ class DBAuteur {
     } catch (e) {
       print(e.toString());
     }
-    return listeEdit;
+    return listeAut;
   }
 
-  static Future<List<Auteur>> selectEditeursByNom(String nomAuteur) async {
-    List<Auteur> listeEdit = [];
+  static Future<List<Auteur>> selectAuteursByNom(String nomAuteur) async {
+    List<Auteur> listeAut = [];
     try {
       MySqlConnection conn =
           await MySqlConnection.connect(LaBDFuret.settingsLaBD());
@@ -89,9 +88,9 @@ class DBAuteur {
             "SELECT * from AUTEUR WHERE nomAuteur='" + nomAuteur + "';";
         Results reponse = await conn.query(requete);
         for (var row in reponse) {
-          Auteur edit =
+          Auteur aut =
               Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
-          listeEdit.add(edit);
+          listeAut.add(aut);
         }
       } catch (e) {
         print(e.toString());
@@ -100,11 +99,11 @@ class DBAuteur {
     } catch (e) {
       print(e.toString());
     }
-    return listeEdit;
+    return listeAut;
   }
 
   static Future<List<int>> selectIdAuteursByPrenom(String prenomAuteur) async {
-    List<int> listeIdEdit = [];
+    List<int> listeIdAut = [];
     try {
       MySqlConnection conn =
           await MySqlConnection.connect(LaBDFuret.settingsLaBD());
@@ -114,8 +113,8 @@ class DBAuteur {
             "';";
         Results reponse = await conn.query(requete);
         for (var row in reponse) {
-          int idEdit = row['idAuteur'];
-          listeIdEdit.add(idEdit);
+          int idAut = row['idAuteur'];
+          listeIdAut.add(idAut);
         }
       } catch (e) {
         print(e.toString());
@@ -124,11 +123,11 @@ class DBAuteur {
     } catch (e) {
       print(e.toString());
     }
-    return listeIdEdit;
+    return listeIdAut;
   }
 
   static Future<List<int>> selectIdAuteursByNom(String nomAuteur) async {
-    List<int> listeIdEdit = [];
+    List<int> listeIdAut = [];
     try {
       MySqlConnection conn =
           await MySqlConnection.connect(LaBDFuret.settingsLaBD());
@@ -137,8 +136,8 @@ class DBAuteur {
             "SELECT idAuteur from AUTEUR WHERE nomAuteur='" + nomAuteur + "';";
         Results reponse = await conn.query(requete);
         for (var row in reponse) {
-          int idEdit = row['idAuteur'];
-          listeIdEdit.add(idEdit);
+          int idAut = row['idAuteur'];
+          listeIdAut.add(idAut);
         }
       } catch (e) {
         print(e.toString());
@@ -147,7 +146,7 @@ class DBAuteur {
     } catch (e) {
       print(e.toString());
     }
-    return listeIdEdit;
+    return listeIdAut;
   }
 
   static Future<void> insertAuteur(
@@ -173,7 +172,7 @@ class DBAuteur {
   }
 
   //update auteur
-  static Future<void> updateEditeur(
+  static Future<void> updateAuteur(
       int idAuteur, String nomAuteur, String prenomAuteur) async {
     try {
       MySqlConnection conn =

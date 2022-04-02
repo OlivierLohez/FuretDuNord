@@ -1,61 +1,63 @@
+import 'dart:html';
 import 'dart:io';
 
 import 'package:mysql1/mysql1.dart';
 
+import 'data.dart';
 import 'furetbd.dart';
 
-class Auteur {
-  int _idauteur = 0;
-  String _nom = "";
-  String _prenom = "";
+class Auteur implements Data {
+  //Attributs
+  int _idAuteur = 0;
+  String _nomAuteur = "";
+  String _prenomAuteur = "";
 
-  Auteur(this._idauteur, this._nom, this._prenom);
-  Auteur.sansid(this._nom, this._prenom);
+  //Constructeurs
+  Auteur(this._idAuteur, this._nomAuteur, this._prenomAuteur);
+  Auteur.sansid(this._nomAuteur, this._prenomAuteur);
 
-  void ajouterauteur(String nom, String prenom, MySqlConnection conn) async {
-    try {
-      String requete = "INSERT INTO AUTEUR(nom,prenom) VALUES('" +
-          nom +
-          "','" +
-          prenom +
-          "')";
-      await conn.query(requete);
-    } catch (e) {
-      print(e.toString());
+  Auteur.fromListString(List<String> unEdit) {
+    if (unEdit.length == 3) {
+      this._idAuteur = int.parse(unEdit[0]);
+      this._nomAuteur = unEdit[1];
+      this._prenomAuteur = unEdit[2];
     }
   }
 
-  void affichertouslesauteur(conn) async {
-    try {
-      String requete = "Select * from AUTEUR";
-      Results reponse = await conn.query(requete);
-
-      for (var row in reponse) {
-        for (var fields in row) {
-          stdout.write(fields.toString());
-        }
-      }
-      await conn.query(requete);
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  // void supprimerauteur() async {
-  //   try {
-  //     MySqlConnection conn = await MySqlConnection.connect
-  //   } catch (e) {}
-  // }
+  Auteur.vide();
 
   int getidAuteur() {
-    return this._idauteur;
+    return this._idAuteur;
   }
 
-  String getnom() {
-    return this._nom;
+  String getnomAuteur() {
+    return this._nomAuteur;
   }
 
-  String getprenom() {
-    return this._prenom;
+  String getprenomAuteur() {
+    return this._prenomAuteur;
+  }
+
+  bool estNull() {
+    bool estnull = false;
+    if (_idAuteur == 0 && _nomAuteur == "" && _prenomAuteur == "") {
+      estnull = true;
+    }
+    return estnull;
+  }
+
+  @override
+  String getEntete() {
+    return "| id | nom | prenom |";
+  }
+
+  @override
+  String getInLine() {
+    return "| " +
+        _idAuteur.toString() +
+        " | " +
+        _nomAuteur +
+        " | " +
+        _prenomAuteur;
   }
 }
