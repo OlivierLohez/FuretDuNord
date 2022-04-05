@@ -22,9 +22,7 @@ class IHMSelectEditeur {
       print("|                                                       |");
       print("+-------------------------------------------------------+");
       choix = IHM.saisirAction(3);
-      if (choix == 0) {
-        print("On retourne au début");
-      }
+      print("--------------------------------------------------");
       if (choix == 1) {
         await IHMSelectEditeur.showAllEditeur(settings);
       } else if (choix == 2) {
@@ -33,6 +31,9 @@ class IHMSelectEditeur {
         await IHMSelectEditeur.askSelectEditeurByNom(settings);
       }
     }
+    print("Retour menu précédent.");
+    print("--------------------------------------------------");
+    await Future.delayed(Duration(seconds: 1));
   }
 
   static Future<void> showAllEditeur(ConnectionSettings settings) async {

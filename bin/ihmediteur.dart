@@ -24,9 +24,7 @@ class IHMEditeur {
       print("|                                                       |");
       print("+-------------------------------------------------------+");
       choix = IHM.saisirAction(4);
-      if (choix == 0) {
-        print("On recommence");
-      }
+      print("--------------------------------------------------");
       if (choix == 1) {
         await IHMEditeur.askInsertEditeur(settings);
       } else if (choix == 2) {
@@ -37,6 +35,9 @@ class IHMEditeur {
         await IHMEditeur.askUpdateEditeur(settings);
       }
     }
+    print("Retour menu précédent.");
+    print("--------------------------------------------------");
+    await Future.delayed(Duration(seconds: 1));
   }
 
   static Future<void> askInsertEditeur(ConnectionSettings settings) async {

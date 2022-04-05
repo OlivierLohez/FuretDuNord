@@ -23,9 +23,7 @@ class IHMDeleteAuteur {
       print("|                                                       |");
       print("+-------------------------------------------------------+");
       choix = IHM.saisirAction(6);
-      if (choix == 0) {
-        print("On retourne au début");
-      }
+      print("--------------------------------------------------");
       if (choix == 1) {
         await IHMDeleteAuteur.askDeleteAllAuteurs(settings);
       } else if (choix == 2) {
@@ -40,6 +38,9 @@ class IHMDeleteAuteur {
         await IHMDeleteAuteur.askDeleteAuteurPrenom(settings);
       }
     }
+    print("Retour menu précédent.");
+    print("--------------------------------------------------");
+    await Future.delayed(Duration(seconds: 1));
   }
 
   static Future<void> askDeleteAllAuteurs(ConnectionSettings settings) async {

@@ -26,9 +26,7 @@ class IHMSelectProduit {
       print("|                                                       |");
       print("+-------------------------------------------------------+");
       choix = IHM.saisirAction(7);
-      if (choix == 0) {
-        print("On retourne au début");
-      }
+      print("--------------------------------------------------");
       if (choix == 1) {
         await IHMSelectProduit.showAllProduits(settings);
       } else if (choix == 2) {
@@ -45,6 +43,9 @@ class IHMSelectProduit {
         await IHMSelectProduit.askSelectProduitsByVilleEditeur(settings);
       }
     }
+    print("Retour menu précédent.");
+    print("--------------------------------------------------");
+    await Future.delayed(Duration(seconds: 1));
   }
 
   static Future<void> showAllProduits(ConnectionSettings settings) async {

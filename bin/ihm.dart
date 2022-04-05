@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:mysql1/mysql1.dart';
 
 import 'data.dart';
-import 'furetbd.dart';
 import 'ihmauteur.dart';
 import 'ihmbdd.dart';
 import 'ihmediteur.dart';
@@ -14,11 +13,15 @@ class IHM {
   // La boucle permettant de faire des saisies jusqu'à ce que l'on ne souhaite plus continuer
   static Future<void> boucleSaisie(ConnectionSettings settings) async {
     print("Bonjour, utilisateur !");
+    print("--------------------------------------------------");
+    await Future.delayed(Duration(seconds: 1));
     bool continuer = true;
     while (continuer) {
       continuer = await IHM.choisirAction(settings);
     }
     print("Au revoir, utilisateur !");
+    print("--------------------------------------------------");
+    await Future.delayed(Duration(seconds: 1));
   }
 
   // L'affichage permettant de montrant le choix des différentes tables

@@ -25,9 +25,7 @@ class IHMDeletEditeur {
       print("|                                                       |");
       print("+-------------------------------------------------------+");
       choix = IHM.saisirAction(6);
-      if (choix == 0) {
-        print("On retourne au début");
-      }
+      print("--------------------------------------------------");
       if (choix == 1) {
         await IHMDeletEditeur.askDeleteAllEditeurs(settings);
       } else if (choix == 2) {
@@ -42,6 +40,9 @@ class IHMDeletEditeur {
         await IHMDeletEditeur.askDeleteEditeurNom(settings);
       }
     }
+    print("Retour menu précédent.");
+    print("--------------------------------------------------");
+    await Future.delayed(Duration(seconds: 1));
   }
 
   static Future<void> askDeleteAllEditeurs(ConnectionSettings settings) async {

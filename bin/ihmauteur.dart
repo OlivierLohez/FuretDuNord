@@ -22,9 +22,7 @@ class IHMAuteur {
       print("|                                                       |");
       print("+-------------------------------------------------------+");
       choix = IHM.saisirAction(4);
-      if (choix == 0) {
-        print("On recommence");
-      }
+      print("--------------------------------------------------");
       if (choix == 1) {
         await IHMAuteur.askInsertAuteur(settings);
       } else if (choix == 2) {
@@ -35,6 +33,9 @@ class IHMAuteur {
         await IHMAuteur.askUpdateAuteur(settings);
       }
     }
+    print("Retour menu précédent.");
+    print("--------------------------------------------------");
+    await Future.delayed(Duration(seconds: 1));
   }
 
   static Future<void> askInsertAuteur(ConnectionSettings settings) async {

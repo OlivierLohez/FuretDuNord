@@ -33,9 +33,7 @@ class IHMDeleteProduit {
       print("|                                                       |");
       print("+-------------------------------------------------------+");
       choix = IHM.saisirAction(14);
-      if (choix == 0) {
-        print("On retourne au début");
-      }
+      print("--------------------------------------------------");
       if (choix == 1) {
         await IHMDeleteProduit.askDeleteAllProduits(settings);
       } else if (choix == 2) {
@@ -66,6 +64,9 @@ class IHMDeleteProduit {
         await IHMDeleteProduit.askDeleteProduitNomEditeur(settings);
       }
     }
+    print("Retour menu précédent.");
+    print("--------------------------------------------------");
+    await Future.delayed(Duration(seconds: 1));
   }
 
   static Future<void> askDeleteAllProduits(ConnectionSettings settings) async {

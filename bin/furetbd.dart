@@ -19,53 +19,43 @@ class LaBDFuret {
     bool checkProduit = false;
     bool checkCreer = false;
 
-    try {
-      MySqlConnection conn = await MySqlConnection.connect(settings);
-      try {
-        String requete = "SHOW TABLES;";
-        Results reponse = await conn.query(requete);
-        for (var rows in reponse) {
-          for (var fields in rows) {
-            if (fields.toString() == "EDITEUR") {
-              checkEditeur = true;
-            }
-            if (fields.toString() == "AUTEUR") {
-              checkAuteur = true;
-            }
-            if (fields.toString() == "PRODUIT") {
-              checkProduit = true;
-            }
-            if (fields.toString() == "CREER") {
-              checkCreer = true;
-            }
-          }
+    String requete = "SHOW TABLES;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var rows in reponse) {
+      for (var fields in rows) {
+        if (fields.toString() == "EDITEUR") {
+          checkEditeur = true;
         }
-        if (!checkEditeur) {
-          requete =
-              'CREATE TABLE EDITEUR (idEditeur int NOT NULL AUTO_INCREMENT PRIMARY KEY, nomEditeur varchar(30), adresseEditeur varchar(60), villeEditeur varchar(30));';
-          await conn.query(requete);
+        if (fields.toString() == "AUTEUR") {
+          checkAuteur = true;
         }
-        if (!checkAuteur) {
-          requete =
-              'CREATE TABLE AUTEUR (idAuteur int NOT NULL AUTO_INCREMENT PRIMARY KEY, nomAuteur varchar(30), prenomAuteur varchar(30));';
-          await conn.query(requete);
+        if (fields.toString() == "PRODUIT") {
+          checkProduit = true;
         }
-        if (!checkProduit) {
-          requete =
-              "CREATE TABLE PRODUIT (idProduit int NOT NULL AUTO_INCREMENT PRIMARY KEY, nomProduit varchar(30), stock int, dateParution varchar(30), type varchar(30), prix double, idEditeur int NOT NULL,FOREIGN KEY (idEditeur) REFERENCES EDITEUR(idEditeur));";
-          await conn.query(requete);
+        if (fields.toString() == "CREER") {
+          checkCreer = true;
         }
-        if (!checkCreer) {
-          requete =
-              'CREATE TABLE CREER (idProduit int NOT NULL, idAuteur int NOT NULL, PRIMARY KEY(idProduit, idAuteur), FOREIGN KEY (idProduit) REFERENCES PRODUIT(idProduit), FOREIGN KEY (idAuteur) REFERENCES AUTEUR(idAuteur));';
-          await conn.query(requete);
-        }
-      } catch (e) {
-        print(e.toString());
       }
-      conn.close();
-    } catch (e) {
-      print(e.toString());
+    }
+    if (!checkEditeur) {
+      requete =
+          'CREATE TABLE EDITEUR (idEditeur int NOT NULL AUTO_INCREMENT PRIMARY KEY, nomEditeur varchar(30), adresseEditeur varchar(60), villeEditeur varchar(30));';
+      await LaBDFuret.executerRequete(settings, requete);
+    }
+    if (!checkAuteur) {
+      requete =
+          'CREATE TABLE AUTEUR (idAuteur int NOT NULL AUTO_INCREMENT PRIMARY KEY, nomAuteur varchar(30), prenomAuteur varchar(30));';
+      await LaBDFuret.executerRequete(settings, requete);
+    }
+    if (!checkProduit) {
+      requete =
+          "CREATE TABLE PRODUIT (idProduit int NOT NULL AUTO_INCREMENT PRIMARY KEY, nomProduit varchar(30), stock int, dateParution varchar(30), type varchar(30), prix double, idEditeur int NOT NULL,FOREIGN KEY (idEditeur) REFERENCES EDITEUR(idEditeur));";
+      await LaBDFuret.executerRequete(settings, requete);
+    }
+    if (!checkCreer) {
+      requete =
+          'CREATE TABLE CREER (idProduit int NOT NULL, idAuteur int NOT NULL, PRIMARY KEY(idProduit, idAuteur), FOREIGN KEY (idProduit) REFERENCES PRODUIT(idProduit), FOREIGN KEY (idAuteur) REFERENCES AUTEUR(idAuteur));';
+      await LaBDFuret.executerRequete(settings, requete);
     }
   }
 
@@ -76,35 +66,24 @@ class LaBDFuret {
     bool checkAuteur = false;
     bool checkProduit = false;
     bool checkCreer = false;
-    try {
-      MySqlConnection conn = await MySqlConnection.connect(settings);
-      String requete = "SHOW TABLES;";
-      try {
-        Results reponse = await conn.query(requete);
-        for (var rows in reponse) {
-          for (var fields in rows) {
-            if (fields.toString() == "EDITEUR") {
-              checkEditeur = true;
-            }
-            if (fields.toString() == "AUTEUR") {
-              checkAuteur = true;
-            }
-            if (fields.toString() == "PRODUIT") {
-              checkProduit = true;
-            }
-            if (fields.toString() == "CREER") {
-              checkCreer = true;
-            }
-          }
+    String requete = "SHOW TABLES;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var rows in reponse) {
+      for (var fields in rows) {
+        if (fields.toString() == "EDITEUR") {
+          checkEditeur = true;
         }
-      } catch (e) {
-        print(e.toString());
+        if (fields.toString() == "AUTEUR") {
+          checkAuteur = true;
+        }
+        if (fields.toString() == "PRODUIT") {
+          checkProduit = true;
+        }
+        if (fields.toString() == "CREER") {
+          checkCreer = true;
+        }
       }
-      conn.close();
-    } catch (e) {
-      print(e.toString());
     }
-
     if (checkEditeur && checkAuteur && checkProduit && checkCreer) {
       checkAll = true;
     }
@@ -114,22 +93,12 @@ class LaBDFuret {
   // retourne la liste des noms des tables dans la BDD;
   static Future<List<String>> selectTables(ConnectionSettings settings) async {
     List<String> listTable = [];
-    try {
-      MySqlConnection conn = await MySqlConnection.connect(settings);
-      try {
-        String requete = "SHOW TABLES;";
-        Results reponse = await conn.query(requete);
-        for (var rows in reponse) {
-          for (var fields in rows) {
-            listTable.add(fields);
-          }
-        }
-      } catch (e) {
-        print(e.toString());
+    String requete = "SHOW TABLES;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var rows in reponse) {
+      for (var fields in rows) {
+        listTable.add(fields);
       }
-      conn.close();
-    } catch (e) {
-      print(e.toString());
     }
     return listTable;
   }
@@ -137,39 +106,16 @@ class LaBDFuret {
   // permet de supprimer une table via son nom passé en parametre, si elle existe dans la database
   static Future<void> dropTable(
       ConnectionSettings settings, String table) async {
-    try {
-      MySqlConnection conn = await MySqlConnection.connect(settings);
-      try {
-        await conn.query("DROP TABLES IF EXISTS " + table + ";");
-      } catch (e) {
-        log(e.toString());
-      }
-      conn.close();
-    } catch (e) {
-      print(e.toString());
-    }
+    await LaBDFuret.executerRequete(settings, "DROP TABLES IF EXISTS $table;");
   }
 
   // supprime toute les tables dans la DB
   static Future<void> dropAllTable(ConnectionSettings settings) async {
-    try {
-      MySqlConnection conn = await MySqlConnection.connect(settings);
-      try {
-        String requete = "SHOW TABLES;";
-        Results reponse = await conn.query(requete);
-        for (var rows in reponse) {
-          for (var fields in rows) {
-            await conn.query("DROP TABLES IF EXISTS " + fields + ";");
-          }
-        }
-      } catch (e) {
-        log(e.toString());
-      }
-
-      conn.close();
-    } catch (e) {
-      log(e.toString());
-    }
+    //version peu optimisée mais fonctionnelle
+    await dropTable(settings, "CREER");
+    await dropTable(settings, "AUTEUR");
+    await dropTable(settings, "PRODUIT");
+    await dropTable(settings, "EDITEUR");
   }
 
   static Future<dynamic> executerRequete(

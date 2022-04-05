@@ -25,9 +25,7 @@ class IHMPRODUIT {
       print("|                                                       |");
       print("+-------------------------------------------------------+");
       choix = IHM.saisirAction(4);
-      if (choix == 0) {
-        print("On recommence");
-      }
+      print("--------------------------------------------------");
       if (choix == 1) {
         await IHMPRODUIT.askInsertProduit(settings);
       } else if (choix == 2) {
@@ -38,6 +36,9 @@ class IHMPRODUIT {
         await IHMPRODUIT.askUpdateProduit(settings);
       }
     }
+    print("Retour menu précédent.");
+    print("--------------------------------------------------");
+    await Future.delayed(Duration(seconds: 1));
   }
 
   static Future<void> askInsertProduit(ConnectionSettings settings) async {
