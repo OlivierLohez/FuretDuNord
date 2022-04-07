@@ -114,12 +114,6 @@ class DBEditeur {
     await LaBDFuret.executerRequete(settings, requete);
   }
 
-  static Future<void> deleteEditeurByName(
-      ConnectionSettings settings, String nomEditeur) async {
-    String requete = "DELETE FROM EDITEUR WHERE nomEditeur='$nomEditeur';";
-    await LaBDFuret.executerRequete(settings, requete);
-  }
-
   //delete all
   static Future<void> deleteAllEditeurs(ConnectionSettings settings) async {
     String requete = "TRUNCATE TABLE EDITEUR;";

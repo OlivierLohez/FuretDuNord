@@ -181,15 +181,9 @@ class DBAuteur {
     await LaBDFuret.executerRequete(settings, requete);
   }
 
-  static Future<void> deleteAuteurByName(
-      ConnectionSettings settings, String nomAuteur) async {
-    String requete = "DELETE FROM AUTEUR WHERE nomAuteur='$nomAuteur';";
-    await LaBDFuret.executerRequete(settings, requete);
-  }
-
-  static Future<void> deleteAuteurByPrenom(
-      ConnectionSettings settings, String prenomAuteur) async {
-    String requete = "DELETE FROM AUTEUR WHERE prenomAuteur='$prenomAuteur';";
+  static Future<void> deleteAuteurInCreer(
+      ConnectionSettings settings, int idAuteur) async {
+    String requete = "DELETE FROM CREER WHERE idAuteur='$idAuteur'";
     await LaBDFuret.executerRequete(settings, requete);
   }
 

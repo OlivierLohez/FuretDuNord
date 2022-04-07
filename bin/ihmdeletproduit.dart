@@ -172,10 +172,10 @@ class IHMDeleteProduit {
   static Future<void> askDeleteProduitNomAuteur(
       ConnectionSettings settings) async {
     print("Vous voulez supprimer un produit en fonction du nom de l'auteur.");
-    String nomEditeur = IHM.saisirString("son nom.");
+    String nomAuteur = IHM.saisirString("son nom.");
     print("Voici la liste des différents auteurs avec ce nom là");
     IHM.afficherDesDonnees(
-        await DBProduit.selectProduitsByNomAuteur(settings, nomEditeur));
+        await DBProduit.selectProduitsByNomAuteur(settings, nomAuteur));
     await IHMDeleteProduit.deleteUnProduit(settings);
   }
 

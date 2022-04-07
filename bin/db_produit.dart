@@ -352,12 +352,6 @@ class DBProduit {
     await LaBDFuret.executerRequete(settings, requete);
   }
 
-  static Future<void> deleteProduitByName(
-      ConnectionSettings settings, String nomProduit) async {
-    String requete = "DELETE FROM PRODUIT WHERE nomProduit='$nomProduit';";
-    await LaBDFuret.executerRequete(settings, requete);
-  }
-
   //delete all
   static Future<void> deleteAllProduits(ConnectionSettings settings) async {
     String requete = "TRUNCATE TABLE PRODUIT;";
