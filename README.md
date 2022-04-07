@@ -3,11 +3,11 @@
 <br/>
 <h2>Sommaire</h2>
 <ul>
-  <li><>Présentation du projet</a></li>
-  <li><>Présentation de la structure de données</a></li>
-  <li><>Présentation de la structure du programme</a></li>
-  <li><>Présentation des fonctionnalités du programme</a></li>
-  <li><>Démonstration d'un exemple de fonctionnement</a></li>
+  <li><a>Présentation du projet</a></li>
+  <li><a>Présentation de la structure de données</a></li>
+  <li><a>Présentation de la structure du programme</a></li>
+  <li><a>Présentation des fonctionnalités du programme</a></li>
+  <li><a>Démonstration d'un exemple de fonctionnement</a></li>
 </ul>
 <hr>
 <h3>Présentation du projet</h3>
@@ -17,6 +17,7 @@
 <p>Ce projet rend accessible la gestion des tables de ces bases de données</p>
 <br/><br/>
 <h3>Présentation de la structure de données</h3>
+<a src="Readmeimages/Structurededonnées.png"><a>
 <br/><br/>
 <p></p>
 <h3>Présentation de la structure du programme</h3>
