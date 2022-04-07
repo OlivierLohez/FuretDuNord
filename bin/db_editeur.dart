@@ -1,6 +1,6 @@
 import 'package:mysql1/mysql1.dart';
 
-import 'furetbd.dart';
+import 'db_bdd.dart';
 import 'editeur.dart';
 
 class DBEditeur {

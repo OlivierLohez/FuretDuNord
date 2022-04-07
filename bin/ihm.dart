@@ -12,6 +12,7 @@ class IHM {
   // Méthodes
   // La boucle permettant de faire des saisies jusqu'à ce que l'on ne souhaite plus continuer
   static Future<void> boucleSaisie(ConnectionSettings settings) async {
+    print("");
     print("Bonjour, utilisateur !");
     print("--------------------------------------------------");
     await Future.delayed(Duration(seconds: 1));
@@ -19,6 +20,7 @@ class IHM {
     while (continuer) {
       continuer = await IHM.choisirAction(settings);
     }
+    print("");
     print("Au revoir, utilisateur !");
     print("--------------------------------------------------");
     await Future.delayed(Duration(seconds: 1));
@@ -82,7 +84,6 @@ class IHM {
     return i;
   }
 
-/*
   // Saisie des strings de manière récurssive
   static String saisirStringRec() {
     print("");
@@ -96,14 +97,47 @@ class IHM {
     }
     return c;
   }
-*/
+
   static String saisirString(String objectifSaisie) {
+    print("");
     bool saisieValide = false;
     String s = "";
     while (!saisieValide) {
       print("> Veuillez saisir $objectifSaisie :");
       try {
         s = stdin.readLineSync().toString();
+        saisieValide = true;
+      } catch (e) {
+        print("Erreur dans la saisie.");
+      }
+    }
+    return s;
+  }
+
+  static int saisirInt(String objectifSaisie) {
+    print("");
+    bool saisieValide = false;
+    int s = -1;
+    while (!saisieValide) {
+      print("> Veuillez saisir $objectifSaisie :");
+      try {
+        s = int.parse(stdin.readLineSync().toString());
+        saisieValide = true;
+      } catch (e) {
+        print("Erreur dans la saisie.");
+      }
+    }
+    return s;
+  }
+
+  static double saisirDouble(String objectifSaisie) {
+    print("");
+    bool saisieValide = false;
+    double s = -1;
+    while (!saisieValide) {
+      print("> Veuillez saisir $objectifSaisie :");
+      try {
+        s = double.parse(stdin.readLineSync().toString());
         saisieValide = true;
       } catch (e) {
         print("Erreur dans la saisie.");

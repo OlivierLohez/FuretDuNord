@@ -2,6 +2,7 @@ import 'package:mysql1/mysql1.dart';
 
 import 'db_produit.dart';
 import 'ihm.dart';
+import 'produit.dart';
 
 class IHMSelectProduit {
   // Methodes
@@ -23,9 +24,10 @@ class IHMSelectProduit {
       print("|   5 = Afficher tout en fonction d'un prix             |");
       print("|   6 = Afficher tout en fonction du nom de l'editeur   |");
       print("|   7 = Afficher tout en fonction de la ville d'editeur |");
+      print("|   8 = Afficher tout en fonction du nom de l'auteur    |");
       print("|                                                       |");
       print("+-------------------------------------------------------+");
-      choix = IHM.saisirAction(7);
+      choix = IHM.saisirAction(8);
       print("--------------------------------------------------");
       if (choix == 1) {
         await IHMSelectProduit.showAllProduits(settings);
@@ -41,6 +43,8 @@ class IHMSelectProduit {
         await IHMSelectProduit.askSelectProduitsByNomEditeur(settings);
       } else if (choix == 7) {
         await IHMSelectProduit.askSelectProduitsByVilleEditeur(settings);
+      } else if (choix == 8) {
+        await IHMSelectProduit.askSelectProduitsByNomAuteur(settings);
       }
     }
     print("Retour menu précédent.");
@@ -98,5 +102,12 @@ class IHMSelectProduit {
     print("Vous voulez des produits en fonction de la ville de l'éditeur.");
     IHM.afficherDesDonnees(await DBProduit.selectProduitsByVilleEditeur(
         settings, IHM.saisirString("la ville de l'éditeur")));
+  }
+
+  static Future<void> askSelectProduitsByNomAuteur(
+      ConnectionSettings settings) async {
+    print("Vous voulez des produits en fonction du nom de l'auteur.");
+    IHM.afficherDesDonnees(await DBProduit.selectProduitsByNomAuteur(
+        settings, IHM.saisirString("le nom de l'auteur")));
   }
 }

@@ -1,13 +1,13 @@
 import 'package:mysql1/mysql1.dart';
 import 'auteur.dart';
-import 'furetbd.dart';
+import 'db_bdd.dart';
 
 class DBAuteur {
   static Future<Auteur> selectAuteur(
       ConnectionSettings settings, int idAuteur) async {
     Auteur edit = Auteur.vide();
     String requete =
-        "SELECT * FROM AUTEUR WHERE idAuteur=$idAuteur AND EXISTS (SELECT idEditeur FROM EDITEUR WHERE idEditeur=$idAuteur );";
+        "SELECT * FROM AUTEUR WHERE idAuteur=$idAuteur AND EXISTS (SELECT idAuteur FROM EDITEUR WHERE idAuteur=$idAuteur );";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
     edit = Auteur(reponse.first['idAuteur'], reponse.first['nomAuteur'],
         reponse.first['prenomAuteur']);
@@ -30,7 +30,7 @@ class DBAuteur {
   static Future<List<Auteur>> selectAuteursByPrenom(
       ConnectionSettings settings, String prenomAuteur) async {
     List<Auteur> listeAut = [];
-    String requete = "SELECT * from AUTEUR WHERE villeAuteur='$prenomAuteur';";
+    String requete = "SELECT * from AUTEUR WHERE prenomAuteur='$prenomAuteur';";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
     for (var row in reponse) {
       Auteur edit =
@@ -51,6 +51,17 @@ class DBAuteur {
       listeAut.add(aut);
     }
     return listeAut;
+  }
+
+  static Future<List<int>> selectIdAuteurs(ConnectionSettings settings) async {
+    List<int> listeIdAut = [];
+    String requete = "SELECT idAuteur from AUTEUR;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      int idAut = row['idAuteur'];
+      listeIdAut.add(idAut);
+    }
+    return listeIdAut;
   }
 
   static Future<List<int>> selectIdAuteursByPrenom(
@@ -79,10 +90,25 @@ class DBAuteur {
     return listeIdAut;
   }
 
+  static Future<int> selectIdLastAuteur(ConnectionSettings settings) async {
+    String requete =
+        "SELECT * FROM AUTEUR WHERE idAuteur=(SELECT MAX(idAuteur) FROM AUTEUR);";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    int idAuteur = reponse.first['idAuteur'];
+    return idAuteur;
+  }
+
   static Future<void> insertAuteur(ConnectionSettings settings,
       String nomAuteur, String prenomAuteur) async {
     String requete =
         "INSERT INTO AUTEUR (nomAuteur, prenomAuteur) VALUES('$nomAuteur', '$prenomAuteur');";
+    await LaBDFuret.executerRequete(settings, requete);
+  }
+
+  static Future<void> insertAuteurtInCreer(
+      ConnectionSettings settings, int idProduit, int idAuteur) async {
+    String requete =
+        "INSERT INTO CREER (idProduit, idAuteur) VALUES($idProduit, $idAuteur);";
     await LaBDFuret.executerRequete(settings, requete);
   }
 

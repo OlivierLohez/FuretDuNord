@@ -1,16 +1,17 @@
 import 'package:mysql1/mysql1.dart';
 
-import 'furetbd.dart';
+import 'db_auteur.dart';
+import 'db_bdd.dart';
 import 'produit.dart';
 
 class DBProduit {
   static Future<Produit> selectProduit(
       ConnectionSettings settings, int idEditeur) async {
-    Produit edit = Produit.vide();
+    Produit produit = Produit.vide();
     String requete =
         "SELECT * FROM PRODUIT WHERE idProduit=$idEditeur AND EXISTS (SELECT idProduit FROM EDITEUR WHERE idProduit=$idEditeur);";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    edit = Produit(
+    produit = Produit(
         reponse.first['idProduit'],
         reponse.first['nomProduit'],
         reponse.first['stock'],
@@ -18,7 +19,7 @@ class DBProduit {
         reponse.first['type'],
         reponse.first['prix'],
         reponse.first['idEditeur']);
-    return edit;
+    return produit;
   }
 
   static Future<List<Produit>> selectAllProduits(
@@ -140,7 +141,7 @@ class DBProduit {
       ConnectionSettings settings, String nomEditeur) async {
     List<Produit> listeProd = [];
     String requete =
-        "SELECT * from EDITEUR, PRODUIT WHERE nomEditeur='$nomEditeur' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
+        "SELECT PRODUIT.idProduit, nomProduit, stock, dateParution, type, prix, PRODUIT.idEditeur from EDITEUR, PRODUIT WHERE nomEditeur='$nomEditeur' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
     for (var row in reponse) {
       Produit produit = Produit(
@@ -160,7 +161,27 @@ class DBProduit {
       ConnectionSettings settings, String villeEditeur) async {
     List<Produit> listeProd = [];
     String requete =
-        "SELECT * from EDITEUR, PRODUIT WHERE villeEditeur='$villeEditeur' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
+        "SELECT PRODUIT.idProduit, nomProduit, stock, dateParution, type, prix, PRODUIT.idEditeur from EDITEUR, PRODUIT WHERE villeEditeur='$villeEditeur' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      Produit produit = Produit(
+          row['idProduit'],
+          row['nomProduit'],
+          row['stock'],
+          row['dateParution'],
+          row['type'],
+          row['prix'],
+          row['idEditeur']);
+      listeProd.add(produit);
+    }
+    return listeProd;
+  }
+
+  static Future<List<Produit>> selectProduitsByNomAuteur(
+      ConnectionSettings settings, String nomAuteur) async {
+    List<Produit> listeProd = [];
+    String requete =
+        "SELECT PRODUIT.idProduit, nomProduit, stock, dateParution, type, prix, PRODUIT.idEditeur from AUTEUR, PRODUIT, CREER WHERE nomAuteur='$nomAuteur' AND AUTEUR.idAuteur=CREER.idAuteur AND CREER.idProduit=PRODUIT.idProduit;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
     for (var row in reponse) {
       Produit produit = Produit(
@@ -261,6 +282,27 @@ class DBProduit {
     return listeIdProduit;
   }
 
+  static Future<List<int>> selectIdProduitsByNomAuteur(
+      ConnectionSettings settings, String nomAuteur) async {
+    List<int> listeIdProduit = [];
+    String requete =
+        "SELECT PRODUIT.idProduit from AUTEUR, PRODUIT, CREER WHERE nomAuteur='$nomAuteur' AND AUTEUR.idAuteur=CREER.idAuteur AND CREER.idProduit=PRODUIT.idProduit;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      int idProduit = row['idProduit'];
+      listeIdProduit.add(idProduit);
+    }
+    return listeIdProduit;
+  }
+
+  static Future<int> selectIdLastProduit(ConnectionSettings settings) async {
+    String requete =
+        "SELECT * FROM PRODUIT WHERE idProduit=(SELECT MAX(idProduit) FROM PRODUIT);";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    int idProduit = reponse.first['idProduit'];
+    return idProduit;
+  }
+
   static Future<void> insertProduit(
       ConnectionSettings settings,
       String nomProduit,
@@ -271,6 +313,13 @@ class DBProduit {
       int idEditeur) async {
     String requete =
         "INSERT INTO PRODUIT (nomProduit, stock, dateParution, type, prix, idEditeur) VALUES('$nomProduit', $stock, '$dateParution', '$type', $prix, $idEditeur);";
+    await LaBDFuret.executerRequete(settings, requete);
+  }
+
+  static Future<void> insertProduitInCreer(
+      ConnectionSettings settings, int idProduit, int idAuteur) async {
+    String requete =
+        "INSERT INTO CREER (idProduit, idAuteur) VALUES($idProduit, $idAuteur);";
     await LaBDFuret.executerRequete(settings, requete);
   }
 
@@ -285,7 +334,7 @@ class DBProduit {
       double prix,
       int idEditeur) async {
     String requete =
-        "UPDATE PRODUIT SET nomProduit = '$nomProduit', stock = $stock, dateParution = '$dateParution', type = '$type', type = $type, prix = $prix WHERE idProduit = $idProduit;";
+        "UPDATE PRODUIT SET nomProduit = '$nomProduit', stock = $stock, dateParution = '$dateParution', type = '$type', prix = $prix WHERE idProduit = $idProduit;";
     await LaBDFuret.executerRequete(settings, requete);
   }
 
@@ -293,6 +342,12 @@ class DBProduit {
   static Future<void> deleteProduit(
       ConnectionSettings settings, int idProduit) async {
     String requete = "DELETE FROM PRODUIT WHERE idProduit='$idProduit'";
+    await LaBDFuret.executerRequete(settings, requete);
+  }
+
+  static Future<void> deleteProduitInCreer(
+      ConnectionSettings settings, int idProduit) async {
+    String requete = "DELETE FROM CREER WHERE idProduit='$idProduit'";
     await LaBDFuret.executerRequete(settings, requete);
   }
 

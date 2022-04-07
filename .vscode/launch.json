@@ -6,6 +6,13 @@
             "request": "launch",
             "program": "bin/furetdunord.dart",
             "console": "terminal"
+        },
+        {
+            "name": "Dart (bin/main.dart)",
+            "type": "dart",
+            "request": "launch",
+            "program": "bin/main.dart",
+            "console": "terminal"
         }
     ]
 }

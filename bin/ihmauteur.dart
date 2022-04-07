@@ -1,6 +1,7 @@
 import 'package:mysql1/mysql1.dart';
 
 import 'db_auteur.dart';
+import 'db_produit.dart';
 import 'ihm.dart';
 import 'ihmdeleteauteur.dart';
 import 'ihmselectauteur.dart';
@@ -17,7 +18,7 @@ class IHMAuteur {
       print("|   0 = Quitter                                         |");
       print("|   1 = Ajouter un auteur                               |");
       print("|   2 = Supprimer un ou plusieurs auteurs               |");
-      print("|   3 = Sélectionner un ou plusieurs auteurs            |");
+      print("|   3 = Afficher un ou plusieurs auteurs                |");
       print("|   4 = Modifier un auteur                              |");
       print("|                                                       |");
       print("+-------------------------------------------------------+");
@@ -43,35 +44,84 @@ class IHMAuteur {
     String nomAuteur = IHM.saisirString("son nom");
     String prenomAuteur = IHM.saisirString("son prénom");
     DBAuteur.insertAuteur(settings, nomAuteur, prenomAuteur);
+    IHMAuteur.askInsertAuteurInCreer(
+        settings, await DBAuteur.selectIdLastAuteur(settings));
   }
 
   static Future<void> askUpdateAuteur(ConnectionSettings settings) async {
     print("Vous voulez modifier un auteur.");
-    print("Veuillez saisir son ID");
-    int idAuteur = IHM.saisirIntRec();
-    //print(idEditeur);
-    print("Vous souhaitez modifier l'éditeur :");
-    IHM.afficherUneDonnee(await DBAuteur.selectAuteur(settings, idAuteur));
-    String nomAuteur = IHM.saisirString("son nom");
-    String prenomAuteur = IHM.saisirString("son prénom");
-    if (IHM.confirmation()) {
-      if (await DBAuteur.exist(settings, idAuteur)) {
-        DBAuteur.updateAuteur(settings, idAuteur, nomAuteur, prenomAuteur);
-        print("Editeur modifié.");
-        print("Fin de l'opération.");
-        print("--------------------------------------------------");
-        print("");
-        await Future.delayed(Duration(seconds: 1));
-        print("L'éditeur a été changé en :");
-        IHM.afficherUneDonnee(await DBAuteur.selectAuteur(settings, idAuteur));
-        await Future.delayed(Duration(seconds: 1));
+    int idAuteur = IHM.saisirInt("son ID");
+    //L'auteur est présent ?
+    bool auteurPresent = false;
+    List<int> laListeIdauteur = await DBAuteur.selectIdAuteurs(settings);
+    int i = 0;
+    while (auteurPresent == false && i < laListeIdauteur.length) {
+      if (idAuteur == laListeIdauteur[i]) {
+        auteurPresent = true;
+      }
+      i++;
+    }
+    if (auteurPresent) {
+      print("Vous souhaitez modifier l'auteur :");
+      IHM.afficherUneDonnee(await DBAuteur.selectAuteur(settings, idAuteur));
+      String nomAuteur = IHM.saisirString("son nom");
+      String prenomAuteur = IHM.saisirString("son prénom");
+      if (IHM.confirmation()) {
+        if (await DBAuteur.exist(settings, idAuteur)) {
+          DBAuteur.updateAuteur(settings, idAuteur, nomAuteur, prenomAuteur);
+          print("Editeur modifié.");
+          print("Fin de l'opération.");
+          print("--------------------------------------------------");
+          print("");
+          await Future.delayed(Duration(seconds: 1));
+          print("L'auteur a été changé en :");
+          IHM.afficherUneDonnee(
+              await DBAuteur.selectAuteur(settings, idAuteur));
+          await Future.delayed(Duration(seconds: 1));
+          IHMAuteur.askInsertAuteurInCreer(settings, idAuteur);
+        } else {
+          print("L'auteur n'existe pas.");
+        }
       } else {
-        print("L'éditeur n'existe pas.");
+        print("Annulation de l'opération.");
+        print("--------------------------------------------------");
+        await Future.delayed(Duration(seconds: 1));
       }
     } else {
-      print("Annulation de l'opération.");
-      print("--------------------------------------------------");
-      await Future.delayed(Duration(seconds: 1));
+      print("Id de l'auteur non reconnu");
+    }
+  }
+
+  static Future<void> askInsertAuteurInCreer(
+      ConnectionSettings settings, int idAuteur) async {
+    print(
+        "> Voulez-vous associer ce produit avec un produit ? (tapez o pour oui, le restera sera considéré comme étant une erreur)");
+    String insertCreer = IHM.saisirStringRec();
+    if (insertCreer.toLowerCase() == "o") {
+      print("Avec quel auteur voulez-vous associer le produit ?");
+      int idProduit = IHM.saisirInt("son ID");
+      //L'auteur est présent ?
+      bool produitPresent = false;
+      List<int> laListeIdProduit = await DBProduit.selectIdProduits(settings);
+      int i = 0;
+      while (produitPresent == false && i < laListeIdProduit.length) {
+        if (idAuteur == laListeIdProduit[i]) {
+          produitPresent = true;
+        }
+        i++;
+      }
+      if (produitPresent) {
+        print("Vous souhaitez associer au produit :");
+        IHM.afficherUneDonnee(
+            await DBProduit.selectProduit(settings, idProduit));
+        if (IHM.confirmation()) {
+          await DBAuteur.insertAuteurtInCreer(settings, idProduit, idAuteur);
+        }
+      } else {
+        print("Id du produit non reconnu");
+      }
+    } else {
+      print("L'auteur ne sera pas associé.");
     }
   }
 }
