@@ -17,7 +17,7 @@
 <p>Ce projet rend accessible la gestion des tables de ces bases de données</p>
 <br/><br/>
 <h3>Présentation de la structure de données</h3>
-![image](Readmeimages/drive-download-20220407T110644Z-001/Structurededonnées.png. jpg)<a>
+![image](Readmeimages/Structurededonnées.png. jpg)<a>
 <br/><br/>
 <p></p>
 <h3>Présentation de la structure du programme</h3>
