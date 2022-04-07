@@ -64,19 +64,26 @@ class IHMAuteur {
     if (auteurPresent) {
       print("Vous souhaitez modifier l'auteur :");
       IHM.afficherUneDonnee(await DBAuteur.selectAuteur(settings, idAuteur));
-      String nomAuteur = IHM.saisirString("son nom");
-      String prenomAuteur = IHM.saisirString("son prénom");
       if (IHM.confirmation()) {
-        if (await DBAuteur.exist(settings, idAuteur)) {
-          DBAuteur.updateAuteur(settings, idAuteur, nomAuteur, prenomAuteur);
-          print("Editeur modifié.");
-          print("Fin de l'opération.");
-          print("--------------------------------------------------");
-          print("");
-          await Future.delayed(Duration(seconds: 1));
-          print("L'auteur a été changé en :");
-          IHM.afficherUneDonnee(
-              await DBAuteur.selectAuteur(settings, idAuteur));
+        String nomAuteur = IHM.saisirString("son nom");
+        String prenomAuteur = IHM.saisirString("son prénom");
+        if (IHM.confirmation()) {
+          if (await DBAuteur.exist(settings, idAuteur)) {
+            DBAuteur.updateAuteur(settings, idAuteur, nomAuteur, prenomAuteur);
+            print("Editeur modifié.");
+            print("Fin de l'opération.");
+            print("--------------------------------------------------");
+            print("");
+            await Future.delayed(Duration(seconds: 1));
+            print("L'auteur a été changé en :");
+            IHM.afficherUneDonnee(
+                await DBAuteur.selectAuteur(settings, idAuteur));
+          } else {
+            print("Vous ne souhaitez pas modifier l'auteur.");
+            print("Annulation de l'opération.");
+            print("--------------------------------------------------");
+            await Future.delayed(Duration(seconds: 1));
+          }
           await Future.delayed(Duration(seconds: 1));
           await IHMAuteur.askInsertAuteurInCreer(settings, idAuteur);
         } else {
@@ -94,10 +101,8 @@ class IHMAuteur {
 
   static Future<void> askInsertAuteurInCreer(
       ConnectionSettings settings, int idAuteur) async {
-    print(
-        "> Voulez-vous associer ce produit avec un auteur ? (tapez o pour oui, le restera sera considéré comme étant une erreur)");
-    String insertCreer = IHM.saisirStringRec();
-    if (insertCreer.toLowerCase() == "o") {
+    print("Voulez-vous associer ce produit avec un auteur ?");
+    if (IHM.confirmation()) {
       print("Avec quel produit voulez-vous associer l'auteur ?");
       int idProduit = IHM.saisirInt("son ID");
       //Le produit est présent ?
@@ -118,7 +123,9 @@ class IHMAuteur {
           await DBAuteur.insertAuteurtInCreer(settings, idProduit, idAuteur);
         }
       } else {
-        print("Id de l'auteur non reconnu");
+        print("Id du produit non reconnu");
+        print("--------------------------------------------------");
+        await Future.delayed(Duration(seconds: 1));
       }
     } else {
       print("Le produit ne sera pas associé.");

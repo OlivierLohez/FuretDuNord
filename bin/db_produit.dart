@@ -47,16 +47,20 @@ class DBProduit {
 
     String requete = "SELECT * from PRODUIT WHERE nomProduit='$nomProduit';";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Produit produit = Produit(
-          row['idProduit'],
-          row['nomProduit'],
-          row['stock'],
-          row['dateParution'],
-          row['type'],
-          row['prix'],
-          row['idEditeur']);
-      listeProd.add(produit);
+    if (reponse.isEmpty) {
+      listeProd.add(Produit.vide());
+    } else {
+      for (var row in reponse) {
+        Produit produit = Produit(
+            row['idProduit'],
+            row['nomProduit'],
+            row['stock'],
+            row['dateParution'],
+            row['type'],
+            row['prix'],
+            row['idEditeur']);
+        listeProd.add(produit);
+      }
     }
     return listeProd;
   }
@@ -66,16 +70,20 @@ class DBProduit {
     List<Produit> listeProd = [];
     String requete = "SELECT * from PRODUIT WHERE stock=$stock;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Produit produit = Produit(
-          row['idProduit'],
-          row['nomProduit'],
-          row['stock'],
-          row['dateParution'],
-          row['type'],
-          row['prix'],
-          row['idEditeur']);
-      listeProd.add(produit);
+    if (reponse.isEmpty) {
+      listeProd.add(Produit.vide());
+    } else {
+      for (var row in reponse) {
+        Produit produit = Produit(
+            row['idProduit'],
+            row['nomProduit'],
+            row['stock'],
+            row['dateParution'],
+            row['type'],
+            row['prix'],
+            row['idEditeur']);
+        listeProd.add(produit);
+      }
     }
     return listeProd;
   }
@@ -85,16 +93,20 @@ class DBProduit {
     List<Produit> listeProd = [];
     String requete = "SELECT * from PRODUIT WHERE dateParution=$dateParution;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Produit produit = Produit(
-          row['idProduit'],
-          row['nomProduit'],
-          row['stock'],
-          row['dateParution'],
-          row['type'],
-          row['prix'],
-          row['idEditeur']);
-      listeProd.add(produit);
+    if (reponse.isEmpty) {
+      listeProd.add(Produit.vide());
+    } else {
+      for (var row in reponse) {
+        Produit produit = Produit(
+            row['idProduit'],
+            row['nomProduit'],
+            row['stock'],
+            row['dateParution'],
+            row['type'],
+            row['prix'],
+            row['idEditeur']);
+        listeProd.add(produit);
+      }
     }
     return listeProd;
   }
@@ -104,16 +116,20 @@ class DBProduit {
     List<Produit> listeProd = [];
     String requete = "SELECT * from PRODUIT WHERE type=$type;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Produit produit = Produit(
-          row['idProduit'],
-          row['nomProduit'],
-          row['stock'],
-          row['dateParution'],
-          row['type'],
-          row['prix'],
-          row['idEditeur']);
-      listeProd.add(produit);
+    if (reponse.isEmpty) {
+      listeProd.add(Produit.vide());
+    } else {
+      for (var row in reponse) {
+        Produit produit = Produit(
+            row['idProduit'],
+            row['nomProduit'],
+            row['stock'],
+            row['dateParution'],
+            row['type'],
+            row['prix'],
+            row['idEditeur']);
+        listeProd.add(produit);
+      }
     }
     return listeProd;
   }
@@ -123,16 +139,20 @@ class DBProduit {
     List<Produit> listeProd = [];
     String requete = "SELECT * from PRODUIT WHERE prix=$prix;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Produit produit = Produit(
-          row['idProduit'],
-          row['nomProduit'],
-          row['stock'],
-          row['dateParution'],
-          row['type'],
-          row['prix'],
-          row['idEditeur']);
-      listeProd.add(produit);
+    if (reponse.isEmpty) {
+      listeProd.add(Produit.vide());
+    } else {
+      for (var row in reponse) {
+        Produit produit = Produit(
+            row['idProduit'],
+            row['nomProduit'],
+            row['stock'],
+            row['dateParution'],
+            row['type'],
+            row['prix'],
+            row['idEditeur']);
+        listeProd.add(produit);
+      }
     }
     return listeProd;
   }
@@ -143,16 +163,20 @@ class DBProduit {
     String requete =
         "SELECT PRODUIT.idProduit, nomProduit, stock, dateParution, type, prix, PRODUIT.idEditeur from EDITEUR, PRODUIT WHERE nomEditeur='$nomEditeur' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Produit produit = Produit(
-          row['idProduit'],
-          row['nomProduit'],
-          row['stock'],
-          row['dateParution'],
-          row['type'],
-          row['prix'],
-          row['idEditeur']);
-      listeProd.add(produit);
+    if (reponse.isEmpty) {
+      listeProd.add(Produit.vide());
+    } else {
+      for (var row in reponse) {
+        Produit produit = Produit(
+            row['idProduit'],
+            row['nomProduit'],
+            row['stock'],
+            row['dateParution'],
+            row['type'],
+            row['prix'],
+            row['idEditeur']);
+        listeProd.add(produit);
+      }
     }
     return listeProd;
   }
@@ -163,16 +187,20 @@ class DBProduit {
     String requete =
         "SELECT PRODUIT.idProduit, nomProduit, stock, dateParution, type, prix, PRODUIT.idEditeur from EDITEUR, PRODUIT WHERE villeEditeur='$villeEditeur' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Produit produit = Produit(
-          row['idProduit'],
-          row['nomProduit'],
-          row['stock'],
-          row['dateParution'],
-          row['type'],
-          row['prix'],
-          row['idEditeur']);
-      listeProd.add(produit);
+    if (reponse.isEmpty) {
+      listeProd.add(Produit.vide());
+    } else {
+      for (var row in reponse) {
+        Produit produit = Produit(
+            row['idProduit'],
+            row['nomProduit'],
+            row['stock'],
+            row['dateParution'],
+            row['type'],
+            row['prix'],
+            row['idEditeur']);
+        listeProd.add(produit);
+      }
     }
     return listeProd;
   }
@@ -183,16 +211,20 @@ class DBProduit {
     String requete =
         "SELECT PRODUIT.idProduit, nomProduit, stock, dateParution, type, prix, PRODUIT.idEditeur from AUTEUR, PRODUIT, CREER WHERE nomAuteur='$nomAuteur' AND AUTEUR.idAuteur=CREER.idAuteur AND CREER.idProduit=PRODUIT.idProduit;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Produit produit = Produit(
-          row['idProduit'],
-          row['nomProduit'],
-          row['stock'],
-          row['dateParution'],
-          row['type'],
-          row['prix'],
-          row['idEditeur']);
-      listeProd.add(produit);
+    if (reponse.isEmpty) {
+      listeProd.add(Produit.vide());
+    } else {
+      for (var row in reponse) {
+        Produit produit = Produit(
+            row['idProduit'],
+            row['nomProduit'],
+            row['stock'],
+            row['dateParution'],
+            row['type'],
+            row['prix'],
+            row['idEditeur']);
+        listeProd.add(produit);
+      }
     }
     return listeProd;
   }
@@ -342,13 +374,13 @@ class DBProduit {
   //delete
   static Future<void> deleteProduit(
       ConnectionSettings settings, int idProduit) async {
-    String requete = "DELETE FROM PRODUIT WHERE idProduit='$idProduit'";
+    String requete = "DELETE FROM PRODUIT WHERE idProduit=$idProduit;";
     await LaBDFuret.executerRequete(settings, requete);
   }
 
   static Future<void> deleteProduitInCreer(
       ConnectionSettings settings, int idProduit) async {
-    String requete = "DELETE FROM CREER WHERE idProduit='$idProduit'";
+    String requete = "DELETE FROM CREER WHERE idProduit=$idProduit;";
     await LaBDFuret.executerRequete(settings, requete);
   }
 

@@ -32,10 +32,14 @@ class DBAuteur {
     List<Auteur> listeAut = [];
     String requete = "SELECT * from AUTEUR WHERE prenomAuteur='$prenomAuteur';";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Auteur edit =
-          Auteur(row['idEditeur'], row['nomEditeur'], row['prenomAuteur']);
-      listeAut.add(edit);
+    if (reponse.isEmpty) {
+      listeAut.add(Auteur.vide());
+    } else {
+      for (var row in reponse) {
+        Auteur edit =
+            Auteur(row['idEditeur'], row['nomEditeur'], row['prenomAuteur']);
+        listeAut.add(edit);
+      }
     }
     return listeAut;
   }
@@ -45,10 +49,14 @@ class DBAuteur {
     List<Auteur> listeAut = [];
     String requete = "SELECT * from AUTEUR WHERE nomAuteur='$nomAuteur';";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Auteur aut =
-          Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
-      listeAut.add(aut);
+    if (reponse.isEmpty) {
+      listeAut.add(Auteur.vide());
+    } else {
+      for (var row in reponse) {
+        Auteur aut =
+            Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
+        listeAut.add(aut);
+      }
     }
     return listeAut;
   }
@@ -59,10 +67,14 @@ class DBAuteur {
     String requete =
         "SELECT AUTEUR.idAuteur, nomAuteur, prenomAuteur from AUTEUR, CREER, PRODUIT WHERE nomProduit='$nomProduit' AND AUTEUR.idAuteur=CREER.idAuteur AND CREER.idProduit=PRODUIT.idProduit;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Auteur aut =
-          Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
-      listeAut.add(aut);
+    if (reponse.isEmpty) {
+      listeAut.add(Auteur.vide());
+    } else {
+      for (var row in reponse) {
+        Auteur aut =
+            Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
+        listeAut.add(aut);
+      }
     }
     return listeAut;
   }
@@ -73,11 +85,16 @@ class DBAuteur {
     String requete =
         "SELECT AUTEUR.idAuteur, nomAuteur, prenomAuteur from AUTEUR, CREER, PRODUIT WHERE type='$type' AND AUTEUR.idAuteur=CREER.idAuteur AND CREER.idProduit=PRODUIT.idProduit;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Auteur aut =
-          Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
-      listeAut.add(aut);
+    if (reponse.isEmpty) {
+      listeAut.add(Auteur.vide());
+    } else {
+      for (var row in reponse) {
+        Auteur aut =
+            Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
+        listeAut.add(aut);
+      }
     }
+
     return listeAut;
   }
 
@@ -183,7 +200,7 @@ class DBAuteur {
 
   static Future<void> deleteAuteurInCreer(
       ConnectionSettings settings, int idAuteur) async {
-    String requete = "DELETE FROM CREER WHERE idAuteur='$idAuteur'";
+    String requete = "DELETE FROM CREER WHERE idAuteur=$idAuteur;";
     await LaBDFuret.executerRequete(settings, requete);
   }
 

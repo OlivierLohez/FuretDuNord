@@ -28,7 +28,7 @@ class IHMEditeur {
       if (choix == 1) {
         await IHMEditeur.askInsertEditeur(settings);
       } else if (choix == 2) {
-        IHMDeletEditeur.choisirActionDeletediteur(settings);
+        await IHMDeletEditeur.choisirActionDeletediteur(settings);
       } else if (choix == 3) {
         await IHMSelectEditeur.choisirActionSelectEditeur(settings);
       } else if (choix == 4) {
@@ -65,29 +65,32 @@ class IHMEditeur {
     if (editeurPresent) {
       print("Vous souhaitez modifier l'éditeur :");
       IHM.afficherUneDonnee(await DBEditeur.selectEditeur(settings, idEditeur));
-      String nomEditeur = IHM.saisirString("son nom");
-      String villeEditeur = IHM.saisirString("sa ville");
-      String adresseEditeur = IHM.saisirString("son adresse");
       if (IHM.confirmation()) {
-        if (await DBEditeur.exist(settings, idEditeur)) {
-          DBEditeur.updateEditeur(
-              settings, idEditeur, nomEditeur, adresseEditeur, villeEditeur);
-          print("Editeur modifié.");
-          print("Fin de l'opération.");
-          print("--------------------------------------------------");
-          print("");
-          await Future.delayed(Duration(seconds: 1));
-          print("L'éditeur a été changé en :");
-          IHM.afficherUneDonnee(
-              await DBEditeur.selectEditeur(settings, idEditeur));
-          await Future.delayed(Duration(seconds: 1));
+        String nomEditeur = IHM.saisirString("son nom");
+        String villeEditeur = IHM.saisirString("sa ville");
+        String adresseEditeur = IHM.saisirString("son adresse");
+        if (IHM.confirmation()) {
+          if (await DBEditeur.exist(settings, idEditeur)) {
+            DBEditeur.updateEditeur(
+                settings, idEditeur, nomEditeur, adresseEditeur, villeEditeur);
+            print("Editeur modifié.");
+            print("Fin de l'opération.");
+            print("--------------------------------------------------");
+            print("");
+            await Future.delayed(Duration(seconds: 1));
+            print("L'éditeur a été changé en :");
+            IHM.afficherUneDonnee(
+                await DBEditeur.selectEditeur(settings, idEditeur));
+            await Future.delayed(Duration(seconds: 1));
+          } else {
+            print("L'éditeur n'existe pas.");
+          }
         } else {
-          print("L'éditeur n'existe pas.");
+          print("Vous ne souhaitez pas modifier l'éditeur.");
+          print("Annulation de l'opération.");
+          print("--------------------------------------------------");
+          await Future.delayed(Duration(seconds: 1));
         }
-      } else {
-        print("Annulation de l'opération.");
-        print("--------------------------------------------------");
-        await Future.delayed(Duration(seconds: 1));
       }
     } else {
       print("Id de l'éditeur non reconnu");

@@ -56,14 +56,20 @@ class Editeur implements Data {
 
   @override
   String getInLine() {
-    return "| " +
-        _idEditeur.toString() +
-        " | " +
-        _nomEditeur +
-        " | " +
-        _adresseEditeur +
-        " | " +
-        _villeEditeur +
-        " |";
+    String afficher = "";
+    if (_idEditeur == 0) {
+      afficher = "Il n'y a pas d'éditeur correspondant";
+    } else {
+      afficher = "| " +
+          _idEditeur.toString() +
+          " | " +
+          _nomEditeur +
+          " | " +
+          _adresseEditeur +
+          " | " +
+          _villeEditeur +
+          " |";
+    }
+    return afficher;
   }
 }

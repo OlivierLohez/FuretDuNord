@@ -34,10 +34,14 @@ class DBEditeur {
     String requete =
         "SELECT * from EDITEUR WHERE villeEditeur='$villeEditeur';";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
-          row['adresseEditeur'], row['villeEditeur']);
-      listeEdit.add(edit);
+    if (reponse.isEmpty) {
+      listeEdit.add(Editeur.vide());
+    } else {
+      for (var row in reponse) {
+        Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
+            row['adresseEditeur'], row['villeEditeur']);
+        listeEdit.add(edit);
+      }
     }
     return listeEdit;
   }
@@ -47,10 +51,14 @@ class DBEditeur {
     List<Editeur> listeEdit = [];
     String requete = "SELECT * from EDITEUR WHERE nomEditeur='$nomEditeur';";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
-          row['adresseEditeur'], row['villeEditeur']);
-      listeEdit.add(edit);
+    if (reponse.isEmpty) {
+      listeEdit.add(Editeur.vide());
+    } else {
+      for (var row in reponse) {
+        Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
+            row['adresseEditeur'], row['villeEditeur']);
+        listeEdit.add(edit);
+      }
     }
     return listeEdit;
   }
@@ -61,10 +69,14 @@ class DBEditeur {
     String requete =
         "SELECT EDITEUR.idEditeur, nomEditeur, adresseEditeur, villeEditeur from EDITEUR, PRODUIT WHERE nomProduit='$nomProduit' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
-          row['adresseEditeur'], row['villeEditeur']);
-      listeEdit.add(edit);
+    if (reponse.isEmpty) {
+      listeEdit.add(Editeur.vide());
+    } else {
+      for (var row in reponse) {
+        Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
+            row['adresseEditeur'], row['villeEditeur']);
+        listeEdit.add(edit);
+      }
     }
     return listeEdit;
   }
@@ -75,10 +87,14 @@ class DBEditeur {
     String requete =
         "SELECT EDITEUR.idEditeur, nomEditeur, adresseEditeur, villeEditeur from EDITEUR, PRODUIT WHERE type='$type' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
-    for (var row in reponse) {
-      Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
-          row['adresseEditeur'], row['villeEditeur']);
-      listeEdit.add(edit);
+    if (reponse.isEmpty) {
+      listeEdit.add(Editeur.vide());
+    } else {
+      for (var row in reponse) {
+        Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
+            row['adresseEditeur'], row['villeEditeur']);
+        listeEdit.add(edit);
+      }
     }
     return listeEdit;
   }
@@ -164,14 +180,22 @@ class DBEditeur {
   //delete
   static Future<void> deleteEditeur(
       ConnectionSettings settings, int idEditeur) async {
-    String requete = "DELETE FROM EDITEUR WHERE idEditeur='$idEditeur'";
+    String requete = "DELETE FROM EDITEUR WHERE idEditeur=$idEditeur;";
     await LaBDFuret.executerRequete(settings, requete);
   }
 
   //delete tous les Produits ayant pour Editeur un Editeur spécifique (et ainsi éviter les bugs pour supprimer un Editeur)
-  static Future<void> deleteEditeurInPRODUIT(
+  static Future<void> deleteEditeurInCreerAndProduit(
       ConnectionSettings settings, int idEditeur) async {
-    String requete = "DELETE FROM CREER WHERE idEditeur='$idEditeur'";
+    String requete =
+        "SELECT idProduit from EDITEUR, PRODUIT WHERE EDITEUR.idEditeur='$idEditeur' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      int idProduit = row['idProduit'];
+      requete = "DELETE FROM CREER WHERE idProduit=$idProduit;";
+      await LaBDFuret.executerRequete(settings, requete);
+    }
+    requete = "DELETE FROM PRODUIT WHERE idEditeur=$idEditeur;";
     await LaBDFuret.executerRequete(settings, requete);
   }
 

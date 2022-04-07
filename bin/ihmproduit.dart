@@ -96,24 +96,31 @@ class IHMPRODUIT {
     if (produitPresent) {
       print("Vous souhaitez modifier le produit :");
       IHM.afficherUneDonnee(await DBProduit.selectProduit(settings, idProduit));
-      String nomProduit = IHM.saisirString("son nom");
-      int stock = IHM.saisirInt("sa quanitité");
-      String dateParution = IHM.saisirString("sa date de parution");
-      String type = IHM.saisirString("son type");
-      double prix = IHM.saisirDouble("son prix");
-      int idEditeur = IHM.saisirInt("l'id de son éditeur");
       if (IHM.confirmation()) {
-        if (await DBProduit.exist(settings, idProduit)) {
-          await DBProduit.updateProduit(settings, idProduit, nomProduit, stock,
-              dateParution, type, prix, idEditeur);
-          print("Produit modifié.");
-          print("Fin de l'opération.");
-          print("--------------------------------------------------");
-          print("");
-          await Future.delayed(Duration(seconds: 1));
-          print("Le produit a été changé en :");
-          IHM.afficherUneDonnee(
-              await DBProduit.selectProduit(settings, idProduit));
+        String nomProduit = IHM.saisirString("son nom");
+        int stock = IHM.saisirInt("sa quanitité");
+        String dateParution = IHM.saisirString("sa date de parution");
+        String type = IHM.saisirString("son type");
+        double prix = IHM.saisirDouble("son prix");
+        int idEditeur = IHM.saisirInt("l'id de son éditeur");
+        if (IHM.confirmation()) {
+          if (await DBProduit.exist(settings, idProduit)) {
+            await DBProduit.updateProduit(settings, idProduit, nomProduit,
+                stock, dateParution, type, prix, idEditeur);
+            print("Produit modifié.");
+            print("Fin de l'opération.");
+            print("--------------------------------------------------");
+            print("");
+            await Future.delayed(Duration(seconds: 1));
+            print("Le produit a été changé en :");
+            IHM.afficherUneDonnee(
+                await DBProduit.selectProduit(settings, idProduit));
+          } else {
+            print("Vous ne souhaitez pas modifier le produit.");
+            print("Annulation de l'opération.");
+            print("--------------------------------------------------");
+            await Future.delayed(Duration(seconds: 1));
+          }
           await Future.delayed(Duration(seconds: 1));
           await IHMPRODUIT.askInsertProduitInCreer(settings, idProduit);
         } else {
@@ -131,10 +138,8 @@ class IHMPRODUIT {
 
   static Future<void> askInsertProduitInCreer(
       ConnectionSettings settings, int idProduit) async {
-    print(
-        "> Voulez-vous associer ce produit avec un auteur ? (tapez o pour oui, le restera sera considéré comme étant une erreur)");
-    String insertCreer = IHM.saisirStringRec();
-    if (insertCreer.toLowerCase() == "o") {
+    print("Voulez-vous associer ce produit avec un auteur ?");
+    if (IHM.confirmation()) {
       print("Avec quel auteur voulez-vous associer le produit ?");
       int idAuteur = IHM.saisirInt("son ID");
       //L'auteur est présent ?
@@ -155,6 +160,8 @@ class IHMPRODUIT {
         }
       } else {
         print("Id de l'auteur non reconnu");
+        print("--------------------------------------------------");
+        await Future.delayed(Duration(seconds: 1));
       }
     } else {
       print("Le produit ne sera pas associé.");

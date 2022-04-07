@@ -19,11 +19,11 @@ class IHMDeleteAuteur {
       print("|   3 = Supprimer tout en fonction d'un prenom          |");
       print("|   4 = Supprimer tout en fonction d'un produit         |");
       print("|   5 = Supprimer tout en fonction d'un type            |");
-      print("|   6 = Supprimer un éditeur en fonction d'un ID        |");
-      print("|   7 = Supprimer un éditeur en fonction d'un nom       |");
-      print("|   8 = Supprimer un éditeur en fonction d'un prenom    |");
-      print("|   9 = Supprimer un éditeur en fonction d'un produit   |");
-      print("|   10 = Supprimer un éditeur en fonction d'un type     |");
+      print("|   6 = Supprimer un auteur en fonction d'un ID         |");
+      print("|   7 = Supprimer un auteur en fonction d'un nom        |");
+      print("|   8 = Supprimer un auteur en fonction d'un prenom     |");
+      print("|   9 = Supprimer un auteur en fonction d'un produit    |");
+      print("|   10 = Supprimer un auteur en fonction d'un type      |");
       print("|                                                       |");
       print("+-------------------------------------------------------+");
       choix = IHM.saisirAction(10);
@@ -111,7 +111,7 @@ class IHMDeleteAuteur {
 
   static Future<void> askDeleteAuteurNomProduit(
       ConnectionSettings settings) async {
-    print("Vous voulez supprimer un auteur en fonction d'un produit'.");
+    print("Vous voulez supprimer un auteur en fonction d'un produit.");
     String nomProduit = IHM.saisirString("son nom.");
     print("Voici la liste des différents auteurs avec ce nom là");
     IHM.afficherDesDonnees(
@@ -121,7 +121,7 @@ class IHMDeleteAuteur {
 
   static Future<void> askDeleteAuteurTypeProduit(
       ConnectionSettings settings) async {
-    print("Vous voulez supprimer un auteur en fonction d'un type de produit'.");
+    print("Vous voulez supprimer un auteur en fonction d'un type de produit.");
     String typeProduit = IHM.saisirString("son type.");
     print("Voici la liste des différents auteurs avec ce nom là");
     IHM.afficherDesDonnees(
@@ -179,7 +179,7 @@ class IHMDeleteAuteur {
         await DBAuteur.deleteAuteurInCreer(settings, idAuteur);
         await DBAuteur.deleteAuteur(settings, idAuteur);
       }
-      print("Les produits ont été supprimés.");
+      print("Les auteurs ont été supprimés.");
       print("Fin de l'opération.");
       print("--------------------------------------------------");
       await Future.delayed(Duration(seconds: 1));
@@ -201,7 +201,7 @@ class IHMDeleteAuteur {
         await DBAuteur.deleteAuteurInCreer(settings, idAuteur);
         await DBAuteur.deleteAuteur(settings, idAuteur);
       }
-      print("Les produits ont été supprimés.");
+      print("Les auteurs ont été supprimés.");
       print("Fin de l'opération.");
       print("--------------------------------------------------");
       await Future.delayed(Duration(seconds: 1));

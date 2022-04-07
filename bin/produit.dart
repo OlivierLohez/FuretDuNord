@@ -78,20 +78,26 @@ class Produit implements Data {
 
   @override
   String getInLine() {
-    return "| " +
-        _idProduit.toString() +
-        " | " +
-        _nomProduit +
-        " | " +
-        _stock.toString() +
-        " | " +
-        _dateParution +
-        " | " +
-        _type +
-        " | " +
-        _prix.toString() +
-        " | " +
-        _idEditeur.toString() +
-        " |";
+    String afficher = "";
+    if (_idProduit == 0) {
+      afficher = "Il n'y a pas de produit correspondant";
+    } else {
+      afficher = "| " +
+          _idProduit.toString() +
+          " | " +
+          _nomProduit +
+          " | " +
+          _stock.toString() +
+          " | " +
+          _dateParution +
+          " | " +
+          _type +
+          " | " +
+          _prix.toString() +
+          " | " +
+          _idEditeur.toString() +
+          " |";
+    }
+    return afficher;
   }
 }

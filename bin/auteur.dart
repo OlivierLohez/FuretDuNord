@@ -47,12 +47,18 @@ class Auteur implements Data {
 
   @override
   String getInLine() {
-    return "| " +
-        _idAuteur.toString() +
-        " | " +
-        _nomAuteur +
-        " | " +
-        _prenomAuteur +
-        " |";
+    String afficher = "";
+    if (_idAuteur == 0) {
+      afficher = "Il n'y a pas d'auteur correspondant";
+    } else {
+      afficher = "| " +
+          _idAuteur.toString() +
+          " | " +
+          _nomAuteur +
+          " | " +
+          _prenomAuteur +
+          " |";
+    }
+    return afficher;
   }
 }
