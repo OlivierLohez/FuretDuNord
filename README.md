@@ -18,10 +18,13 @@
 <br/><br/>
 <hr>
 <h3>Présentation de la structure de données</h3>
+<div align="center">
 <a href="https://github.com/OlivierLohez/FuretDuNord">
-  <img src="Readmeimages/drive-download-20220407T110644Z-001/Structurededonnées.png">
+  <center>
+  <img src="Readmeimages/drive-download-20220407T110644Z-001/Structurededonnées.png" style="text-align:center" width="80%" height="80%">
+  </center>
 </a>
-
+</div>
 <hr>
 <h3>Présentation de la structure du programme</h3>
 <br/>
