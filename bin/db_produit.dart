@@ -6,10 +6,10 @@ import 'produit.dart';
 
 class DBProduit {
   static Future<Produit> selectProduit(
-      ConnectionSettings settings, int idEditeur) async {
+      ConnectionSettings settings, int idProduit) async {
     Produit produit = Produit.vide();
     String requete =
-        "SELECT * FROM PRODUIT WHERE idProduit=$idEditeur AND EXISTS (SELECT idProduit FROM EDITEUR WHERE idProduit=$idEditeur);";
+        "SELECT * FROM PRODUIT WHERE idProduit=$idProduit AND EXISTS (SELECT idProduit FROM EDITEUR WHERE idProduit=$idProduit);";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
     produit = Produit(
         reponse.first['idProduit'],
@@ -284,6 +284,7 @@ class DBProduit {
 
   static Future<List<int>> selectIdProduitsByNomAuteur(
       ConnectionSettings settings, String nomAuteur) async {
+    await DBAuteur.selectIdAuteurs(settings);
     List<int> listeIdProduit = [];
     String requete =
         "SELECT PRODUIT.idProduit from AUTEUR, PRODUIT, CREER WHERE nomAuteur='$nomAuteur' AND AUTEUR.idAuteur=CREER.idAuteur AND CREER.idProduit=PRODUIT.idProduit;";

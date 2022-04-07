@@ -58,10 +58,8 @@ class IHMDeleteAuteur {
     }
   }
 
-  static Future<void> askDeleteAuteurID(ConnectionSettings settings) async {
-    print("Vous voulez supprimer un auteur en fonction d'un ID.");
-    print("Veuillez saisir son ID");
-    int auteur = IHM.saisirIntRec();
+  static Future<void> deleteUnAuteur(ConnectionSettings settings) async {
+    int auteur = IHM.saisirInt("son ID");
     if (IHM.confirmation()) {
       await DBAuteur.deleteAuteur(settings, auteur);
       print("Auteur supprimé.");
@@ -75,25 +73,18 @@ class IHMDeleteAuteur {
     }
   }
 
+  static Future<void> askDeleteAuteurID(ConnectionSettings settings) async {
+    print("Vous voulez supprimer un auteur en fonction d'un ID.");
+    await IHMDeleteAuteur.deleteUnAuteur(settings);
+  }
+
   static Future<void> askDeleteAuteurPrenom(ConnectionSettings settings) async {
     print("Vous voulez supprimer un auteur en fonction d'un prénom.");
     String prenomAuteur = IHM.saisirString("le prénom de l'auteur");
     print("Voici la liste des différents auteurs présente avec ce prénom");
     IHM.afficherDesDonnees(
         await DBAuteur.selectAuteursByPrenom(settings, prenomAuteur));
-    print("Veuillez saisir l'ID de l'Auteur à supprimer.");
-    int editeur = IHM.saisirIntRec();
-    if (IHM.confirmation()) {
-      await DBAuteur.deleteAuteur(settings, editeur);
-      print("Auteur supprimé.");
-      print("Fin de l'opération.");
-      print("--------------------------------------------------");
-      await Future.delayed(Duration(seconds: 1));
-    } else {
-      print("Annulation de l'opération.");
-      print("--------------------------------------------------");
-      await Future.delayed(Duration(seconds: 1));
-    }
+    await IHMDeleteAuteur.deleteUnAuteur(settings);
   }
 
   static Future<void> askDeleteAuteurNom(ConnectionSettings settings) async {
@@ -102,19 +93,7 @@ class IHMDeleteAuteur {
     print("Voici la liste des différents auteurs présente avec ce nom");
     IHM.afficherDesDonnees(
         await DBAuteur.selectAuteursByNom(settings, nomAuteur));
-    print("Veuillez saisir l'ID de l'Auteur à supprimer.");
-    int editeur = IHM.saisirIntRec();
-    if (IHM.confirmation()) {
-      await DBAuteur.deleteAuteur(settings, editeur);
-      print("Auteur supprimé.");
-      print("Fin de l'opération.");
-      print("--------------------------------------------------");
-      await Future.delayed(Duration(seconds: 1));
-    } else {
-      print("Annulation de l'opération.");
-      print("--------------------------------------------------");
-      await Future.delayed(Duration(seconds: 1));
-    }
+    await IHMDeleteAuteur.deleteUnAuteur(settings);
   }
 
   static Future<void> askDeleteAllAuteursPrenom(

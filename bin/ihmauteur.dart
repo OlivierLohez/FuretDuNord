@@ -44,7 +44,7 @@ class IHMAuteur {
     String nomAuteur = IHM.saisirString("son nom");
     String prenomAuteur = IHM.saisirString("son prénom");
     DBAuteur.insertAuteur(settings, nomAuteur, prenomAuteur);
-    IHMAuteur.askInsertAuteurInCreer(
+    await IHMAuteur.askInsertAuteurInCreer(
         settings, await DBAuteur.selectIdLastAuteur(settings));
   }
 
@@ -78,7 +78,7 @@ class IHMAuteur {
           IHM.afficherUneDonnee(
               await DBAuteur.selectAuteur(settings, idAuteur));
           await Future.delayed(Duration(seconds: 1));
-          IHMAuteur.askInsertAuteurInCreer(settings, idAuteur);
+          await IHMAuteur.askInsertAuteurInCreer(settings, idAuteur);
         } else {
           print("L'auteur n'existe pas.");
         }
@@ -95,17 +95,17 @@ class IHMAuteur {
   static Future<void> askInsertAuteurInCreer(
       ConnectionSettings settings, int idAuteur) async {
     print(
-        "> Voulez-vous associer ce produit avec un produit ? (tapez o pour oui, le restera sera considéré comme étant une erreur)");
+        "> Voulez-vous associer ce produit avec un auteur ? (tapez o pour oui, le restera sera considéré comme étant une erreur)");
     String insertCreer = IHM.saisirStringRec();
     if (insertCreer.toLowerCase() == "o") {
-      print("Avec quel auteur voulez-vous associer le produit ?");
+      print("Avec quel produit voulez-vous associer l'auteur ?");
       int idProduit = IHM.saisirInt("son ID");
-      //L'auteur est présent ?
+      //Le produit est présent ?
       bool produitPresent = false;
-      List<int> laListeIdProduit = await DBProduit.selectIdProduits(settings);
+      List<int> laListeIdProduits = await DBProduit.selectIdProduits(settings);
       int i = 0;
-      while (produitPresent == false && i < laListeIdProduit.length) {
-        if (idAuteur == laListeIdProduit[i]) {
+      while (produitPresent == false && i < laListeIdProduits.length) {
+        if (idProduit == laListeIdProduits[i]) {
           produitPresent = true;
         }
         i++;
@@ -118,10 +118,10 @@ class IHMAuteur {
           await DBAuteur.insertAuteurtInCreer(settings, idProduit, idAuteur);
         }
       } else {
-        print("Id du produit non reconnu");
+        print("Id de l'auteur non reconnu");
       }
     } else {
-      print("L'auteur ne sera pas associé.");
+      print("Le produit ne sera pas associé.");
     }
   }
 }

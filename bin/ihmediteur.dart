@@ -1,6 +1,8 @@
 import 'package:mysql1/mysql1.dart';
 
+import 'db_auteur.dart';
 import 'db_editeur.dart';
+import 'db_produit.dart';
 import 'ihm.dart';
 import 'ihmdeletediteur.dart';
 import 'ihmselectediteur.dart';
