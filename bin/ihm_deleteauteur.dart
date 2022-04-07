@@ -1,7 +1,7 @@
 import 'package:mysql1/mysql1.dart';
 
 import 'db_auteur.dart';
-import 'ihm.dart';
+import 'ihm_principal.dart';
 
 class IHMDeleteAuteur {
   static Future<void> choisirActionDeletAuteur(

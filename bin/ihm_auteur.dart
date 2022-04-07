@@ -2,9 +2,9 @@ import 'package:mysql1/mysql1.dart';
 
 import 'db_auteur.dart';
 import 'db_produit.dart';
-import 'ihm.dart';
-import 'ihmdeleteauteur.dart';
-import 'ihmselectauteur.dart';
+import 'ihm_principal.dart';
+import 'ihm_deleteauteur.dart';
+import 'ihm_selectauteur.dart';
 
 class IHMAuteur {
   static Future<void> choisirActionAuteur(ConnectionSettings settings) async {

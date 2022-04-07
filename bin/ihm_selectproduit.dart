@@ -1,7 +1,7 @@
 import 'package:mysql1/mysql1.dart';
 
 import 'db_produit.dart';
-import 'ihm.dart';
+import 'ihm_principal.dart';
 import 'produit.dart';
 
 class IHMSelectProduit {
@@ -70,9 +70,8 @@ class IHMSelectProduit {
   static Future<void> askSelectProduitsByStock(
       ConnectionSettings settings) async {
     print("Vous voulez des produits en fonction d'un stock de produit.");
-    print("Veuillez saisir la quantité du produit");
-    IHM.afficherDesDonnees(
-        await DBProduit.selectProduitsByStock(settings, IHM.saisirIntRec()));
+    IHM.afficherDesDonnees(await DBProduit.selectProduitsByStock(
+        settings, IHM.saisirInt("la quantité du produit")));
   }
 
   static Future<void> askSelectProduitsByType(
@@ -85,9 +84,8 @@ class IHMSelectProduit {
   static Future<void> askSelectProduitsByPrix(
       ConnectionSettings settings) async {
     print("Vous voulez des produits en fonction d'un prix de produit.");
-    print("Veuillez saisir le prix du produit");
-    IHM.afficherDesDonnees(
-        await DBProduit.selectProduitsByPrix(settings, IHM.saisirDoubleRec()));
+    IHM.afficherDesDonnees(await DBProduit.selectProduitsByPrix(
+        settings, IHM.saisirDouble("le prix du produit")));
   }
 
   static Future<void> askSelectProduitsByNomEditeur(

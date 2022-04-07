@@ -1,7 +1,7 @@
 import 'package:mysql1/mysql1.dart';
 
 import 'db_produit.dart';
-import 'ihm.dart';
+import 'ihm_principal.dart';
 
 class IHMDeleteProduit {
   // Methodes

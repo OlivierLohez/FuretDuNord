@@ -1,23 +1,23 @@
 import 'package:mysql1/mysql1.dart';
 
-import 'db_editeur.dart';
-import 'ihm.dart';
+import 'db_auteur.dart';
+import 'ihm_principal.dart';
 
-class IHMSelectEditeur {
+class IHMSelectAuteur {
   // Methodes
   // L'affichage permettant de montrant le choix des différentes actions
-  static Future<void> choisirActionSelectEditeur(
+  static Future<void> choisirActionSelectAuteur(
       ConnectionSettings settings) async {
     int choix = -1;
     while (choix != 0) {
       print("");
       print("+-------------------------------------------------------+");
       print("|                                                       |");
-      print("|   Menu - Sélection Editeur                            |");
+      print("|   Menu - Sélection Auteur                             |");
       print("|   Quelle action voulez-vous choisir ?                 |");
       print("|   0 = Quitter                                         |");
       print("|   1 = Afficher tout                                   |");
-      print("|   2 = Afficher tout en fonction d'une ville           |");
+      print("|   2 = Afficher tout en fonction d'un prenom           |");
       print("|   3 = Afficher tout en fonction d'un nom              |");
       print("|   4 = Afficher tout en fonction d'un nom de produit   |");
       print("|   5 = Afficher tout en fonction d'un type de produit  |");
@@ -26,15 +26,15 @@ class IHMSelectEditeur {
       choix = IHM.saisirAction(5);
       print("--------------------------------------------------");
       if (choix == 1) {
-        await IHMSelectEditeur.showAllEditeurs(settings);
+        await IHMSelectAuteur.showAllAuteur(settings);
       } else if (choix == 2) {
-        await IHMSelectEditeur.askSelectEditeursByVille(settings);
+        await IHMSelectAuteur.askSelectAuteursByPrenom(settings);
       } else if (choix == 3) {
-        await IHMSelectEditeur.askSelectEditeursByNom(settings);
+        await IHMSelectAuteur.askSelectAuteursByNom(settings);
       } else if (choix == 4) {
-        await IHMSelectEditeur.askSelectEditeursByNomProduit(settings);
+        await IHMSelectAuteur.askSelectAuteursByNomProduit(settings);
       } else if (choix == 5) {
-        await IHMSelectEditeur.askSelectEditeursByTypeProduit(settings);
+        await IHMSelectAuteur.askSelectAuteursByTypeProduit(settings);
       }
     }
     print("Retour menu précédent.");
@@ -42,39 +42,38 @@ class IHMSelectEditeur {
     await Future.delayed(Duration(seconds: 1));
   }
 
-  static Future<void> showAllEditeurs(ConnectionSettings settings) async {
+  static Future<void> showAllAuteur(ConnectionSettings settings) async {
     try {
-      IHM.afficherDesDonnees(await DBEditeur.selectAllEditeurs(settings));
+      IHM.afficherDesDonnees(await DBAuteur.selectAllAuteurs(settings));
     } catch (e) {
       print(e.toString());
     }
   }
 
-  static Future<void> askSelectEditeursByVille(
+  static Future<void> askSelectAuteursByPrenom(
       ConnectionSettings settings) async {
-    print("Vous voulez des éditeurs en fonction d'une ville.");
-    IHM.afficherDesDonnees(await DBEditeur.selectEditeursByVille(
-        settings, IHM.saisirString("le nom de la ville.")));
+    print("Vous voulez des éditeurs en fonction d'un prénom.");
+    IHM.afficherDesDonnees(await DBAuteur.selectAuteursByPrenom(
+        settings, IHM.saisirString("le prénom")));
   }
 
-  static Future<void> askSelectEditeursByNom(
-      ConnectionSettings settings) async {
-    print("Vous voulez des éditeurs en fonction d'un nom.");
-    IHM.afficherDesDonnees(await DBEditeur.selectEditeursByNom(
-        settings, IHM.saisirString("le nom de l'éditeur.")));
+  static Future<void> askSelectAuteursByNom(ConnectionSettings settings) async {
+    print("Vous voulez des auteurs en fonction d'un nom.");
+    IHM.afficherDesDonnees(await DBAuteur.selectAuteursByNom(
+        settings, IHM.saisirString("le nom de l'auteur")));
   }
 
-  static Future<void> askSelectEditeursByNomProduit(
+  static Future<void> askSelectAuteursByNomProduit(
       ConnectionSettings settings) async {
     print("Vous voulez tous les auteurs qui ont créé un même produit.");
-    IHM.afficherDesDonnees(await DBEditeur.selectEditeursByNomProduit(
+    IHM.afficherDesDonnees(await DBAuteur.selectAuteursByNomProduit(
         settings, IHM.saisirString("le nom du produit")));
   }
 
-  static Future<void> askSelectEditeursByTypeProduit(
+  static Future<void> askSelectAuteursByTypeProduit(
       ConnectionSettings settings) async {
     print("Vous voulez des auteurs en fonction du même type de produit.");
-    IHM.afficherDesDonnees(await DBEditeur.selectEditeursByTypeProduit(
+    IHM.afficherDesDonnees(await DBAuteur.selectAuteursByTypeProduit(
         settings, IHM.saisirString("le type de produit")));
   }
 }

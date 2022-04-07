@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:mysql1/mysql1.dart';
 
 import 'data.dart';
-import 'ihmauteur.dart';
-import 'ihmbdd.dart';
-import 'ihmediteur.dart';
-import 'ihmproduit.dart';
+import 'ihm_auteur.dart';
+import 'ihm_bdd.dart';
+import 'ihm_editeur.dart';
+import 'ihm_produit.dart';
 
 class IHM {
   // Méthodes
@@ -66,20 +66,6 @@ class IHM {
     } catch (e) {
       print("Erreur lors de la saisie");
       i = saisirIntRec();
-    }
-    return i;
-  }
-
-  // Saisie des réels de manière récurssive
-  static double saisirDoubleRec() {
-    print("");
-    double i = 0;
-    //print("Veuillez indiquer un nombre réel :");
-    try {
-      i = double.parse(stdin.readLineSync().toString());
-    } catch (e) {
-      print("Erreur lors de la saisie");
-      i = saisirDoubleRec();
     }
     return i;
   }

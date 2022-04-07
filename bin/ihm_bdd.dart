@@ -1,7 +1,7 @@
 import 'package:mysql1/mysql1.dart';
 
 import 'db_bdd.dart';
-import 'ihm.dart';
+import 'ihm_principal.dart';
 
 class IHMBDD {
   // menu pour la gestion basic de la BDD

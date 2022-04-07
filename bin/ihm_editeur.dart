@@ -1,9 +1,9 @@
 import 'package:mysql1/mysql1.dart';
 
 import 'db_editeur.dart';
-import 'ihm.dart';
-import 'ihmdeletediteur.dart';
-import 'ihmselectediteur.dart';
+import 'ihm_principal.dart';
+import 'ihm_deletediteur.dart';
+import 'ihm_selectediteur.dart';
 
 class IHMEditeur {
   // Methodes

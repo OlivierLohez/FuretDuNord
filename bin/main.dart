@@ -1,6 +1,6 @@
 import 'package:mysql1/mysql1.dart';
 
-import 'ihm.dart';
+import 'ihm_principal.dart';
 
 void main(List<String> args) async {
   ConnectionSettings settings = IHM.setting();

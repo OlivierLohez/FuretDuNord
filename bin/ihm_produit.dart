@@ -3,9 +3,9 @@ import 'package:mysql1/mysql1.dart';
 import 'db_auteur.dart';
 import 'db_editeur.dart';
 import 'db_produit.dart';
-import 'ihm.dart';
-import 'ihmdeletproduit.dart';
-import 'ihmselectproduit.dart';
+import 'ihm_principal.dart';
+import 'ihm_deletproduit.dart';
+import 'ihm_selectproduit.dart';
 
 class IHMPRODUIT {
   // Methodes
