@@ -19,7 +19,7 @@ class IHMEditeur {
       print("|   0 = Quitter                                         |");
       print("|   1 = Ajouter un éditeur                              |");
       print("|   2 = Supprimer un ou plusieurs éditeurs              |");
-      print("|   3 = Sélectionner un ou plusieurs éditeurs           |");
+      print("|   3 = Afficher un ou plusieurs éditeurs               |");
       print("|   4 = Modifier un éditeur                             |");
       print("|                                                       |");
       print("+-------------------------------------------------------+");
@@ -51,8 +51,7 @@ class IHMEditeur {
 
   static Future<void> askUpdateEditeur(ConnectionSettings settings) async {
     print("Vous voulez modifier un éditeur.");
-    print("Veuillez saisir son ID");
-    int idEditeur = IHM.saisirIntRec();
+    int idEditeur = IHM.saisirInt("son ID");
     //L'éditeur est présent ?
     bool editeurPresent = false;
     List<int> laListeIdEditeur = await DBEditeur.selectIdEditeurs(settings);

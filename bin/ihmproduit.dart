@@ -1,8 +1,10 @@
 import 'package:mysql1/mysql1.dart';
 
+import 'db_auteur.dart';
 import 'db_editeur.dart';
 import 'db_produit.dart';
 import 'ihm.dart';
+import 'ihmauteur.dart';
 import 'ihmdeletproduit.dart';
 import 'ihmselectproduit.dart';
 
@@ -20,7 +22,7 @@ class IHMPRODUIT {
       print("|   0 = Quitter                                         |");
       print("|   1 = Ajouter un produit                              |");
       print("|   2 = Supprimer un ou plusieurs produits              |");
-      print("|   3 = Sélectionner un ou plusieurs produits           |");
+      print("|   3 = Afficher un ou plusieurs produits               |");
       print("|   4 = Modifier un produit                             |");
       print("|                                                       |");
       print("+-------------------------------------------------------+");
@@ -44,18 +46,15 @@ class IHMPRODUIT {
   static Future<void> askInsertProduit(ConnectionSettings settings) async {
     print("Vous voulez saisir un produit.");
     String nomProduit = IHM.saisirString("son nom");
-    print("Veuillez saisir sa quantité");
-    int stock = IHM.saisirIntRec();
+    int stock = IHM.saisirInt("sa quantité");
     String dateParution = IHM.saisirString("sa date de parution");
     String type = IHM.saisirString("son type");
-    print("Veuillez saisir son prix");
-    double prix = IHM.saisirDoubleRec();
+    double prix = IHM.saisirDouble("son prix");
     bool editeurValide = false;
     bool editeurPresent = false;
     List<int> laListeIdEditeur = await DBEditeur.selectIdEditeurs(settings);
     while (editeurValide == false) {
-      print("Veuillez saisir l'id de son éditeur");
-      int idEditeur = IHM.saisirIntRec();
+      int idEditeur = IHM.saisirInt("l'id de son éditeur");
       //L'éditeur est présent ?
       if (laListeIdEditeur.isEmpty) {
         print("La liste éditeur est vide, veuillez la remplir");
@@ -72,6 +71,8 @@ class IHMPRODUIT {
           await DBProduit.insertProduit(
               settings, nomProduit, stock, dateParution, type, prix, idEditeur);
           editeurValide = true;
+          await IHMPRODUIT.askInsertProduitInCreer(
+              settings, await DBProduit.selectIdLastProduit(settings));
         } else {
           print("Id de l'éditeur non reconnu");
         }
@@ -81,8 +82,7 @@ class IHMPRODUIT {
 
   static Future<void> askUpdateProduit(ConnectionSettings settings) async {
     print("Vous voulez modifier un produit.");
-    print("Veuillez saisir son ID");
-    int idProduit = IHM.saisirIntRec();
+    int idProduit = IHM.saisirInt("son ID");
     print(idProduit);
     //Le produit est présent ?
     bool produitPresent = false;
@@ -98,17 +98,14 @@ class IHMPRODUIT {
       print("Vous souhaitez modifier le produit :");
       IHM.afficherUneDonnee(await DBProduit.selectProduit(settings, idProduit));
       String nomProduit = IHM.saisirString("son nom");
-      print("Veuillez saisir sa quantité");
-      int stock = IHM.saisirIntRec();
+      int stock = IHM.saisirInt("sa quanitité");
       String dateParution = IHM.saisirString("sa date de parution");
       String type = IHM.saisirString("son type");
-      print("Veuillez saisir son prix");
-      double prix = IHM.saisirDoubleRec();
-      print("Veuillez saisir l'id de son éditeur");
-      int idEditeur = IHM.saisirIntRec();
+      double prix = IHM.saisirDouble("son prix");
+      int idEditeur = IHM.saisirInt("l'id de son éditeur");
       if (IHM.confirmation()) {
         if (await DBProduit.exist(settings, idProduit)) {
-          DBProduit.updateProduit(settings, idProduit, nomProduit, stock,
+          await DBProduit.updateProduit(settings, idProduit, nomProduit, stock,
               dateParution, type, prix, idEditeur);
           print("Produit modifié.");
           print("Fin de l'opération.");
@@ -119,6 +116,7 @@ class IHMPRODUIT {
           IHM.afficherUneDonnee(
               await DBProduit.selectProduit(settings, idProduit));
           await Future.delayed(Duration(seconds: 1));
+          await IHMPRODUIT.askInsertProduitInCreer(settings, idProduit);
         } else {
           print("Le produit n'existe pas.");
         }
@@ -129,6 +127,38 @@ class IHMPRODUIT {
       }
     } else {
       print("Id du produit non reconnu");
+    }
+  }
+
+  static Future<void> askInsertProduitInCreer(
+      ConnectionSettings settings, int idProduit) async {
+    print(
+        "> Voulez-vous associer ce produit avec un auteur ? (tapez o pour oui, le restera sera considéré comme étant une erreur)");
+    String insertCreer = IHM.saisirStringRec();
+    if (insertCreer.toLowerCase() == "o") {
+      print("Avec quel auteur voulez-vous associer le produit ?");
+      int idAuteur = IHM.saisirInt("son ID");
+      //L'auteur est présent ?
+      bool auteurPresent = false;
+      List<int> laListeIdauteur = await DBAuteur.selectIdAuteurs(settings);
+      int i = 0;
+      while (auteurPresent == false && i < laListeIdauteur.length) {
+        if (idAuteur == laListeIdauteur[i]) {
+          auteurPresent = true;
+        }
+        i++;
+      }
+      if (auteurPresent) {
+        print("Vous souhaitez associer à l'auteur :");
+        IHM.afficherUneDonnee(await DBAuteur.selectAuteur(settings, idAuteur));
+        if (IHM.confirmation()) {
+          await DBProduit.insertProduitInCreer(settings, idProduit, idAuteur);
+        }
+      } else {
+        print("Id de l'auteur non reconnu");
+      }
+    } else {
+      print("Le produit ne sera pas associé.");
     }
   }
 }
