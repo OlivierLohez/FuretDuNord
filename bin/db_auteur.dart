@@ -57,7 +57,7 @@ class DBAuteur {
       ConnectionSettings settings, String nomProduit) async {
     List<Auteur> listeAut = [];
     String requete =
-        "SELECT AUTEUR.idAuteur, nomAuteur, prenomAuteur from AUTEUR, CREER, PRODUIT WHERE nomProduit='$nomProduit' AND AUTEUR.idAuteur=CREER.idAuteur AND CREER.idProduit=PRODUIT.idProduit;;";
+        "SELECT AUTEUR.idAuteur, nomAuteur, prenomAuteur from AUTEUR, CREER, PRODUIT WHERE nomProduit='$nomProduit' AND AUTEUR.idAuteur=CREER.idAuteur AND CREER.idProduit=PRODUIT.idProduit;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
     for (var row in reponse) {
       Auteur aut =

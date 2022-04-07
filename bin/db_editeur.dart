@@ -55,6 +55,34 @@ class DBEditeur {
     return listeEdit;
   }
 
+  static Future<List<Editeur>> selectEditeursByNomProduit(
+      ConnectionSettings settings, String nomProduit) async {
+    List<Editeur> listeEdit = [];
+    String requete =
+        "SELECT EDITEUR.idEditeur, nomEditeur, adresseEditeur, villeEditeur from EDITEUR, PRODUIT WHERE nomProduit='$nomProduit' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
+          row['adresseEditeur'], row['villeEditeur']);
+      listeEdit.add(edit);
+    }
+    return listeEdit;
+  }
+
+  static Future<List<Editeur>> selectEditeursByTypeProduit(
+      ConnectionSettings settings, String type) async {
+    List<Editeur> listeEdit = [];
+    String requete =
+        "SELECT EDITEUR.idEditeur, nomEditeur, adresseEditeur, villeEditeur from EDITEUR, PRODUIT WHERE type='$type' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      Editeur edit = Editeur(row['idEditeur'], row['nomEditeur'],
+          row['adresseEditeur'], row['villeEditeur']);
+      listeEdit.add(edit);
+    }
+    return listeEdit;
+  }
+
   static Future<List<int>> selectIdEditeurs(ConnectionSettings settings) async {
     List<int> listeIdEdit = [];
     String requete = "SELECT idEditeur from EDITEUR;";
@@ -92,6 +120,32 @@ class DBEditeur {
     return listeIdEdit;
   }
 
+  static Future<List<int>> selectIdEditeursByNomProduit(
+      ConnectionSettings settings, String nomProduit) async {
+    List<int> listeIdEdit = [];
+    String requete =
+        "SELECT EDITEUR.idEditeur from EDITEUR, PRODUIT WHERE nomProduit='$nomProduit' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      int idEdit = row['idEditeur'];
+      listeIdEdit.add(idEdit);
+    }
+    return listeIdEdit;
+  }
+
+  static Future<List<int>> selectIdEditeursByTypeProduit(
+      ConnectionSettings settings, String type) async {
+    List<int> listeIdEdit = [];
+    String requete =
+        "SELECT EDITEUR.idEditeur from EDITEUR, PRODUIT WHERE type='$type' AND EDITEUR.idEditeur=PRODUIT.idEditeur;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      int idEdit = row['idEditeur'];
+      listeIdEdit.add(idEdit);
+    }
+    return listeIdEdit;
+  }
+
   static Future<void> insertEditeur(ConnectionSettings settings,
       String nomEditeur, String adresseEditeur, String villeEditeur) async {
     String requete =
@@ -111,6 +165,13 @@ class DBEditeur {
   static Future<void> deleteEditeur(
       ConnectionSettings settings, int idEditeur) async {
     String requete = "DELETE FROM EDITEUR WHERE idEditeur='$idEditeur'";
+    await LaBDFuret.executerRequete(settings, requete);
+  }
+
+  //delete tous les Produits ayant pour Editeur un Editeur spécifique (et ainsi éviter les bugs pour supprimer un Editeur)
+  static Future<void> deleteEditeurInPRODUIT(
+      ConnectionSettings settings, int idEditeur) async {
+    String requete = "DELETE FROM CREER WHERE idEditeur='$idEditeur'";
     await LaBDFuret.executerRequete(settings, requete);
   }
 
