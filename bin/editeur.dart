@@ -21,7 +21,9 @@ class Editeur implements Data {
       this._villeEditeur = unEdit[3];
     }
   }
+
   Editeur.vide();
+
   int getIdEditeur() {
     return this._idEditeur;
   }
