@@ -53,6 +53,34 @@ class DBAuteur {
     return listeAut;
   }
 
+  static Future<List<Auteur>> selectAuteursByNomProduit(
+      ConnectionSettings settings, String nomProduit) async {
+    List<Auteur> listeAut = [];
+    String requete =
+        "SELECT AUTEUR.idAuteur, nomAuteur, prenomAuteur from AUTEUR, CREER, PRODUIT WHERE nomProduit='$nomProduit' AND AUTEUR.idAuteur=CREER.idAuteur AND CREER.idProduit=PRODUIT.idProduit;;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      Auteur aut =
+          Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
+      listeAut.add(aut);
+    }
+    return listeAut;
+  }
+
+  static Future<List<Auteur>> selectAuteursByTypeProduit(
+      ConnectionSettings settings, String type) async {
+    List<Auteur> listeAut = [];
+    String requete =
+        "SELECT AUTEUR.idAuteur, nomAuteur, prenomAuteur from AUTEUR, CREER, PRODUIT WHERE type='$type' AND AUTEUR.idAuteur=CREER.idAuteur AND CREER.idProduit=PRODUIT.idProduit;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      Auteur aut =
+          Auteur(row['idAuteur'], row['nomAuteur'], row['prenomAuteur']);
+      listeAut.add(aut);
+    }
+    return listeAut;
+  }
+
   static Future<List<int>> selectIdAuteurs(ConnectionSettings settings) async {
     List<int> listeIdAut = [];
     String requete = "SELECT idAuteur from AUTEUR;";
@@ -82,6 +110,32 @@ class DBAuteur {
     List<int> listeIdAut = [];
     String requete =
         "SELECT idAuteur from AUTEUR WHERE nomAuteur='$nomAuteur';";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      int idAut = row['idAuteur'];
+      listeIdAut.add(idAut);
+    }
+    return listeIdAut;
+  }
+
+  static Future<List<int>> selectIdAuteursByNomProduit(
+      ConnectionSettings settings, String nomProduit) async {
+    List<int> listeIdAut = [];
+    String requete =
+        "SELECT AUTEUR.idAuteur from AUTEUR, CREER, PRODUIT WHERE nomProduit='$nomProduit' AND AUTEUR.idAuteur=CREER.idAuteur AND CREER.idProduit=PRODUIT.idProduit;";
+    Results reponse = await LaBDFuret.executerRequete(settings, requete);
+    for (var row in reponse) {
+      int idAut = row['idAuteur'];
+      listeIdAut.add(idAut);
+    }
+    return listeIdAut;
+  }
+
+  static Future<List<int>> selectIdAuteursByTypeProduit(
+      ConnectionSettings settings, String type) async {
+    List<int> listeIdAut = [];
+    String requete =
+        "SELECT AUTEUR.idAuteur from AUTEUR, CREER, PRODUIT WHERE type='$type' AND AUTEUR.idAuteur=CREER.idAuteur AND CREER.idProduit=PRODUIT.idProduit;";
     Results reponse = await LaBDFuret.executerRequete(settings, requete);
     for (var row in reponse) {
       int idAut = row['idAuteur'];

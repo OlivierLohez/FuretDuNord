@@ -18,17 +18,23 @@ class IHMSelectAuteur {
       print("|   0 = Quitter                                         |");
       print("|   1 = Afficher tout                                   |");
       print("|   2 = Afficher tout en fonction d'un prenom           |");
-      print("|   2 = Afficher tout en fonction d'un nom              |");
+      print("|   3 = Afficher tout en fonction d'un nom              |");
+      print("|   4 = Afficher tout en fonction d'un nom de produit   |");
+      print("|   5 = Afficher tout en fonction d'un type de produit  |");
       print("|                                                       |");
       print("+-------------------------------------------------------+");
-      choix = IHM.saisirAction(3);
+      choix = IHM.saisirAction(5);
       print("--------------------------------------------------");
       if (choix == 1) {
         await IHMSelectAuteur.showAllAuteur(settings);
       } else if (choix == 2) {
-        await IHMSelectAuteur.askSelectAuteurByPrenom(settings);
+        await IHMSelectAuteur.askSelectAuteursByPrenom(settings);
       } else if (choix == 3) {
-        await IHMSelectAuteur.askSelectAuteurByNom(settings);
+        await IHMSelectAuteur.askSelectAuteursByNom(settings);
+      } else if (choix == 4) {
+        await IHMSelectAuteur.askSelectAuteursByNomProduit(settings);
+      } else if (choix == 5) {
+        await IHMSelectAuteur.askSelectAuteursByTypeProduit(settings);
       }
     }
     print("Retour menu précédent.");
@@ -44,16 +50,30 @@ class IHMSelectAuteur {
     }
   }
 
-  static Future<void> askSelectAuteurByPrenom(
+  static Future<void> askSelectAuteursByPrenom(
       ConnectionSettings settings) async {
     print("Vous voulez des éditeurs en fonction d'un prénom.");
     IHM.afficherDesDonnees(await DBAuteur.selectAuteursByPrenom(
         settings, IHM.saisirString("le prénom")));
   }
 
-  static Future<void> askSelectAuteurByNom(ConnectionSettings settings) async {
+  static Future<void> askSelectAuteursByNom(ConnectionSettings settings) async {
     print("Vous voulez des auteurs en fonction d'un nom.");
     IHM.afficherDesDonnees(await DBAuteur.selectAuteursByNom(
         settings, IHM.saisirString("le nom de l'auteur")));
+  }
+
+  static Future<void> askSelectAuteursByNomProduit(
+      ConnectionSettings settings) async {
+    print("Vous voulez tous les auteurs qui ont créé un même produit.");
+    IHM.afficherDesDonnees(await DBAuteur.selectAuteursByNomProduit(
+        settings, IHM.saisirString("le nom du produit")));
+  }
+
+  static Future<void> askSelectAuteursByTypeProduit(
+      ConnectionSettings settings) async {
+    print("Vous voulez des auteurs en fonction du même type de produit.");
+    IHM.afficherDesDonnees(await DBAuteur.selectAuteursByTypeProduit(
+        settings, IHM.saisirString("le type de produit")));
   }
 }

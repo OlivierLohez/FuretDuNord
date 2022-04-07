@@ -4,7 +4,6 @@ import 'db_auteur.dart';
 import 'db_editeur.dart';
 import 'db_produit.dart';
 import 'ihm.dart';
-import 'ihmauteur.dart';
 import 'ihmdeletproduit.dart';
 import 'ihmselectproduit.dart';
 
