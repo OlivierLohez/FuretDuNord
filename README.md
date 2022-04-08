@@ -31,8 +31,27 @@ Ce projet rend accessible la gestion des auteurs,éditeurs et des produits de ce
   <ul>
       <li>Editeur
       <ul>
-        <li>IDEditeur
-        <li>
+        <li>IDEditeur(Clé primaire)
+        <li>NomEditeur
+        <li>AdresseEditeur
+        <li>villeEditeur
+      </ul>
+      <li>Produit
+      <ul>
+        <li>IDProduit(Clé primaire)
+        <li>nomProduit
+        <li>Stock
+        <li>DateParution
+        <li>Type
+        <li>Prix
+        <li>IDEditeur(Clé étrangère) 
+      </ul>
+      <li>Auteur
+      <ul>
+        <li>IDAuteur(Clé primaire)
+        <li>NomAuteur
+        <li>PrenomAuteur
+      </ul>
   </ul>
 </div>
 <hr>
@@ -82,5 +101,149 @@ Ce projet rend accessible la gestion des auteurs,éditeurs et des produits de ce
 <hr>
 
 <h3>Démonstration d'un exemple de fonctionnement</h3>
+<p>Après vous avoir expliquez tout ca, une petite démonstration:</p>
+<p>Dans notre démonstration,nous allons créer une nouvelle base de données puis créer un éditeur,un produit et un auteur et les afficher</p>
+<div align="center">
+  <h1>Connexion et initialisation de la base de données</h1>
+<h4>A l'allumage du programme,il faudra se connecter en indiquant la base de données concernée.Indiquer ensuite l'utilisateur et son mot de passe associé</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/connexion.png">
+  <center>
+  <img src="Readmeimages/connexion.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+<h4>Nous accèdons au menu principal et nous allons dans notre cas,tapez 1 pour accéder à "Manipuler les BDD" qui nous permettra de créer les tables de base automatiquement</h4> 
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/menuprincipal.png">
+  <center>
+  <img src="Readmeimages/menuprincipal.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+<h4>Nous voila actuellement dans le menu - Gestion BDD et nous allons taper 1 pour la "Création des tables de la BDD"</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/gestionBDD.png">
+  <center>
+  <img src="Readmeimages/gestionBDD.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+<h4>Voila maintenant nos tables sont crées ce qui nous donne ceci</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/CreationdestablesBDD.png">
+  <center>
+  <img src="Readmeimages/CreationdestablesBDD.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+  <h4>Maintenant,nous allons taper 0 pour "Quitter" et revenir dans le menu principal</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/menuprincipal2.png">
+  <center>
+  <img src="Readmeimages/menuprincipal2.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+  <h1>Création de l'éditeur et vérification</h1>
+<h4>Nous sommes de nouveau dans le menu principal,nous allons partir pour créer notre premier Editeur</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/menuprincipal2.png">
+  <center>
+  <img src="Readmeimages/menuprincipal2.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+  <h4>Pour créer notre premier éditeur , nous allons taper 1 pour "Ajouter un éditeur"</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/menuEditeur.png">
+  <center>
+  <img src="Readmeimages/menuEditeur.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+  <h4>Il ne vous reste qu'à rajouter le nom , ville et adresse que vous voulez saisir</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/CréationEditeur.png">
+  <center>
+  <img src="Readmeimages/CréationEditeur.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+  <h4>Puis nous allons taper 3, pour pouvoir vérifier si notre éditeur à bien était créer</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/menuEditeur.png">
+  <center>
+  <img src="Readmeimages/menuEditeur.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+<h4>Nous allons afficher tout les éditeurs donc nous allons taper 1 pour "Afficher tout"
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/AffichageEditeur.png">
+  <center>
+  <img src="Readmeimages/AffichageEditeur.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+<h4>Et voila tout nos editeurs ou plutôt l'éditeur que nous avons créer
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/affichagedesediteur.png">
+  <center>
+  <img src="Readmeimages/affichagedesediteur.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+<h4>Maintenant nous allons taper 0 puis entrée pour revenir dans le menu puis une autre fois 0 puis entrée pour revenir dans le menu principal
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/retourgestionediteur.png">
+  <center>
+  <img src="Readmeimages/retourgestionediteur.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/retourgestionediteur2.png">
+  <center>
+  <img src="Readmeimages/retourgestionediteur2.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+  <h1>Création du Produit et vérification</h1>
+<h4>Nous voilà revenus dans le menu principal, nous allons maintenant créer notre produit et vérifier donc taper 4</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/menuprincipal2.png">
+  <center>
+  <img src="Readmeimages/menuprincipal2.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+  <h4>Ensuite taper 1 pour pouvoir créer votre produit</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/gestionproduit.png">
+  <center>
+  <img src="Readmeimages/gestionproduit.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+<h4>Rentrez un nom, quantité, date de parution, type(livre,film,etc) , son prix et l'id de l'éditeur associé au produit et on associera un auteur au moment de la création de l'auteur</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/creationduproduit.png">
+  <center>
+  <img src="Readmeimages/creationduproduit.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+<h4>Pour visualiser nos produits nous allons taper 3 puis entrée et nous sélectionnerons "Afficher tout" donc on tape 1</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/visualisationdesproduits.png">
+  <center>
+  <img src="Readmeimages/visualisationdesproduits.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+  <h4>Nous retournons ensuite dans le menu principal donc on taper 0 puis entrée et encore une fois, on tape 0 puis entrée</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/retourmenuprincipal.png">
+  <center>
+  <img src="Readmeimages/retourmenuprincipal.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+  <h1>Création de l'Auteur et Vérification</h1>
+  <h4>Pour créer l'Auteur , il faudra taper 2 pour pouvoir créer notre Auteur et le vérifier</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/menuprincipal2.png">
+  <center>
+  <img src="Readmeimages/menuprincipal2.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+<h4>Puis taper 1 pour "Ajouter un auteur" et taper le nom,prénom de l'auteur et à partir de ce moment vous pouvez l'associer au produit que vous avez créer
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/Créationdauteur.png">
+  <center>
+  <img src="Readmeimages/Créationdauteur.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+<h4>Puis nous allons taper 3 pour "Afficher un ou plusieurs auteurs" et nous allons taper 1 pour "Afficher tout" pour pouvoir afficher nos auteurs
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/affichageauteur.png">
+  <center>
+  <img src="Readmeimages/affichageauteur.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+  <h1>Comment quitter le programme ?</h1>
+  <h4>Pour pouvoir quitter le programme , rien de plus simple , il vous suffit juste d'écrire 0 puis entrée en série jusqu'à que le message "Au revoir , utilisateur!" soit écrit</h4>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/Quitterfinale1.png">
+  <center>
+  <img src="Readmeimages/Quitterfinale1.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/Quitterfinale2.png">
+  <center>
+  <img src="Readmeimages/Quitterfinale2.png" style="text-align:center" width="80%" height="80%">
+  </center>
+</a>
 <br/>
 <hr>
