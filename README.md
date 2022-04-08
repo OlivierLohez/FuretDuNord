@@ -93,7 +93,7 @@ Ce projet rend accessible la gestion des auteurs,éditeurs et des produits de ce
 <h3>Présentation des fonctionnalité du programme</h3>
 <br/>
 
-<p>Le premier élément à noter est la présence d'un système de vérification de la connexion. Si celle-ci n'est pas possible (c'est-à-dire qu'une première connexion sans requête n'a pas réussie), le programme se ferme directement.</p>
+<p>Le premier élément à noter est la présence d'un système de vérification de la connexion. Si celle-ci n'est pas possible (c'est-à-dire qu'une première connexion sans requête n'a pas réussie), le programme se ferme directement. Le programme s'adapte aux paramètre de la base de donnée locale. Il suffit donc de créer une base de donnée en local et de la doter d'un utilisateur pour que la connection puisse réussir.</p>
 <br/>
 <p>Si la connexion a été réussie, un premier panneau s'ouvre. Il suffit de saisir le nombre 0 sur ce panneau pour quitter le programme. Sur tous les autres panneaux, cela permet de revenir au panneau précédent.</p>
 <p>Chaque panneau possède 2 types d'actions : la navigation vers de nouvelles options ou une interaction avec la base de données ou une des tables. Si l'on interragit avec une table, l'utilisateur reste sur le même panneau et pourra continuer d'interragir avec cette même table.</p>
@@ -114,7 +114,7 @@ Ce projet rend accessible la gestion des auteurs,éditeurs et des produits de ce
 
 <h3>Démonstration d'un exemple de fonctionnement</h3>
 <p>Après vous avoir expliquez tout ca, une petite démonstration:</p>
-<p>Dans notre démonstration,nous allons créer une nouvelle base de données puis créer un éditeur,un produit et un auteur et les afficher</p>
+<p>Dans notre démonstration, nous allons remplir une base de données (qu'il faut avoir créer auparavant et doté d'un utilisateur) puis créer un éditeur,un produit et un auteur et les afficher</p>
 <div align="center">
   <h1>Connexion et initialisation de la base de données</h1>
 <h4>A l'allumage du programme,il faudra se connecter en indiquant la base de données concernée.Indiquer ensuite l'utilisateur et son mot de passe associé</h4>
