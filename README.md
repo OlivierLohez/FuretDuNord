@@ -27,7 +27,7 @@ Ce projet rend accessible la gestion des auteurs,éditeurs et des produits de ce
 </a>
 </div>
 <div>
-<p>Nous avons dans notre programme trois tables composée comme ceci :
+<p>Nous avons dans notre programme trois tables composée comme ceci :</p>
   <ul>
       <li>Editeur
       <ul>
@@ -53,6 +53,16 @@ Ce projet rend accessible la gestion des auteurs,éditeurs et des produits de ce
         <li>PrenomAuteur
       </ul>
   </ul>
+  <br/>
+
+  <p>Une quatrième table est présente dans la base de donnée, mais pas dans ne possède pas de fichier propre dans le programme en dart. C'est la table Creer, qui sert de table d'association entre la table Auteur et la table Produit. Chaque produit peut donc avoir plusieurs auteurs et chaque auteur peut avoir fait plusieurs produits.</p>
+  <p> Creer</p>
+  <ul>
+    <li>IDAuteur(Clé primaire étrangère)
+    <li>IDProduit(Clé primaire étrangère)
+  </ul>
+<br/>
+
 </div>
 <hr>
 
