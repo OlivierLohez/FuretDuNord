@@ -197,9 +197,9 @@ Ce projet rend accessible la gestion des auteurs,éditeurs et des produits de ce
   </center>
 </a>
 <h4>Rentrez un nom, quantité, date de parution, type(livre,film,etc) , son prix et l'id de l'éditeur associé au produit et on associera un auteur au moment de la création de l'auteur</h4>
-<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/creationduproduit.png">
+<a href="https://github.com/OlivierLohez/FuretDuNord/blob/main/Readmeimages/créationduproduit.png">
   <center>
-  <img src="Readmeimages/creationduproduit.png" style="text-align:center" width="80%" height="80%">
+  <img src="Readmeimages/créationduproduit.png" style="text-align:center" width="80%" height="80%">
   </center>
 </a>
 <h4>Pour visualiser nos produits nous allons taper 3 puis entrée et nous sélectionnerons "Afficher tout" donc on tape 1</h4>
